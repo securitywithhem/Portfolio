@@ -42,13 +42,13 @@ export const ButtonPremium = forwardRef<HTMLButtonElement, ButtonPremiumProps>(
 
     const variants = {
       primary:
-        "bg-[#EDEDEE] text-[#0B0C0E] hover:bg-[#5EEAD4] hover:text-[#04211C] hover:shadow-lg active:scale-95",
+        "bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] text-[#04211C] hover:shadow-[0_0_30px_rgba(94,234,212,0.4)] hover:scale-105 active:scale-95 font-semibold",
       secondary:
-        "border border-[rgba(255,255,255,0.14)] text-[#EDEDEE] hover:border-[#5EEAD4] hover:text-[#5EEAD4] hover:bg-[rgba(94,234,212,0.05)]",
+        "border border-[rgba(94,234,212,0.3)] text-[#5EEAD4] bg-gradient-to-r from-[rgba(94,234,212,0.05)] to-[rgba(94,234,212,0.02)] backdrop-blur-sm hover:border-[#5EEAD4] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_20px_rgba(94,234,212,0.25)]",
       ghost:
-        "text-[#8B8D92] hover:text-[#5EEAD4] hover:bg-[rgba(94,234,212,0.05)]",
+        "text-[#8B8D92] hover:text-[#5EEAD4] hover:bg-[rgba(94,234,212,0.08)] hover:shadow-[0_0_15px_rgba(94,234,212,0.15)]",
       accent:
-        "bg-[#5EEAD4] text-[#04211C] hover:bg-[#7FFCE8] hover:shadow-[0_0_20px_rgba(94,234,212,0.2)] active:scale-95 font-bold",
+        "bg-gradient-to-r from-[#5EEAD4] via-[#6FD9C8] to-[#7FFCE8] text-[#04211C] hover:shadow-[0_0_35px_rgba(94,234,212,0.5)] hover:scale-105 active:scale-95 font-bold",
     };
 
     const sizes = {

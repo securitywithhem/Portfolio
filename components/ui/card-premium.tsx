@@ -31,21 +31,23 @@ export const CardPremium = forwardRef<HTMLDivElement, CardPremiumProps>(
     },
     ref,
   ) => {
-    const baseStyles =
-      "rounded-xl bg-[#131417] border border-[rgba(255,255,255,0.08)] transition-all duration-300";
+    const baseStyles = "rounded-xl border transition-all duration-300";
 
     const variants = {
-      default: "p-6 sm:p-8",
-      elevated: "p-6 sm:p-8 shadow-lg",
-      bordered: "p-6 sm:p-8 border-2 border-[rgba(94,234,212,0.25)]",
+      default:
+        "p-6 sm:p-8 bg-gradient-to-br from-[rgba(19,20,23,0.6)] to-[rgba(15,17,23,0.4)] border-[rgba(94,234,212,0.15)] backdrop-blur-sm",
+      elevated:
+        "p-6 sm:p-8 bg-gradient-to-br from-[rgba(19,20,23,0.7)] to-[rgba(15,17,23,0.5)] border-[rgba(94,234,212,0.2)] backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.2)]",
+      bordered:
+        "p-6 sm:p-8 bg-gradient-to-br from-[rgba(94,234,212,0.05)] to-[rgba(94,234,212,0.02)] border-2 border-[rgba(94,234,212,0.3)] backdrop-blur-sm",
       glass:
-        "p-6 sm:p-8 backdrop-blur-sm bg-[rgba(19,20,23,0.7)] border border-[rgba(255,255,255,0.1)]",
+        "p-6 sm:p-8 bg-gradient-to-br from-[rgba(19,20,23,0.5)] to-[rgba(15,17,23,0.3)] border-[rgba(94,234,212,0.2)] backdrop-blur-xl",
     };
 
     const interactiveStyles = interactive
-      ? "cursor-pointer hover:border-[rgba(94,234,212,0.25)] hover:shadow-[0_0_20px_rgba(94,234,212,0.05)] hover:bg-[#1A1B1F] transform hover:scale-[1.02]"
+      ? "cursor-pointer hover:border-[rgba(94,234,212,0.4)] hover:shadow-[0_0_30px_rgba(94,234,212,0.2)] hover:bg-gradient-to-br hover:from-[rgba(94,234,212,0.1)] hover:to-[rgba(94,234,212,0.05)] transform hover:scale-[1.02] hover:translate-y-[-4px]"
       : accentBorder
-        ? "hover:border-[rgba(94,234,212,0.25)] hover:shadow-[0_0_20px_rgba(94,234,212,0.05)]"
+        ? "hover:border-[rgba(94,234,212,0.3)] hover:shadow-[0_0_20px_rgba(94,234,212,0.15)]"
         : "";
 
     return (

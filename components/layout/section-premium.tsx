@@ -37,12 +37,12 @@ export function SectionPremium({
   };
 
   const variants = {
-    default: "bg-[#0B0C0E]",
-    dark: "bg-[#0B0C0E]",
+    default: "bg-gradient-to-b from-[#0B0C0E] to-[#0F1117]",
+    dark: "bg-gradient-to-b from-[#0B0C0E] to-[#0F1117]",
     glass:
-      "bg-gradient-to-br from-[#131417] to-[#0B0C0E] backdrop-blur-sm border-t border-[rgba(255,255,255,0.08)]",
+      "bg-gradient-to-br from-[rgba(19,20,23,0.4)] via-[#0B0C0E] to-[#0B0C0E] backdrop-blur-sm border-t border-[rgba(94,234,212,0.15)]",
     accent:
-      "bg-gradient-to-br from-[rgba(94,234,212,0.03)] to-[#0B0C0E] border-t border-[rgba(94,234,212,0.2)]",
+      "bg-gradient-to-br from-[rgba(94,234,212,0.08)] via-[#0B0C0E] to-[#0B0C0E] border-t border-[rgba(94,234,212,0.25)]",
   };
 
   const accentLineStyles = {
@@ -115,15 +115,35 @@ export function SectionHeader({
       )}
     >
       {eyebrow && (
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[rgba(94,234,212,0.25)] bg-[rgba(94,234,212,0.12)] px-4 py-2">
-          <span className="inline-block h-2 w-2 rounded-full bg-[#5EEAD4]" />
-          <span className="font-mono text-xs tracking-widest text-[#5EEAD4] uppercase">
+        <div
+          className="mb-4 inline-flex items-center gap-2 rounded-full border border-[rgba(94,234,212,0.3)] bg-gradient-to-r from-[rgba(94,234,212,0.1)] to-[rgba(94,234,212,0.05)] px-4 py-2 backdrop-blur-sm"
+          style={{
+            boxShadow:
+              "0 0 15px rgba(94,234,212,0.12), inset 0 1px 0 rgba(255,255,255,0.08)",
+          }}
+        >
+          <span
+            className="inline-block h-2 w-2 rounded-full bg-[#5EEAD4]"
+            style={{
+              boxShadow: "0 0 8px rgba(94,234,212,0.5)",
+            }}
+          />
+          <span className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text font-mono text-xs tracking-widest text-transparent uppercase">
             {eyebrow}
           </span>
         </div>
       )}
 
-      <h2 className="sm:text-5xl mb-4 text-4xl font-black tracking-tight text-[#EDEDEE]">
+      <h2
+        className="sm:text-5xl mb-4 text-4xl font-black tracking-tight"
+        style={{
+          background:
+            "linear-gradient(135deg, #EDEDEE 0%, #5EEAD4 60%, #7FFCE8 100%)",
+          backgroundClip: "text",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
         {title}
       </h2>
 
