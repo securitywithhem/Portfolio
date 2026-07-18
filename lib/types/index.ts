@@ -1,0 +1,6 @@
+export type { Profile, SocialLink } from "./profile";
+export type { Project } from "./project";
+export type { Certificate } from "./certificate";
+export type { Experience } from "./experience";
+export type { BlogPost } from "./blog";
+export type { ContactFormInput } from "./contact";
