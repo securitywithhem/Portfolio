@@ -1,33 +1,17 @@
-import { Container } from "@/components/layout/container";
-import { HeroParticles } from "@/components/sections/hero-particles";
-import { HeroClient } from "./hero-client";
+import { HeroElite } from "./hero-elite";
 import { getProfile } from "@/lib/data";
 
 /**
- * Hero — the recruiter's first impression (PRD: credibility in <30s).
- * Server Component shell wrapping HeroClient for animation boundary.
- *
- * The h1 carries name + role — the page's primary keyword signal.
- * Animations: fade-in + slide-up with stagger for heading, bio, and CTA.
+ * Hero — elite hacker aesthetic with refined dark theme + teal accent.
+ * Premium animations: grid background, glow effect, typing animation, stagger reveals.
+ * Motion tier: Complex (8/10) — smooth scroll reveals and premium polish.
  */
 export function Hero() {
-  const { name, role, bio, socials, resumeUrl } = getProfile();
+  const profile = getProfile();
 
   return (
-    <section
-      id="hero"
-      className="relative flex min-h-dvh items-center overflow-hidden"
-    >
-      <HeroParticles />
-      <Container className="relative">
-        <HeroClient
-          name={name}
-          role={role}
-          bio={bio}
-          socials={socials}
-          resumeUrl={resumeUrl}
-        />
-      </Container>
+    <section id="hero">
+      <HeroElite socials={profile.socials} resumeUrl={profile.resumeUrl} />
     </section>
   );
 }
