@@ -1,11 +1,3 @@
-import { SectionHeading } from "@/components/shared/section-heading";
-
-/**
- * Narrative content of About: heading, bio paragraphs, focus-area tags.
- * Split from About so the section shell (anchor id, container, motion
- * wrapper) stays uncluttered — this is the piece that will grow if About
- * later gains a portrait or stat row.
- */
 export function AboutContent({
   aboutBio,
   focusAreas,
@@ -14,28 +6,29 @@ export function AboutContent({
   focusAreas: string[];
 }) {
   return (
-    <div className="flex flex-col gap-8">
-      <SectionHeading id="about-heading" eyebrow="About" title="About Me" />
+    <div className="flex flex-col gap-12">
       <div className="flex flex-col gap-4">
         {aboutBio.map((paragraph) => (
           <p
             key={paragraph}
-            className="max-w-3xl text-base text-muted-foreground sm:text-lg"
+            className="max-w-3xl text-lg leading-relaxed text-[#8B8D92] sm:text-xl"
           >
             {paragraph}
           </p>
         ))}
       </div>
-      <ul className="flex flex-wrap gap-2">
+
+      <div className="flex flex-wrap gap-3">
         {focusAreas.map((area) => (
-          <li
+          <span
             key={area}
-            className="rounded-md border bg-accent/50 px-3 py-1 text-sm text-accent-foreground"
+            className="inline-flex items-center gap-2 rounded-full border border-[rgba(94,234,212,0.25)] bg-[rgba(94,234,212,0.12)] px-4 py-2 text-sm font-medium text-[#5EEAD4]"
           >
+            <span className="inline-block h-2 w-2 rounded-full bg-[#5EEAD4]" />
             {area}
-          </li>
+          </span>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
