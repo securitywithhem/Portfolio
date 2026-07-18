@@ -173,61 +173,81 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
   }, []);
 
   return (
-    <section className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-[#0B0C0E] py-32">
-      {/* Grid background */}
-      <div className="pointer-events-none absolute inset-0 opacity-50">
+    <section className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#0B0C0E] via-[#0B0C0E] to-[#0F1117] py-32">
+      {/* Animated grid background */}
+      <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
+              "linear-gradient(rgba(94,234,212,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(94,234,212,0.12) 1px, transparent 1px)",
+            backgroundSize: "50px 50px",
             maskImage:
-              "radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 75%)",
+              "radial-gradient(ellipse 80% 50% at 50% 40%, black 0%, transparent 80%)",
           }}
         />
       </div>
 
-      {/* Glow effect */}
+      {/* Multiple glow layers for depth */}
       <div
-        className="pointer-events-none absolute -top-1/4 left-1/2 h-[600px] w-[900px] -translate-x-1/2"
+        className="pointer-events-none absolute -top-1/3 left-1/2 h-[800px] w-[1000px] -translate-x-1/2"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(94,234,212,0.10), transparent 65%)",
+            "radial-gradient(ellipse at center, rgba(94,234,212,0.15), transparent 70%)",
+          filter: "blur(40px)",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute top-1/4 right-0 h-[600px] w-[600px]"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(94,234,212,0.08), transparent 60%)",
+          filter: "blur(60px)",
         }}
       />
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-3xl px-6 sm:px-8">
-        {/* Eyebrow badge */}
+        {/* Eyebrow badge - glassmorphic */}
         <div
           ref={eyebrowRef}
-          className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-[rgba(94,234,212,0.25)] bg-[rgba(94,234,212,0.12)] px-4 py-2"
+          className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-[rgba(94,234,212,0.3)] bg-gradient-to-r from-[rgba(94,234,212,0.1)] to-[rgba(94,234,212,0.05)] px-4 py-2 backdrop-blur-sm"
+          style={{
+            boxShadow:
+              "0 0 20px rgba(94,234,212,0.15), inset 0 1px 0 rgba(255,255,255,0.1)",
+          }}
         >
           <span
-            className="h-1.5 w-1.5 rounded-full bg-[#5EEAD4]"
+            className="h-2 w-2 rounded-full bg-[#5EEAD4]"
             style={{
-              boxShadow: "0 0 0 3px rgba(94,234,212,0.18)",
+              boxShadow:
+                "0 0 8px rgba(94,234,212,0.6), 0 0 12px rgba(94,234,212,0.3)",
               animation: "pulse 2.4s ease-in-out infinite",
             }}
           />
-          <span className="font-mono text-xs tracking-widest text-[#5EEAD4] uppercase">
+          <span className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text font-mono text-xs tracking-widest text-transparent uppercase">
             open to security engineering roles
           </span>
         </div>
 
-        {/* Main heading */}
+        {/* Main heading - gradient text */}
         <h1
           ref={headingRef}
           className="text-5xl lg:text-7xl max-w-4xl leading-[1.03] font-black tracking-tight sm:text-6xl"
           style={{
-            color: "#EDEDEE",
             letterSpacing: "-0.03em",
+            background:
+              "linear-gradient(135deg, #EDEDEE 0%, #5EEAD4 50%, #7FFCE8 100%)",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundSize: "200% 200%",
+            backgroundPosition: "0% 50%",
           }}
         >
           Hem Gabhawala builds systems
           <br />
-          <span className="text-[#5EEAD4]">
+          <span style={{ opacity: 0.95 }}>
             attackers can&apos;t quietly break.
           </span>
         </h1>
@@ -261,18 +281,17 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
           Dharma, and API pentest work included below.
         </p>
 
-        {/* CTA buttons */}
-        <div ref={ctaRef} className="mt-11 flex flex-col gap-3 sm:flex-row">
+        {/* CTA buttons - premium hover effects */}
+        <div ref={ctaRef} className="mt-11 flex flex-col gap-4 sm:flex-row">
           <Button
             asChild
-            className="rounded-lg border border-white bg-white px-6 py-3 text-sm font-semibold text-[#0B0C0E] transition-all duration-200 hover:border-[#5EEAD4] hover:bg-[#5EEAD4] hover:text-[#04211C]"
+            className="group relative rounded-lg border border-[#5EEAD4] bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] px-8 py-3 text-sm font-semibold text-[#04211C] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(94,234,212,0.4)] active:scale-95"
           >
             <a href="#projects">View projects →</a>
           </Button>
           <Button
             asChild
-            variant="outline"
-            className="rounded-lg border border-[rgba(255,255,255,0.14)] bg-transparent px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:border-[#5EEAD4] hover:text-[#5EEAD4]"
+            className="group relative rounded-lg border border-[rgba(94,234,212,0.3)] bg-gradient-to-r from-[rgba(94,234,212,0.05)] to-[rgba(94,234,212,0.02)] px-8 py-3 text-sm font-semibold text-[#5EEAD4] backdrop-blur-sm transition-all duration-300 hover:border-[#5EEAD4] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_20px_rgba(94,234,212,0.25)]"
           >
             <a href={resumeUrl} download>
               Download resume
@@ -280,32 +299,40 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
           </Button>
         </div>
 
-        {/* Stats */}
+        {/* Stats - glassmorphic cards */}
         <div
           ref={statsRef}
-          className="mt-20 grid grid-cols-2 gap-8 border-t border-[rgba(255,255,255,0.08)] pt-8 sm:grid-cols-4 sm:gap-4"
+          className="mt-20 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-3"
         >
-          <div className="font-mono">
-            <div className="text-2xl font-semibold text-white">3</div>
-            <div className="mt-1 text-xs tracking-wider text-[#55575D] uppercase">
+          <div className="group rounded-lg border border-[rgba(94,234,212,0.15)] bg-gradient-to-br from-[rgba(94,234,212,0.08)] to-[rgba(94,234,212,0.02)] p-4 backdrop-blur-sm transition-all duration-300 hover:border-[rgba(94,234,212,0.3)] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_15px_rgba(94,234,212,0.2)]">
+            <div className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text text-2xl font-bold text-transparent">
+              3
+            </div>
+            <div className="mt-2 text-xs tracking-wider text-[#8B8D92] uppercase">
               Featured Projects
             </div>
           </div>
-          <div className="font-mono">
-            <div className="text-2xl font-semibold text-white">Top 5%</div>
-            <div className="mt-1 text-xs tracking-wider text-[#55575D] uppercase">
+          <div className="group rounded-lg border border-[rgba(94,234,212,0.15)] bg-gradient-to-br from-[rgba(94,234,212,0.08)] to-[rgba(94,234,212,0.02)] p-4 backdrop-blur-sm transition-all duration-300 hover:border-[rgba(94,234,212,0.3)] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_15px_rgba(94,234,212,0.2)]">
+            <div className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text text-2xl font-bold text-transparent">
+              Top 5%
+            </div>
+            <div className="mt-2 text-xs tracking-wider text-[#8B8D92] uppercase">
               TryHackMe Rank
             </div>
           </div>
-          <div className="font-mono">
-            <div className="text-2xl font-semibold text-white">12+</div>
-            <div className="mt-1 text-xs tracking-wider text-[#55575D] uppercase">
+          <div className="group rounded-lg border border-[rgba(94,234,212,0.15)] bg-gradient-to-br from-[rgba(94,234,212,0.08)] to-[rgba(94,234,212,0.02)] p-4 backdrop-blur-sm transition-all duration-300 hover:border-[rgba(94,234,212,0.3)] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_15px_rgba(94,234,212,0.2)]">
+            <div className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text text-2xl font-bold text-transparent">
+              12+
+            </div>
+            <div className="mt-2 text-xs tracking-wider text-[#8B8D92] uppercase">
               Certifications
             </div>
           </div>
-          <div className="font-mono">
-            <div className="text-2xl font-semibold text-white">24H</div>
-            <div className="mt-1 text-xs tracking-wider text-[#55575D] uppercase">
+          <div className="group rounded-lg border border-[rgba(94,234,212,0.15)] bg-gradient-to-br from-[rgba(94,234,212,0.08)] to-[rgba(94,234,212,0.02)] p-4 backdrop-blur-sm transition-all duration-300 hover:border-[rgba(94,234,212,0.3)] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_15px_rgba(94,234,212,0.2)]">
+            <div className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text text-2xl font-bold text-transparent">
+              24H
+            </div>
+            <div className="mt-2 text-xs tracking-wider text-[#8B8D92] uppercase">
               Response Time
             </div>
           </div>
