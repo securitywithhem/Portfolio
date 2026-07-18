@@ -26,7 +26,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { fadeIn, fadeUp, staggerChildren, subtleHover } from "@/lib/motion";
 
 /**

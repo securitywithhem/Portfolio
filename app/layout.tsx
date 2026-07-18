@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Providers } from "@/components/providers";
+import { MotionProvider } from "@/components/providers/motion-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { env } from "@/lib/env";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -13,13 +15,34 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteName = "Hem Gabhawala — Cybersecurity Portfolio";
+const description =
+  "Cybersecurity portfolio of Hem Gabhawala: projects, certifications, and experience.";
+
+/**
+ * Metadata scaffold (Phase 1C): structure is final; copy and OG images are
+ * finalized with real content in later phases. metadataBase falls back to
+ * localhost until NEXT_PUBLIC_SITE_URL is set for the deployed origin.
+ */
 export const metadata: Metadata = {
+  metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
-    default: "Hem Gabhawala — Cybersecurity Portfolio",
+    default: siteName,
     template: "%s — Hem Gabhawala",
   },
-  description:
-    "Cybersecurity portfolio of Hem Gabhawala: projects, certifications, and experience.",
+  description,
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName,
+    title: siteName,
+    description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteName,
+    description,
+  },
 };
 
 export default function RootLayout({
@@ -32,7 +55,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{children}</Providers>
+        <ThemeProvider>
+          <MotionProvider>{children}</MotionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -26,19 +26,22 @@ npm run dev
 
 ## Folder structure
 
-| Folder                 | Purpose                                                        |
-| ---------------------- | -------------------------------------------------------------- |
-| `app/`                 | Next.js App Router routes, layouts, metadata                   |
-| `components/ui/`       | shadcn/ui primitives (added in Phase 0.2)                      |
-| `components/sections/` | Page sections (Hero, About, … — Phases 2–4)                    |
-| `data/`                | Static typed content (profile, projects, certs — Phase 0.3)    |
-| `lib/types/`           | TypeScript entity interfaces                                   |
-| `lib/validations/`     | Zod schemas (build-time data validation + runtime form checks) |
-| `lib/data/`            | Data access layer — the only sanctioned way to read `data/`    |
-| `lib/utils/`           | Shared utilities                                               |
-| `public/`              | Static assets                                                  |
-| `styles/`              | `globals.css` — Tailwind + design tokens                       |
-| `Docs/`                | PRD, TRD, UI/UX spec, implementation plan, backend schema      |
+| Folder                  | Purpose                                                        |
+| ----------------------- | -------------------------------------------------------------- |
+| `app/`                  | Next.js App Router routes, layouts, metadata                   |
+| `components/ui/`        | shadcn/ui primitives (generated, minimally edited)             |
+| `components/providers/` | Client context providers (theme, motion)                       |
+| `components/shared/`    | Cross-section reusables (theme toggle, …)                      |
+| `components/layout/`    | Structural pieces (Container; header/footer in Phase 2)        |
+| `components/sections/`  | Page sections (Hero, About, … — Phases 2–4)                    |
+| `data/`                 | Static typed content (profile, projects, certs — Phase 0.3)    |
+| `lib/types/`            | TypeScript entity interfaces                                   |
+| `lib/validations/`      | Zod schemas (build-time data validation + runtime form checks) |
+| `lib/data/`             | Data access layer — the only sanctioned way to read `data/`    |
+| `lib/utils/`            | Shared utilities                                               |
+| `public/`               | Static assets                                                  |
+| `styles/`               | `globals.css` — Tailwind + design tokens                       |
+| `Docs/`                 | PRD, TRD, UI/UX spec, implementation plan, backend schema      |
 
 ## Conventions
 
