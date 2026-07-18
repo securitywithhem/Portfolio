@@ -7,6 +7,7 @@ import { Skills } from "@/components/sections/skills";
 import { ExperienceTimeline } from "@/components/experience/experience-timeline";
 import { Certifications } from "@/components/certifications/certifications";
 import { TryHackMeSection } from "@/components/certifications/tryhackme-section";
+import { GitHubSection } from "@/components/github/github-section";
 import { getNavSections } from "@/lib/data";
 
 const IMPLEMENTED_IDS = [
@@ -18,6 +19,7 @@ const IMPLEMENTED_IDS = [
   "projects",
   "certifications",
   "tryhackme",
+  "github",
 ];
 
 function Placeholder({ id, label }: { id: string; label: string }) {
@@ -37,18 +39,17 @@ function Placeholder({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * Home page. Phases 2–4 are now complete: Hero, About, Journey, Skills (2–3),
- * Projects (4A), Certifications & TryHackMe (4B), and Experience (4C). The
- * remaining sections (GitHub, Blog, Contact) are TEMPORARY full-height
- * placeholders that keep every anchor in the nav contract (data/navigation.ts)
- * present and scrollable until Phase 5.
+ * Home page. Phases 2–4 complete + GitHub integration (Phase 5a):
+ * Hero, About, Journey, Skills (2–3), Projects (4A), Certifications & TryHackMe (4B),
+ * Experience (4C), and GitHub (5a). The remaining sections (Blog, Contact) are
+ * TEMPORARY full-height placeholders until Phase 5b/5c.
  *
  * Layout follows App Flow order: Hero → About → Journey → Skills →
- * Experience → Projects → Certifications → TryHackMe → [placeholders].
+ * Experience → Projects → Certifications → TryHackMe → GitHub → [placeholders].
  */
 export default function Home() {
   const sections = getNavSections();
-  const afterTryHackMe = sections.filter(
+  const afterGitHub = sections.filter(
     ({ id }) => !IMPLEMENTED_IDS.includes(id),
   );
 
@@ -62,7 +63,8 @@ export default function Home() {
       <Projects />
       <Certifications />
       <TryHackMeSection />
-      {afterTryHackMe.map((section) => (
+      <GitHubSection />
+      {afterGitHub.map((section) => (
         <Placeholder key={section.id} {...section} />
       ))}
     </main>
