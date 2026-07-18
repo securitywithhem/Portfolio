@@ -12,4 +12,7 @@ export const profileSchema = z.object({
   role: nonEmpty,
   bio: nonEmpty.max(1000),
   socials: z.array(socialLinkSchema).min(1),
+  resumeUrl: z.string().regex(/^\/\S+$/, {
+    message: "Expected site-relative path (e.g. /resume.pdf)",
+  }),
 }) satisfies z.ZodType<Profile>;
