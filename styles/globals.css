@@ -176,3 +176,123 @@
   background-color: color-mix(in oklab, var(--card) 65%, transparent);
   backdrop-filter: blur(12px);
 }
+
+/*
+ * Premium Motion Layer — GSAP animations + micro-interactions.
+ * Part of the Complex Motion tier (8/10).
+ */
+
+/* Loading pulse animation */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 60%, transparent);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 0 8px color-mix(in oklch, var(--primary) 0%, transparent);
+  }
+}
+
+/* Smooth color transition */
+@keyframes color-shift {
+  0% {
+    color: var(--foreground);
+  }
+  50% {
+    color: var(--primary);
+  }
+  100% {
+    color: var(--foreground);
+  }
+}
+
+/* Smooth gradient animation for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@layer utilities {
+  /* Smooth transitions for interactive elements */
+  .transition-smooth {
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Will-change for GPU acceleration during animations */
+  .will-animate {
+    will-change: transform, opacity;
+  }
+
+  /* Prevent layout shift during hover animations */
+  .hover-stable {
+    transition: none;
+  }
+
+  /* Gradient text effect for headings */
+  .gradient-text {
+    background: linear-gradient(
+      to right bottom,
+      var(--foreground),
+      var(--foreground),
+      color-mix(in oklch, var(--foreground) 70%, transparent)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Glow effect for interactive elements */
+  .glow-primary {
+    box-shadow: 0 0 20px color-mix(in oklch, var(--primary) 50%, transparent);
+  }
+
+  /* Hover elevation with shadow */
+  .hover-elevate {
+    transition: none;
+    will-change: transform, opacity;
+  }
+
+  /* Smooth focus state */
+  .focus-ring {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--primary),
+      0 0 0 4px var(--background);
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-color-shift {
+    animation: color-shift 3s ease-in-out infinite;
+  }
+
+  /* Magnetic hover effect baseline */
+  .magnetic-base {
+    transition: none;
+    will-change: transform, opacity;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s infinite;
+    background: linear-gradient(
+      90deg,
+      var(--muted) 25%,
+      var(--accent) 50%,
+      var(--muted) 75%
+    );
+    background-size: 1000px 100%;
+  }
+}
