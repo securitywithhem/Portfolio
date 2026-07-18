@@ -1,23 +1,25 @@
 import { Container } from "@/components/layout/container";
 import { About } from "@/components/sections/about";
 import { Hero } from "@/components/sections/hero";
+import { JourneyTimeline } from "@/components/sections/journey-timeline";
 import { getNavSections } from "@/lib/data";
 
 /**
- * Home page. Hero and About are real (Phases 2.2, 3A); the remaining
- * sections are TEMPORARY full-height placeholders that keep every anchor
- * in the nav contract (data/navigation.ts) present and scrollable until
- * later phases replace them.
+ * Home page. Hero, About, and Journey are real (Phases 2.2, 3A, 3B); the
+ * remaining sections are TEMPORARY full-height placeholders that keep
+ * every anchor in the nav contract (data/navigation.ts) present and
+ * scrollable until later phases replace them.
  */
 export default function Home() {
   const placeholders = getNavSections().filter(
-    ({ id }) => id !== "hero" && id !== "about",
+    ({ id }) => id !== "hero" && id !== "about" && id !== "journey",
   );
 
   return (
     <main id="main">
       <Hero />
       <About />
+      <JourneyTimeline />
       {placeholders.map(({ id, label }) => (
         <section
           key={id}

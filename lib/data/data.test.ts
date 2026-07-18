@@ -12,12 +12,14 @@ import {
   navSectionsSchema,
   profileSchema,
   projectsSchema,
+  timelineEventsSchema,
 } from "@/lib/validations";
 import {
   getBlogPosts,
   getExperience,
   getFeaturedProjects,
   getProjectBySlug,
+  getTimelineEvents,
 } from "@/lib/data";
 
 /**
@@ -104,5 +106,24 @@ describe("data access layer", () => {
   it("getBlogPosts sorts newest first", () => {
     const dates = getBlogPosts().map((p) => p.date);
     expect(dates).toEqual([...dates].sort((a, b) => b.localeCompare(a)));
+  });
+
+  it("getTimelineEvents merges Experience/Certificates and sorts ascending, regardless of source order", () => {
+    const events = getTimelineEvents();
+    const dates = events.map((e) => e.date);
+    expect(dates).toEqual([...dates].sort((a, b) => a.localeCompare(b)));
+
+    // data/timeline.ts deliberately lists its milestones out of order —
+    // this proves the accessor sorts explicitly rather than relying on it.
+    expect(events[0]?.id).toBe("started-btech");
+
+    // Experience/Certificates are represented without being duplicated as
+    // separate hand-authored timeline entries.
+    expect(events.some((e) => e.category === "experience")).toBe(true);
+    expect(events.some((e) => e.category === "certification")).toBe(true);
+
+    const result = timelineEventsSchema.safeParse(events);
+    expect(result.error?.issues ?? []).toEqual([]);
+    expect(result.success).toBe(true);
   });
 });

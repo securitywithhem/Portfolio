@@ -4,6 +4,7 @@ import { experience } from "@/data/experience";
 import { navSections } from "@/data/navigation";
 import { profile } from "@/data/profile";
 import { projects } from "@/data/projects";
+import { timelineMilestones } from "@/data/timeline";
 import type {
   BlogPost,
   Certificate,
@@ -11,7 +12,9 @@ import type {
   NavSection,
   Profile,
   Project,
+  TimelineEvent,
 } from "@/lib/types";
+import { slugify } from "@/lib/utils";
 
 /**
  * Data access layer — the ONLY sanctioned way to read /data.
@@ -56,6 +59,39 @@ export function getExperience(): Experience[] {
     }
     return b.startDate.localeCompare(a.startDate);
   });
+}
+
+/**
+ * Journey timeline: milestone-only entries merged with Experience and
+ * Certificate facts mapped into TimelineEvent shape — see the
+ * data-relationship decision recorded in data/timeline.ts. Sorted
+ * ascending (oldest first) so the section reads as a forward narrative;
+ * this is the opposite of getExperience()/getCertificates() below, which
+ * are newest-first for their own resume-style sections — both orderings
+ * are deliberate for their context.
+ */
+export function getTimelineEvents(): TimelineEvent[] {
+  const experienceEvents: TimelineEvent[] = experience.map((e) => ({
+    id: `experience-${slugify(e.company)}`,
+    date: e.startDate,
+    title: `${e.role} — ${e.company}`,
+    description: e.achievements[0] ?? "",
+    category: "experience",
+  }));
+
+  const certificateEvents: TimelineEvent[] = certificates.map((c) => ({
+    id: `certification-${c.id}`,
+    date: c.date,
+    title: c.title,
+    description: `Issued by ${c.issuer}.`,
+    category: "certification",
+  }));
+
+  return [
+    ...timelineMilestones,
+    ...experienceEvents,
+    ...certificateEvents,
+  ].sort((a, b) => a.date.localeCompare(b.date));
 }
 
 /** Newest first. */

@@ -12,6 +12,16 @@ export const isoMonth = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/, {
   message: "Expected ISO month (YYYY-MM)",
 });
 
+/**
+ * `YYYY-MM-DD` or `YYYY-MM` (timeline entries merge Experience's month-only
+ * dates with Certificate's full dates — see lib/data/index.ts#getTimelineEvents).
+ */
+export const isoDateOrMonth = z
+  .string()
+  .regex(/^\d{4}-(0[1-9]|1[0-2])(-(0[1-9]|[12]\d|3[01]))?$/, {
+    message: "Expected ISO date (YYYY-MM-DD) or month (YYYY-MM)",
+  });
+
 /** Lowercase kebab-case URL segment. */
 export const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
   message: "Expected lowercase kebab-case slug",
