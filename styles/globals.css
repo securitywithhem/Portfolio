@@ -1,26 +1,138 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design tokens — single source of truth (Phase 0.2).
+ *
+ * Colors are oklch semantic tokens: components reference `bg-background`,
+ * `text-primary`, etc. — never raw color values. Light theme on :root,
+ * dark theme on .dark (class strategy, toggled via next-themes).
+ *
+ * Every pairing of `x-foreground` on `x` (plus foreground/muted-foreground
+ * on background) is WCAG-AA-verified by lib/design/contrast.test.ts, which
+ * parses this file. Editing a value here reruns those checks in CI.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: oklch(0.985 0.003 250);
+  --foreground: oklch(0.19 0.02 255);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.02 255);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.02 255);
+  /* Deep blue brand accent (UI/UX doc: "Deep Blue Accent") */
+  --primary: oklch(0.45 0.16 258);
+  --primary-foreground: oklch(0.985 0.005 250);
+  --secondary: oklch(0.955 0.01 252);
+  --secondary-foreground: oklch(0.28 0.04 256);
+  --muted: oklch(0.96 0.008 252);
+  --muted-foreground: oklch(0.45 0.025 256);
+  --accent: oklch(0.94 0.025 255);
+  --accent-foreground: oklch(0.32 0.1 258);
+  --destructive: oklch(0.5 0.19 27);
+  --destructive-foreground: oklch(0.985 0.005 250);
+  --border: oklch(0.905 0.01 252);
+  --input: oklch(0.905 0.01 252);
+  --ring: oklch(0.45 0.16 258);
+  --radius: 0.625rem;
+}
+
+.dark {
+  --background: oklch(0.16 0.015 256);
+  --foreground: oklch(0.95 0.008 250);
+  --card: oklch(0.205 0.018 256);
+  --card-foreground: oklch(0.95 0.008 250);
+  --popover: oklch(0.205 0.018 256);
+  --popover-foreground: oklch(0.95 0.008 250);
+  --primary: oklch(0.65 0.15 258);
+  --primary-foreground: oklch(0.15 0.02 256);
+  --secondary: oklch(0.26 0.02 256);
+  --secondary-foreground: oklch(0.93 0.01 250);
+  --muted: oklch(0.24 0.02 256);
+  --muted-foreground: oklch(0.72 0.02 254);
+  --accent: oklch(0.29 0.05 258);
+  --accent-foreground: oklch(0.92 0.02 254);
+  --destructive: oklch(0.58 0.2 26);
+  --destructive-foreground: oklch(0.985 0.005 250);
+  --border: oklch(0.28 0.02 256);
+  --input: oklch(0.28 0.02 256);
+  --ring: oklch(0.65 0.15 258);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /*
+   * Deliberate, limited type scale (enterprise / Apple + Vercel direction).
+   * Tailwind's defaults beyond this set are removed so hierarchy stays
+   * intentional: body text, two supporting sizes, three heading steps,
+   * one display step.
+   */
+  --text-*: initial;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 2.5rem;
+  --text-6xl: 3.75rem;
+  --text-6xl--line-height: 1;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/*
+ * Glassmorphism surface — the only sanctioned glass treatment (UI/UX doc).
+ * Deliberately subtle: translucent card surface, backdrop blur, soft border.
+ * Apply to floating/overlay surfaces only, never to every card.
+ */
+@utility glass {
+  border-width: 1px;
+  border-color: color-mix(in oklab, var(--border) 60%, transparent);
+  background-color: color-mix(in oklab, var(--card) 65%, transparent);
+  backdrop-filter: blur(12px);
 }

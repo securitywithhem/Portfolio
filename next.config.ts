@@ -34,6 +34,9 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // A stray lockfile in the home directory otherwise makes Next infer the
+  // wrong workspace root for file tracing.
+  outputFileTracingRoot: __dirname,
   images: {
     formats: ["image/avif", "image/webp"],
   },
