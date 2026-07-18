@@ -6,6 +6,8 @@ import { MotionProvider } from "@/components/providers/motion-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { getProfile } from "@/lib/data";
 import { env } from "@/lib/env";
+import { generatePersonSchema } from "@/lib/seo/jsonld";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo/config";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -23,10 +25,12 @@ const siteName = `${name} — Cybersecurity Portfolio`;
 const description = `${name}, ${role}. Hands-on offensive security: penetration testing, security tooling, certifications, and TryHackMe achievements.`;
 
 /**
- * Metadata (finalized copy in Phase 2.2, informed by the Hero: name, role,
- * one-line value prop). OG images land with the SEO phase. metadataBase
- * falls back to localhost until NEXT_PUBLIC_SITE_URL is set for the
- * deployed origin.
+ * Root layout metadata — extends to all pages unless overridden.
+ * metadataBase is required for OG image URL resolution. Template sets
+ * the standard suffix format for per-page titles.
+ *
+ * JSON-LD structured data (Person schema) is injected in the body
+ * to establish site-wide identity for search engines.
  */
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -41,11 +45,25 @@ export const metadata: Metadata = {
     siteName,
     title: siteName,
     description,
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: siteName,
     description,
+    images: [DEFAULT_OG_IMAGE.url],
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 };
 
@@ -54,8 +72,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const personSchema = generatePersonSchema();
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* JSON-LD structured data: site-wide Person schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

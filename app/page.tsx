@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Container } from "@/components/layout/container";
 import { About } from "@/components/sections/about";
 import { Hero } from "@/components/sections/hero";
@@ -10,6 +11,9 @@ import { TryHackMeSection } from "@/components/certifications/tryhackme-section"
 import { GitHubSection } from "@/components/github/github-section";
 import { ContactSection } from "@/components/contact/contact-section";
 import { getNavSections } from "@/lib/data";
+import { homeMetadata } from "@/lib/seo/metadata";
+
+export const metadata: Metadata = homeMetadata();
 
 const IMPLEMENTED_IDS = [
   "hero",
