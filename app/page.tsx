@@ -8,6 +8,7 @@ import { ExperienceTimeline } from "@/components/experience/experience-timeline"
 import { Certifications } from "@/components/certifications/certifications";
 import { TryHackMeSection } from "@/components/certifications/tryhackme-section";
 import { GitHubSection } from "@/components/github/github-section";
+import { ContactSection } from "@/components/contact/contact-section";
 import { getNavSections } from "@/lib/data";
 
 const IMPLEMENTED_IDS = [
@@ -20,6 +21,7 @@ const IMPLEMENTED_IDS = [
   "certifications",
   "tryhackme",
   "github",
+  "contact",
 ];
 
 function Placeholder({ id, label }: { id: string; label: string }) {
@@ -39,17 +41,19 @@ function Placeholder({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * Home page. Phases 2–4 complete + GitHub integration (Phase 5a):
+ * Home page. Phases 2–4 complete + Phase 5 Contact/GitHub:
  * Hero, About, Journey, Skills (2–3), Projects (4A), Certifications & TryHackMe (4B),
- * Experience (4C), and GitHub (5a). The remaining sections (Blog, Contact) are
- * TEMPORARY full-height placeholders until Phase 5b/5c.
+ * Experience (4C), GitHub (5a), and Contact (5b). The remaining sections (Blog)
+ * are TEMPORARY placeholders until Phase 5c.
  *
  * Layout follows App Flow order: Hero → About → Journey → Skills →
- * Experience → Projects → Certifications → TryHackMe → GitHub → [placeholders].
+ * Experience → Projects → Certifications → TryHackMe → GitHub → Contact → [placeholders].
+ *
+ * Contact is the final conversion point before Resume Download.
  */
 export default function Home() {
   const sections = getNavSections();
-  const afterGitHub = sections.filter(
+  const afterContact = sections.filter(
     ({ id }) => !IMPLEMENTED_IDS.includes(id),
   );
 
@@ -64,7 +68,8 @@ export default function Home() {
       <Certifications />
       <TryHackMeSection />
       <GitHubSection />
-      {afterGitHub.map((section) => (
+      <ContactSection />
+      {afterContact.map((section) => (
         <Placeholder key={section.id} {...section} />
       ))}
     </main>
