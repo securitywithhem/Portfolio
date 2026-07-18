@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { PageTransition } from "@/components/shared/page-transition";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { LayoutClient } from "@/components/layout/layout-client";
 import { getProfile } from "@/lib/data";
 import { env } from "@/lib/env";
 import { generatePersonSchema } from "@/lib/seo/jsonld";
@@ -25,14 +26,6 @@ const { name, role } = getProfile();
 const siteName = `${name} — Cybersecurity Portfolio`;
 const description = `${name}, ${role}. Hands-on offensive security: penetration testing, security tooling, certifications, and TryHackMe achievements.`;
 
-/**
- * Root layout metadata — extends to all pages unless overridden.
- * metadataBase is required for OG image URL resolution. Template sets
- * the standard suffix format for per-page titles.
- *
- * JSON-LD structured data (Person schema) is injected in the body
- * to establish site-wide identity for search engines.
- */
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
@@ -78,21 +71,22 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* JSON-LD structured data: site-wide Person schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-black text-white antialiased`}
       >
         <ThemeProvider>
           <MotionProvider>
-            <PageTransition />
-            <SiteHeader />
-            {children}
-            <Footer />
+            <LayoutClient>
+              <PageTransition />
+              <SiteHeader />
+              {children}
+              <Footer />
+            </LayoutClient>
           </MotionProvider>
         </ThemeProvider>
       </body>

@@ -3,39 +3,50 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design tokens — single source of truth (Phase 0.2).
- *
- * Colors are oklch semantic tokens: components reference `bg-background`,
- * `text-primary`, etc. — never raw color values. Light theme on :root,
- * dark theme on .dark (class strategy, toggled via next-themes).
- *
- * Every pairing of `x-foreground` on `x` (plus foreground/muted-foreground
- * on background) is WCAG-AA-verified by lib/design/contrast.test.ts, which
- * parses this file. Editing a value here reruns those checks in CI.
- */
+/* Orange + Black Design System */
 :root {
-  --background: oklch(0.985 0.003 250);
-  --foreground: oklch(0.19 0.02 255);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.19 0.02 255);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.19 0.02 255);
-  /* Deep blue brand accent (UI/UX doc: "Deep Blue Accent") */
-  --primary: oklch(0.45 0.16 258);
-  --primary-foreground: oklch(0.985 0.005 250);
-  --secondary: oklch(0.955 0.01 252);
-  --secondary-foreground: oklch(0.28 0.04 256);
-  --muted: oklch(0.96 0.008 252);
-  --muted-foreground: oklch(0.45 0.025 256);
-  --accent: oklch(0.94 0.025 255);
-  --accent-foreground: oklch(0.32 0.1 258);
-  --destructive: oklch(0.5 0.19 27);
-  --destructive-foreground: oklch(0.985 0.005 250);
-  --border: oklch(0.905 0.01 252);
-  --input: oklch(0.905 0.01 252);
-  --ring: oklch(0.45 0.16 258);
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+  --card: #1a1a1a;
+  --card-foreground: #f5f5f5;
+  --popover: #1a1a1a;
+  --popover-foreground: #f5f5f5;
+  --primary: #ff8c00;
+  --primary-foreground: #0a0a0a;
+  --secondary: #2a2a2a;
+  --secondary-foreground: #f5f5f5;
+  --muted: #3a3a3a;
+  --muted-foreground: #a0a0a0;
+  --accent: #ff8c00;
+  --accent-foreground: #0a0a0a;
+  --destructive: #ef4444;
+  --destructive-foreground: #f5f5f5;
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #ff8c00;
   --radius: 0.625rem;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+  --card: #1a1a1a;
+  --card-foreground: #f5f5f5;
+  --popover: #1a1a1a;
+  --popover-foreground: #f5f5f5;
+  --primary: #ff8c00;
+  --primary-foreground: #0a0a0a;
+  --secondary: #2a2a2a;
+  --secondary-foreground: #f5f5f5;
+  --muted: #3a3a3a;
+  --muted-foreground: #a0a0a0;
+  --accent: #ff8c00;
+  --accent-foreground: #0a0a0a;
+  --destructive: #ef4444;
+  --destructive-foreground: #f5f5f5;
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #ff8c00;
 }
 
 .dark {
@@ -294,5 +305,79 @@
       var(--muted) 75%
     );
     background-size: 1000px 100%;
+  }
+
+  /* Orange glow orb backgrounds */
+  body::before {
+    content: "";
+    position: fixed;
+    top: -40%;
+    left: 10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 140, 0, 0.25),
+      transparent 70%
+    );
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: -30%;
+    right: 5%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 140, 0, 0.2),
+      transparent 70%
+    );
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(30px);
+    }
+  }
+
+  /* Orange accent for buttons and interactive elements */
+  button {
+    @apply transition-all duration-300;
+  }
+
+  button:hover {
+    @apply transition-all duration-300;
+  }
+
+  /* Pill-shaped buttons */
+  .pill-button {
+    @apply rounded-full px-6 py-3 transition-all duration-300;
+  }
+
+  .pill-button-outlined {
+    @apply rounded-full border border-current px-6 py-3 transition-all duration-300 hover:border-[#FF8C00] hover:bg-[#FF8C00] hover:text-black;
+  }
+
+  /* Orange circular floating button */
+  .floating-button {
+    @apply fixed rounded-full bg-[#FF8C00] text-black transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(255,140,0,0.5)];
   }
 }
