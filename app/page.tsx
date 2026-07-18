@@ -4,6 +4,7 @@ import { Hero } from "@/components/sections/hero";
 import { JourneyTimeline } from "@/components/sections/journey-timeline";
 import { Projects } from "@/components/sections/projects";
 import { Skills } from "@/components/sections/skills";
+import { ExperienceTimeline } from "@/components/experience/experience-timeline";
 import { Certifications } from "@/components/certifications/certifications";
 import { TryHackMeSection } from "@/components/certifications/tryhackme-section";
 import { getNavSections } from "@/lib/data";
@@ -13,6 +14,7 @@ const IMPLEMENTED_IDS = [
   "about",
   "journey",
   "skills",
+  "experience",
   "projects",
   "certifications",
   "tryhackme",
@@ -35,23 +37,19 @@ function Placeholder({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * Home page. Hero, About, Journey, Skills (Phases 2–3) and Projects,
- * Certifications, TryHackMe (Phase 4A–4B) are real; the remaining sections
- * (Experience, GitHub, Blog, Contact) are TEMPORARY full-height placeholders
- * that keep every anchor in the nav contract (data/navigation.ts) present
- * and scrollable until later phases replace them.
+ * Home page. Phases 2–4 are now complete: Hero, About, Journey, Skills (2–3),
+ * Projects (4A), Certifications & TryHackMe (4B), and Experience (4C). The
+ * remaining sections (GitHub, Blog, Contact) are TEMPORARY full-height
+ * placeholders that keep every anchor in the nav contract (data/navigation.ts)
+ * present and scrollable until Phase 5.
  *
- * Layout follows App Flow order: the placeholder sections are split around
- * real ones so Experience → Projects → Certifications → TryHackMe order
- * holds even though Experience itself isn't built yet.
+ * Layout follows App Flow order: Hero → About → Journey → Skills →
+ * Experience → Projects → Certifications → TryHackMe → [placeholders].
  */
 export default function Home() {
   const sections = getNavSections();
-  const beforeProjects = sections.filter(({ id }) =>
-    ["experience"].includes(id),
-  );
   const afterTryHackMe = sections.filter(
-    ({ id }) => !IMPLEMENTED_IDS.includes(id) && id !== "experience",
+    ({ id }) => !IMPLEMENTED_IDS.includes(id),
   );
 
   return (
@@ -60,9 +58,7 @@ export default function Home() {
       <About />
       <JourneyTimeline />
       <Skills />
-      {beforeProjects.map((section) => (
-        <Placeholder key={section.id} {...section} />
-      ))}
+      <ExperienceTimeline />
       <Projects />
       <Certifications />
       <TryHackMeSection />
