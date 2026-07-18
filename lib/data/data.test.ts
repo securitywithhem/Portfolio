@@ -5,6 +5,7 @@ import { experience } from "@/data/experience";
 import { navSections } from "@/data/navigation";
 import { profile } from "@/data/profile";
 import { projects } from "@/data/projects";
+import { skillCategories } from "@/data/skills";
 import {
   blogPostsSchema,
   certificatesSchema,
@@ -12,6 +13,7 @@ import {
   navSectionsSchema,
   profileSchema,
   projectsSchema,
+  skillCategoriesSchema,
   timelineEventsSchema,
 } from "@/lib/validations";
 import {
@@ -19,6 +21,7 @@ import {
   getExperience,
   getFeaturedProjects,
   getProjectBySlug,
+  getSkillCategories,
   getTimelineEvents,
 } from "@/lib/data";
 
@@ -60,6 +63,24 @@ describe("static data matches schemas", () => {
     const result = navSectionsSchema.safeParse(navSections);
     expect(result.error?.issues ?? []).toEqual([]);
     expect(result.success).toBe(true);
+  });
+
+  it("skill categories (incl. unique category ids)", () => {
+    const result = skillCategoriesSchema.safeParse(skillCategories);
+    expect(result.error?.issues ?? []).toEqual([]);
+    expect(result.success).toBe(true);
+  });
+
+  it("no skill item carries a fabricated proficiency score", () => {
+    // Guards the Phase 3C decision recorded in data/skills.ts: SkillItem
+    // has no level/percentage field, so there's nothing to assert a value
+    // for — this test instead locks the *shape* so a future edit can't
+    // silently reintroduce one without updating the type/schema too.
+    for (const category of skillCategories) {
+      for (const item of category.items) {
+        expect(Object.keys(item)).toEqual(["name"]);
+      }
+    }
   });
 
   it("includes the PRD-named projects", () => {
@@ -125,5 +146,11 @@ describe("data access layer", () => {
     const result = timelineEventsSchema.safeParse(events);
     expect(result.error?.issues ?? []).toEqual([]);
     expect(result.success).toBe(true);
+  });
+
+  it("getSkillCategories groups items by category, not a flat list", () => {
+    const categories = getSkillCategories();
+    expect(categories.length).toBeGreaterThan(1);
+    expect(categories.every((c) => c.items.length > 0)).toBe(true);
   });
 });

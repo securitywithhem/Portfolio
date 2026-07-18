@@ -5,6 +5,11 @@ export {
   timelineEventSchema,
   timelineEventsSchema,
 } from "./timeline";
+export {
+  skillCategoriesSchema,
+  skillCategorySchema,
+  skillItemSchema,
+} from "./skill";
 export { projectSchema, projectsSchema } from "./project";
 export { certificateSchema, certificatesSchema } from "./certificate";
 export { experienceSchema, experiencesSchema } from "./experience";

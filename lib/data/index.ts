@@ -4,6 +4,7 @@ import { experience } from "@/data/experience";
 import { navSections } from "@/data/navigation";
 import { profile } from "@/data/profile";
 import { projects } from "@/data/projects";
+import { skillCategories } from "@/data/skills";
 import { timelineMilestones } from "@/data/timeline";
 import type {
   BlogPost,
@@ -12,6 +13,7 @@ import type {
   NavSection,
   Profile,
   Project,
+  SkillCategory,
   TimelineEvent,
 } from "@/lib/types";
 import { slugify } from "@/lib/utils";
@@ -92,6 +94,11 @@ export function getTimelineEvents(): TimelineEvent[] {
     ...experienceEvents,
     ...certificateEvents,
   ].sort((a, b) => a.date.localeCompare(b.date));
+}
+
+/** In the deliberate order set in data/skills.ts (broadest/most-used domains first). */
+export function getSkillCategories(): SkillCategory[] {
+  return [...skillCategories];
 }
 
 /** Newest first. */
