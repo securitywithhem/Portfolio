@@ -6,6 +6,7 @@ import { profile } from "@/data/profile";
 import { projects } from "@/data/projects";
 import { skillCategories } from "@/data/skills";
 import { timelineMilestones } from "@/data/timeline";
+import { tryHackMeAchievements } from "@/data/tryhackme";
 import type {
   BlogPost,
   Certificate,
@@ -48,9 +49,26 @@ export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
 
-/** Newest first. */
-export function getCertificates(): Certificate[] {
+/** Professional certifications (non-TryHackMe), newest first. */
+export function getCertifications(): Certificate[] {
   return [...certificates].sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/** TryHackMe achievements (learning paths), newest first. */
+export function getTryHackMeAchievements(): Certificate[] {
+  return [...tryHackMeAchievements].sort((a, b) =>
+    b.date.localeCompare(a.date),
+  );
+}
+
+/**
+ * All certificates (professional + TryHackMe) merged, newest first.
+ * Used for Journey timeline where all credentials appear chronologically.
+ */
+export function getCertificates(): Certificate[] {
+  return [...certificates, ...tryHackMeAchievements].sort((a, b) =>
+    b.date.localeCompare(a.date),
+  );
 }
 
 /** Current position first, then by most recent start date. */

@@ -4,9 +4,19 @@ import { Hero } from "@/components/sections/hero";
 import { JourneyTimeline } from "@/components/sections/journey-timeline";
 import { Projects } from "@/components/sections/projects";
 import { Skills } from "@/components/sections/skills";
+import { Certifications } from "@/components/certifications/certifications";
+import { TryHackMeSection } from "@/components/certifications/tryhackme-section";
 import { getNavSections } from "@/lib/data";
 
-const IMPLEMENTED_IDS = ["hero", "about", "journey", "skills", "projects"];
+const IMPLEMENTED_IDS = [
+  "hero",
+  "about",
+  "journey",
+  "skills",
+  "projects",
+  "certifications",
+  "tryhackme",
+];
 
 function Placeholder({ id, label }: { id: string; label: string }) {
   return (
@@ -25,21 +35,22 @@ function Placeholder({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * Home page. Hero, About, Journey, Skills (Phases 2.2, 3A, 3B, 3C) and
- * Projects (Phase 4A) are real; the remaining sections are TEMPORARY
- * full-height placeholders that keep every anchor in the nav contract
- * (data/navigation.ts) present and scrollable until later phases replace
- * them. Placeholders are rendered in `navSections` order and split around
- * Projects (Experience before it, Certifications onward after it) so the
- * App Flow's Experience → Projects → Certifications order holds even
- * though Experience itself isn't built yet.
+ * Home page. Hero, About, Journey, Skills (Phases 2–3) and Projects,
+ * Certifications, TryHackMe (Phase 4A–4B) are real; the remaining sections
+ * (Experience, GitHub, Blog, Contact) are TEMPORARY full-height placeholders
+ * that keep every anchor in the nav contract (data/navigation.ts) present
+ * and scrollable until later phases replace them.
+ *
+ * Layout follows App Flow order: the placeholder sections are split around
+ * real ones so Experience → Projects → Certifications → TryHackMe order
+ * holds even though Experience itself isn't built yet.
  */
 export default function Home() {
   const sections = getNavSections();
   const beforeProjects = sections.filter(({ id }) =>
     ["experience"].includes(id),
   );
-  const afterProjects = sections.filter(
+  const afterTryHackMe = sections.filter(
     ({ id }) => !IMPLEMENTED_IDS.includes(id) && id !== "experience",
   );
 
@@ -53,7 +64,9 @@ export default function Home() {
         <Placeholder key={section.id} {...section} />
       ))}
       <Projects />
-      {afterProjects.map((section) => (
+      <Certifications />
+      <TryHackMeSection />
+      {afterTryHackMe.map((section) => (
         <Placeholder key={section.id} {...section} />
       ))}
     </main>

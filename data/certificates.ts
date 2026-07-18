@@ -1,9 +1,14 @@
 import type { Certificate } from "@/lib/types";
 
 /**
- * Certifications and completed learning paths. Entries are realistic
- * placeholders — replace titles/dates with your actual credentials and add
- * verification URLs where issuers provide them (see data/README.md).
+ * Professional certifications and completed learning paths from traditional
+ * issuers (CompTIA, ISC², Google, Coursera, etc.) — separate from
+ * TryHackMe achievements (see data/tryhackme.ts, which uses the same
+ * Certificate schema but is a distinct content source).
+ *
+ * Entries are realistic placeholders — replace titles/dates with your
+ * actual credentials and add verification URLs where issuers provide them
+ * (see data/README.md).
  */
 export const certificates = [
   {
@@ -11,13 +16,6 @@ export const certificates = [
     title: "Google Cybersecurity Professional Certificate",
     issuer: "Google / Coursera",
     date: "2025-06-15",
-    credentialUrl: null,
-  },
-  {
-    id: "cert-thm-jr-pentester",
-    title: "Jr Penetration Tester Learning Path",
-    issuer: "TryHackMe",
-    date: "2025-11-20",
     credentialUrl: null,
   },
   {

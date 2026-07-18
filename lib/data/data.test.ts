@@ -6,6 +6,7 @@ import { navSections } from "@/data/navigation";
 import { profile } from "@/data/profile";
 import { projects } from "@/data/projects";
 import { skillCategories } from "@/data/skills";
+import { tryHackMeAchievements } from "@/data/tryhackme";
 import {
   blogPostsSchema,
   certificatesSchema,
@@ -41,8 +42,14 @@ describe("static data matches schemas", () => {
     expect(result.success).toBe(true);
   });
 
-  it("certificates", () => {
+  it("certificates (professional, non-TryHackMe)", () => {
     expect(certificatesSchema.safeParse(certificates)).toMatchObject({
+      success: true,
+    });
+  });
+
+  it("tryhackme achievements", () => {
+    expect(certificatesSchema.safeParse(tryHackMeAchievements)).toMatchObject({
       success: true,
     });
   });
