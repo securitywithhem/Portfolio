@@ -11,7 +11,7 @@ export interface Profile {
   name: string;
   /** Professional headline, e.g. "Cybersecurity Engineer". */
   role: string;
-  /** Short third-person or first-person bio for the About section. */
+  /** Short bio for the Hero — one to two sentences, sets the tone at a glance. */
   bio: string;
   socials: SocialLink[];
   /**
@@ -21,4 +21,13 @@ export interface Profile {
    * Hero's "Download Resume" CTA.
    */
   resumeUrl: string;
+  /**
+   * Extended narrative for the About section, one entry per paragraph.
+   * Extension to the Backend Schema's Profile entity, added in Phase 3A —
+   * the Hero's `bio` is deliberately short, and About needs more room to
+   * establish credibility without repeating the Hero verbatim.
+   */
+  aboutBio: string[];
+  /** Short focus-area tags shown in About, bridging into the Skills section. */
+  focusAreas: string[];
 }

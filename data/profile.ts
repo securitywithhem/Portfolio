@@ -19,4 +19,14 @@ export const profile = {
     { label: "TryHackMe", url: "https://tryhackme.com/p/SecurityWithHem" },
   ],
   resumeUrl: "/Hem-Gabhawala-Resume.pdf",
+  aboutBio: [
+    "I'm a Computer Science undergraduate specializing in cybersecurity at Navrachana University, with an attacker's instinct for where systems actually break. My background spans penetration testing, vulnerability assessment, and network analysis — grounded in hands-on lab work rather than theory alone.",
+    "Ranked in the top 5% on TryHackMe with 170+ rooms completed across offensive and defensive tracks, I've carried that practice into a cybersecurity internship, bug bounty practice, and CTF competitions. I'm as comfortable writing the report a stakeholder reads as I am running the scan behind it.",
+  ],
+  focusAreas: [
+    "Penetration Testing",
+    "Vulnerability Assessment",
+    "Network Security",
+    "Security Automation",
+  ],
 } satisfies Profile;

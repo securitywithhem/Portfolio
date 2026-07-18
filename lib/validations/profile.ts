@@ -15,4 +15,6 @@ export const profileSchema = z.object({
   resumeUrl: z.string().regex(/^\/\S+$/, {
     message: "Expected site-relative path (e.g. /resume.pdf)",
   }),
+  aboutBio: z.array(nonEmpty.max(600)).min(1),
+  focusAreas: z.array(nonEmpty).min(1).max(6),
 }) satisfies z.ZodType<Profile>;
