@@ -123,6 +123,34 @@
   body {
     @apply bg-background font-sans text-foreground antialiased;
   }
+
+  /*
+   * Global focus ring (accessibility requirement): every focusable element
+   * gets a visible ring in the accent color, both themes. shadcn primitives
+   * opt out via `outline-none` and render their own ring from the same
+   * --ring token, so the treatment stays consistent everywhere.
+   */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /*
+   * CSS-level reduced-motion support. Framer Motion presets additionally
+   * respect this via MotionConfig reducedMotion="user"; this rule covers
+   * CSS transitions/animations (tw-animate-css, hover transitions, smooth
+   * scrolling) for users who opt out of motion.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 /*
