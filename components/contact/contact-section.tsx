@@ -9,7 +9,9 @@ export function ContactSection() {
     <SectionPremium id="contact" spacing="spacious" accentLine="top">
       <SectionHeader
         eyebrow="Contact"
-        title="Let's work together"
+        index="09"
+        title="Let's work"
+        titleAccent="together"
         subtitle="Have a project or opportunity? Get in touch"
         maxWidth="md"
       />

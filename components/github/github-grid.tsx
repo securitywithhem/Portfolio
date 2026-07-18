@@ -3,38 +3,39 @@
 import { motion } from "motion/react";
 import { ReactNode } from "react";
 
-import { fadeUp, staggerChildren, subtleHover } from "@/lib/motion";
+import { fadeIn, staggerChildren } from "@/lib/motion";
 
 /**
- * Grid of GitHub repos with staggered reveal animation. Uses the exact
- * pattern from Skills/Projects/Certifications grids for visual consistency.
+ * Flat hairline grid of GitHub repos (Design System v2) — the same credential
+ * wall treatment as CertificationGrid: a top/left frame plus per-cell
+ * right/bottom borders, opacity-only stagger so the seams stay stable.
  *
- * Accepts `children` (typically GitHubCard components passed as JSX),
- * so the grid component stays presentation-only and the parent section
- * owns the data fetching and card rendering.
+ * Accepts server-rendered GitHubCard elements as children (each wrapped in a
+ * GitHubGridItem), keeping data fetching in the parent section while the
+ * motion wrappers stay client-side.
  */
 export function GitHubGrid({ children }: { children: ReactNode }) {
   return (
-    <motion.div
+    <motion.ul
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
       variants={staggerChildren}
-      className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3"
+      className="grid grid-cols-1 border-t border-l border-border-subtle sm:grid-cols-2 lg:grid-cols-3"
     >
       {children}
-    </motion.div>
+    </motion.ul>
   );
 }
 
-/**
- * Individual grid item wrapper — adds motion animation per card.
- * Must be a client component to inherit stagger timing.
- */
+/** Individual grid cell wrapper — motion.li so it inherits the stagger. */
 export function GitHubGridItem({ children }: { children: ReactNode }) {
   return (
-    <motion.div variants={fadeUp} whileHover={subtleHover}>
+    <motion.li
+      variants={fadeIn}
+      className="border-r border-b border-border-subtle"
+    >
       {children}
-    </motion.div>
+    </motion.li>
   );
 }

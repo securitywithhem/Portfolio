@@ -14,7 +14,9 @@ export function About() {
       <FadeInView>
         <SectionHeader
           eyebrow="About"
-          title="About Me"
+          index="01"
+          title="About"
+          titleAccent="me"
           subtitle="Security researcher and pentesting specialist"
         />
         <AboutContent aboutBio={aboutBio} focusAreas={focusAreas} />

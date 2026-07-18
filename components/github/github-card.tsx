@@ -1,17 +1,16 @@
-import { Star, GitFork, Code, Clock } from "lucide-react";
+import { Star, GitFork, Code, Clock, ArrowUpRight } from "lucide-react";
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { fetchGitHubRepo, repoToMetadata } from "@/lib/github";
 
 /**
- * One GitHub repo card — fetches live data server-side and falls back
+ * One GitHub repo cell — fetches live data server-side and falls back
  * gracefully if unavailable. Server Component since data-fetching is
  * inherently async and server-side only.
  *
- * Takes a full GitHub URL (e.g. https://github.com/user/repo) and extracts
- * the owner/repo to fetch metadata. If fetch fails, renders a fallback with
- * the URL still clickable so the recruiter can view the repo directly.
+ * Flat editorial cell (Design System v2) consistent with the credential wall:
+ * the whole cell links out, owner reads as a tracked-out mono label, repo is
+ * the primary type and turns accent on hover, with a live stats row beneath.
+ * Takes a full GitHub URL; if the fetch fails the cell still links to the repo.
  */
 export async function GitHubCard({ url }: { url: string }) {
   const { owner, repo } = parseGitHubUrl(url);
@@ -25,70 +24,63 @@ export async function GitHubCard({ url }: { url: string }) {
   }
 
   return (
-    <Card className="flex h-full flex-col overflow-hidden py-4 sm:py-6">
-      <CardHeader className="pb-3 sm:pb-4">
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-block"
-          aria-label={`${repo} repository on GitHub (opens in a new tab)`}
-        >
-          <h3 className="text-base font-semibold tracking-tight transition-colors group-hover:text-primary sm:text-lg">
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${repo} repository on GitHub (opens in a new tab)`}
+      className="group flex h-full flex-col gap-4 bg-bg-base p-6 transition-colors duration-200 hover:bg-bg-surface sm:p-8"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          {owner && (
+            <span className="font-mono text-[11px] font-medium tracking-[0.12em] text-text-muted uppercase">
+              {owner}
+            </span>
+          )}
+          <h3 className="mt-2 truncate text-base font-semibold tracking-tight text-text-primary transition-colors duration-200 group-hover:text-accent sm:text-lg">
             {repo}
           </h3>
-        </a>
-        <p className="text-xs text-muted-foreground sm:text-sm">{owner}</p>
-      </CardHeader>
-
-      <CardContent className="flex flex-1 flex-col gap-4 pb-0">
-        {metadata?.description && (
-          <p className="line-clamp-2 text-sm text-muted-foreground sm:text-base">
-            {metadata.description}
-          </p>
-        )}
-
-        {metadata && (
-          <div className="flex flex-wrap gap-3 text-xs text-muted-foreground sm:text-sm">
-            <div className="flex items-center gap-1">
-              <Star aria-hidden className="size-3.5" />
-              <span>{formatCount(metadata.stars)}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <GitFork aria-hidden className="size-3.5" />
-              <span>{formatCount(metadata.forks)}</span>
-            </div>
-            {metadata.language && (
-              <div className="flex items-center gap-1">
-                <Code aria-hidden className="size-3.5" />
-                <span>{metadata.language}</span>
-              </div>
-            )}
-            {metadata.updated && (
-              <div className="flex items-center gap-1">
-                <Clock aria-hidden className="size-3.5" />
-                <time dateTime={metadata.updated}>
-                  {formatDate(metadata.updated)}
-                </time>
-              </div>
-            )}
-          </div>
-        )}
-
-        <div className="mt-auto pt-3">
-          <Button asChild variant="outline" size="sm">
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View ${repo} on GitHub (opens in a new tab)`}
-            >
-              View on GitHub
-            </a>
-          </Button>
         </div>
-      </CardContent>
-    </Card>
+        <ArrowUpRight
+          aria-hidden
+          className="size-4 shrink-0 text-text-muted opacity-0 transition-all duration-200 group-hover:text-accent group-hover:opacity-100"
+        />
+      </div>
+
+      {metadata?.description && (
+        <p className="line-clamp-2 text-sm leading-relaxed text-text-secondary">
+          {metadata.description}
+        </p>
+      )}
+
+      {metadata && (
+        <div className="mt-auto flex flex-wrap gap-4 pt-2 text-xs text-text-muted">
+          <span className="flex items-center gap-1.5">
+            <Star aria-hidden className="size-3.5" />
+            {formatCount(metadata.stars)}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <GitFork aria-hidden className="size-3.5" />
+            {formatCount(metadata.forks)}
+          </span>
+          {metadata.language && (
+            <span className="flex items-center gap-1.5">
+              <Code aria-hidden className="size-3.5" />
+              {metadata.language}
+            </span>
+          )}
+          {metadata.updated && (
+            <span className="flex items-center gap-1.5">
+              <Clock aria-hidden className="size-3.5" />
+              <time dateTime={metadata.updated}>
+                {formatDate(metadata.updated)}
+              </time>
+            </span>
+          )}
+        </div>
+      )}
+    </a>
   );
 }
 

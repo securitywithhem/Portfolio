@@ -22,9 +22,9 @@ export function AboutContent({
         {focusAreas.map((area) => (
           <span
             key={area}
-            className="inline-flex items-center gap-2 rounded-full border border-[rgba(94,234,212,0.25)] bg-[rgba(94,234,212,0.12)] px-4 py-2 text-sm font-medium text-[#5EEAD4]"
+            className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-bg-surface px-4 py-2 text-sm font-medium text-text-secondary transition-colors duration-200 hover:border-accent hover:text-accent"
           >
-            <span className="inline-block h-2 w-2 rounded-full bg-[#5EEAD4]" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" />
             {area}
           </span>
         ))}

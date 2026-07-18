@@ -12,13 +12,20 @@ interface HeroEliteProps {
   resumeUrl: string;
 }
 
+const STATS = [
+  { value: "3", label: "Featured projects" },
+  { value: "Top 5%", label: "TryHackMe rank" },
+  { value: "12+", label: "Certifications" },
+] as const;
+
 /**
- * Elite hacker aesthetic hero — refined dark theme with teal accent.
- * Features: Grid background, glow effect, typing animation, premium polish.
- * Motion tier: Complex (8/10) with smooth scroll reveals and stagger.
+ * Hero — flat, high-contrast, editorial (Design System v2).
+ * Oversized mixed-weight display headline with a single italic accent phrase,
+ * a mono terminal role line, three stat counters, and two flat CTAs.
+ * No grid, no glow, no blur, no gradient washes — confidence from type + space.
+ * Motion: line-by-line headline reveal + staggered children, expo-out easing.
  */
 export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
-  const typedRef = useRef<HTMLSpanElement>(null);
   const eyebrowRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const roleLineRef = useRef<HTMLDivElement>(null);
@@ -34,7 +41,7 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
     "ctf player · tryhackme top 5%",
   ];
 
-  // Typing animation
+  // Typing animation for the mono role line
   useEffect(() => {
     let lineIndex = 0;
     let charIndex = 0;
@@ -48,7 +55,6 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
       if (!isDeleting) {
         charIndex++;
         setTypedText(currentLine.slice(0, charIndex));
-
         if (charIndex === currentLine.length) {
           isDeleting = true;
           timeoutId = setTimeout(type, 1400);
@@ -57,7 +63,6 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
       } else {
         charIndex--;
         setTypedText(currentLine.slice(0, charIndex));
-
         if (charIndex === 0) {
           isDeleting = false;
           lineIndex = (lineIndex + 1) % typingLines.length;
@@ -68,103 +73,72 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
     };
 
     type();
-
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // GSAP animations
+  // Entrance timeline — expo.out ≈ ease-default cubic-bezier(0.16, 1, 0.3, 1)
   useEffect(() => {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
     if (prefersReduced) return;
 
-    const tl = gsap.timeline({ paused: false });
+    const tl = gsap.timeline();
 
-    // Eyebrow pulse
     if (eyebrowRef.current) {
       tl.from(eyebrowRef.current, {
         opacity: 0,
-        scale: 0.9,
+        y: 12,
         duration: 0.5,
-        ease: "back.out(1.7)",
+        ease: "expo.out",
       });
     }
 
-    // Heading fade + scale
+    // Headline reveals line-by-line (v2 §5: line-by-line, not word-by-word)
     if (headingRef.current) {
       tl.from(
-        headingRef.current,
+        Array.from(headingRef.current.children),
         {
           opacity: 0,
-          scale: 0.95,
-          y: 20,
-          duration: 0.7,
+          y: 24,
+          duration: 0.8,
+          stagger: 0.09,
           ease: "expo.out",
         },
         0.1,
       );
     }
 
-    // Role line slide
-    if (roleLineRef.current) {
-      tl.from(
-        roleLineRef.current,
-        {
-          opacity: 0,
-          y: 12,
-          duration: 0.5,
-          ease: "power1.out",
-        },
-        0.25,
-      );
+    for (const [ref, at] of [
+      [roleLineRef, 0.5],
+      [bioRef, 0.6],
+    ] as const) {
+      if (ref.current) {
+        tl.from(
+          ref.current,
+          { opacity: 0, y: 16, duration: 0.5, ease: "expo.out" },
+          at,
+        );
+      }
     }
 
-    // Bio fade
-    if (bioRef.current) {
-      tl.from(
-        bioRef.current,
-        {
-          opacity: 0,
-          y: 16,
-          duration: 0.5,
-          ease: "power1.out",
-        },
-        0.35,
-      );
-    }
-
-    // CTA buttons stagger
-    if (ctaRef.current) {
-      tl.from(
-        Array.from(ctaRef.current.children),
-        {
-          opacity: 0,
-          y: 16,
-          duration: 0.4,
-          stagger: 0.08,
-          ease: "power1.out",
-        },
-        0.45,
-      );
-    }
-
-    // Stats stagger
-    if (statsRef.current) {
-      tl.from(
-        Array.from(statsRef.current.children),
-        {
-          opacity: 0,
-          y: 8,
-          duration: 0.3,
-          stagger: 0.06,
-          ease: "power1.out",
-        },
-        0.6,
-      );
+    for (const ref of [ctaRef, statsRef]) {
+      if (ref.current) {
+        tl.from(
+          Array.from(ref.current.children),
+          {
+            opacity: 0,
+            y: 16,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "expo.out",
+          },
+          ">-0.3",
+        );
+      }
     }
 
     return () => {
@@ -173,125 +147,62 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
   }, []);
 
   return (
-    <section className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#0B0C0E] via-[#0B0C0E] to-[#0F1117] py-32">
-      {/* Animated grid background */}
-      <div className="pointer-events-none absolute inset-0">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(94,234,212,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(94,234,212,0.12) 1px, transparent 1px)",
-            backgroundSize: "50px 50px",
-            maskImage:
-              "radial-gradient(ellipse 80% 50% at 50% 40%, black 0%, transparent 80%)",
-          }}
-        />
-      </div>
-
-      {/* Multiple glow layers for depth */}
-      <div
-        className="pointer-events-none absolute -top-1/3 left-1/2 h-[800px] w-[1000px] -translate-x-1/2"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(94,234,212,0.15), transparent 70%)",
-          filter: "blur(40px)",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute top-1/4 right-0 h-[600px] w-[600px]"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(94,234,212,0.08), transparent 60%)",
-          filter: "blur(60px)",
-        }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10 mx-auto max-w-3xl px-6 sm:px-8">
-        {/* Eyebrow badge - glassmorphic */}
-        <div
-          ref={eyebrowRef}
-          className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-[rgba(94,234,212,0.3)] bg-gradient-to-r from-[rgba(94,234,212,0.1)] to-[rgba(94,234,212,0.05)] px-4 py-2 backdrop-blur-sm"
-          style={{
-            boxShadow:
-              "0 0 20px rgba(94,234,212,0.15), inset 0 1px 0 rgba(255,255,255,0.1)",
-          }}
-        >
-          <span
-            className="h-2 w-2 rounded-full bg-[#5EEAD4]"
-            style={{
-              boxShadow:
-                "0 0 8px rgba(94,234,212,0.6), 0 0 12px rgba(94,234,212,0.3)",
-              animation: "pulse 2.4s ease-in-out infinite",
-            }}
-          />
-          <span className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text font-mono text-xs tracking-widest text-transparent uppercase">
+    <section className="relative flex min-h-dvh flex-col justify-center bg-bg-base py-32">
+      <div className="mx-auto w-full max-w-[1320px] px-6 sm:px-8 lg:px-12">
+        {/* Eyebrow — uppercase, tracked-out, accent dot */}
+        <div ref={eyebrowRef} className="mb-8 inline-flex items-center gap-2.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+          <span className="font-mono text-xs font-medium tracking-[0.12em] text-text-muted uppercase">
             open to security engineering roles
           </span>
         </div>
 
-        {/* Main heading - gradient text */}
-        <h1
-          ref={headingRef}
-          className="text-5xl lg:text-7xl max-w-4xl leading-[1.03] font-black tracking-tight sm:text-6xl"
-          style={{
-            letterSpacing: "-0.03em",
-            background:
-              "linear-gradient(135deg, #EDEDEE 0%, #5EEAD4 50%, #7FFCE8 100%)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundSize: "200% 200%",
-            backgroundPosition: "0% 50%",
-          }}
-        >
-          Hem Gabhawala builds systems
-          <br />
-          <span style={{ opacity: 0.95 }}>
-            attackers can&apos;t quietly break.
+        {/* Oversized mixed-weight display headline with italic accent phrase */}
+        <h1 className="max-w-5xl text-[2.75rem] leading-[1.02] tracking-[-0.02em] text-text-primary sm:text-6xl lg:text-8xl">
+          <span className="block font-bold">Hem Gabhawala</span>
+          <span className="block font-light text-text-secondary">
+            builds systems attackers
+          </span>
+          <span className="block font-light text-text-secondary">
+            can&apos;t{" "}
+            <em className="font-normal text-accent italic">quietly break.</em>
           </span>
         </h1>
 
-        {/* Role line with typing */}
+        {/* Mono terminal role line */}
         <div
           ref={roleLineRef}
-          className="mt-6 font-mono text-sm sm:text-base"
-          style={{ color: "#8B8D92" }}
+          className="mt-8 font-mono text-sm text-text-secondary sm:text-base"
         >
-          <span style={{ color: "#55575D" }}>&gt;</span>
-          <span ref={typedRef} className="ml-2 text-[#5EEAD4]">
-            {typedText}
-          </span>
+          <span className="text-text-muted">&gt;</span>
+          <span className="ml-2 text-accent">{typedText}</span>
           <span
-            className="ml-0.5 inline-block h-5 w-2 bg-[#5EEAD4] align-text-bottom"
-            style={{
-              animation: "blink 1s step-end infinite",
-            }}
+            className="ml-0.5 inline-block h-4 w-[2px] bg-accent align-text-bottom"
+            style={{ animation: "blink 1s step-end infinite" }}
           />
         </div>
 
         {/* Bio */}
         <p
           ref={bioRef}
-          className="mt-6 max-w-2xl text-base leading-relaxed sm:text-lg"
-          style={{ color: "#8B8D92" }}
+          className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary sm:text-lg"
         >
           Cybersecurity engineer focused on offensive security, application
           penetration testing, and hardened system design &mdash; VaultIQ,
           Dharma, and API pentest work included below.
         </p>
 
-        {/* CTA buttons - premium hover effects */}
-        <div ref={ctaRef} className="mt-11 flex flex-col gap-4 sm:flex-row">
+        {/* CTAs — flat, accent fill + outline, subtle hover */}
+        <div ref={ctaRef} className="mt-10 flex flex-col gap-4 sm:flex-row">
           <Button
             asChild
-            className="group relative rounded-lg border border-[#5EEAD4] bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] px-8 py-3 text-sm font-semibold text-[#04211C] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(94,234,212,0.4)] active:scale-95"
+            className="rounded-full bg-accent px-8 py-3 text-sm font-semibold text-bg-base transition-[background-color,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] hover:bg-accent-hover"
           >
             <a href="#projects">View projects →</a>
           </Button>
           <Button
             asChild
-            className="group relative rounded-lg border border-[rgba(94,234,212,0.3)] bg-gradient-to-r from-[rgba(94,234,212,0.05)] to-[rgba(94,234,212,0.02)] px-8 py-3 text-sm font-semibold text-[#5EEAD4] backdrop-blur-sm transition-all duration-300 hover:border-[#5EEAD4] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_20px_rgba(94,234,212,0.25)]"
+            className="rounded-full border border-border-subtle bg-transparent px-8 py-3 text-sm font-semibold text-text-primary transition-[border-color,color,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] hover:border-accent hover:text-accent"
           >
             <a href={resumeUrl} download>
               Download resume
@@ -299,43 +210,21 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
           </Button>
         </div>
 
-        {/* Stats - glassmorphic cards */}
+        {/* Stat counters — flat, accent numerals, hairline dividers */}
         <div
           ref={statsRef}
-          className="mt-20 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-3"
+          className="mt-20 grid max-w-2xl grid-cols-3 gap-px overflow-hidden border-y border-border-subtle"
         >
-          <div className="group rounded-lg border border-[rgba(94,234,212,0.15)] bg-gradient-to-br from-[rgba(94,234,212,0.08)] to-[rgba(94,234,212,0.02)] p-4 backdrop-blur-sm transition-all duration-300 hover:border-[rgba(94,234,212,0.3)] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_15px_rgba(94,234,212,0.2)]">
-            <div className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text text-2xl font-bold text-transparent">
-              3
+          {STATS.map((stat) => (
+            <div key={stat.label} className="bg-bg-base px-2 py-6">
+              <div className="text-3xl font-bold tracking-tight text-accent sm:text-4xl">
+                {stat.value}
+              </div>
+              <div className="mt-2 text-xs tracking-[0.1em] text-text-muted uppercase">
+                {stat.label}
+              </div>
             </div>
-            <div className="mt-2 text-xs tracking-wider text-[#8B8D92] uppercase">
-              Featured Projects
-            </div>
-          </div>
-          <div className="group rounded-lg border border-[rgba(94,234,212,0.15)] bg-gradient-to-br from-[rgba(94,234,212,0.08)] to-[rgba(94,234,212,0.02)] p-4 backdrop-blur-sm transition-all duration-300 hover:border-[rgba(94,234,212,0.3)] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_15px_rgba(94,234,212,0.2)]">
-            <div className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text text-2xl font-bold text-transparent">
-              Top 5%
-            </div>
-            <div className="mt-2 text-xs tracking-wider text-[#8B8D92] uppercase">
-              TryHackMe Rank
-            </div>
-          </div>
-          <div className="group rounded-lg border border-[rgba(94,234,212,0.15)] bg-gradient-to-br from-[rgba(94,234,212,0.08)] to-[rgba(94,234,212,0.02)] p-4 backdrop-blur-sm transition-all duration-300 hover:border-[rgba(94,234,212,0.3)] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_15px_rgba(94,234,212,0.2)]">
-            <div className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text text-2xl font-bold text-transparent">
-              12+
-            </div>
-            <div className="mt-2 text-xs tracking-wider text-[#8B8D92] uppercase">
-              Certifications
-            </div>
-          </div>
-          <div className="group rounded-lg border border-[rgba(94,234,212,0.15)] bg-gradient-to-br from-[rgba(94,234,212,0.08)] to-[rgba(94,234,212,0.02)] p-4 backdrop-blur-sm transition-all duration-300 hover:border-[rgba(94,234,212,0.3)] hover:bg-[rgba(94,234,212,0.1)] hover:shadow-[0_0_15px_rgba(94,234,212,0.2)]">
-            <div className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text text-2xl font-bold text-transparent">
-              24H
-            </div>
-            <div className="mt-2 text-xs tracking-wider text-[#8B8D92] uppercase">
-              Response Time
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* Social links */}
@@ -345,18 +234,8 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
       </div>
 
       <style>{`
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.35;
-          }
-        }
         @keyframes blink {
-          50% {
-            opacity: 0;
-          }
+          50% { opacity: 0; }
         }
       `}</style>
     </section>

@@ -12,7 +12,9 @@ export function Skills() {
     <SectionPremium id="skills" spacing="normal" accentLine="top">
       <SectionHeader
         eyebrow="Expertise"
-        title="What I work with"
+        index="03"
+        title="What I work"
+        titleAccent="with"
         subtitle="Tools, frameworks, and methodologies"
       />
       <SkillGrid categories={categories} />

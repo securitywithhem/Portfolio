@@ -11,21 +11,21 @@ import type { Transition, Variants } from "motion/react";
  * disables the transform portion of these presets for users who opt out.
  */
 
-/** Standard easing/duration for entrances. */
+/** Standard easing/duration for entrances (v2 §5: ease-default, duration-base). */
 export const transitionBase: Transition = {
   duration: 0.5,
-  ease: [0.21, 0.47, 0.32, 0.98],
+  ease: [0.16, 1, 0.3, 1],
 };
 
-/** Fast easing for micro-interactions (hover, press). */
+/** Fast easing for micro-interactions (hover, press) — v2 duration-fast. */
 export const transitionFast: Transition = {
   duration: 0.2,
-  ease: "easeOut",
+  ease: [0.16, 1, 0.3, 1],
 };
 
-/** Element rises 16px and fades in. Pair with `initial="hidden" animate="visible"`. */
+/** Element rises 24px (v2 reveal-offset) and fades in. Pair with `initial="hidden" animate="visible"`. */
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: transitionBase },
 };
 

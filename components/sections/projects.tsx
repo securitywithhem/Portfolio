@@ -12,7 +12,9 @@ export function Projects() {
     <SectionPremium id="projects" spacing="normal" accentLine="top">
       <SectionHeader
         eyebrow="Portfolio"
-        title="What I've built"
+        index="05"
+        title="What I've"
+        titleAccent="built"
         subtitle="Security projects, tools, and pentesting work"
       />
       <ProjectExplorer projects={projects} />

@@ -1,16 +1,16 @@
-import { ExternalLink } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { Certificate } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 /**
- * One certification or achievement card. Server Component — everything is
- * renderable without client JS.
+ * One credential cell in the logo/name grid (Design System v2 §6). Flat and
+ * editorial: the issuer reads as a small tracked-out label (the "logo"), the
+ * title is the primary type and turns accent on hover. When a verification URL
+ * exists the whole cell is a link; otherwise it's a static cell.
  *
- * Used by both Certifications and TryHackMe sections (same Card component,
- * passed in as-is without branching logic), so properties stay generic and
- * the issuer/date metadata handles both credential types identically.
+ * Server Component — renderable without client JS. Shared by both the
+ * Certifications and TryHackMe sections without branching logic.
  */
 export function CertificationCard({ cert }: { cert: Certificate }) {
   const { title, issuer, date, credentialUrl } = cert;
@@ -19,32 +19,47 @@ export function CertificationCard({ cert }: { cert: Certificate }) {
     month: "short",
   });
 
-  return (
-    <Card className="h-full py-4 sm:py-6">
-      <CardHeader className="pb-3 sm:pb-4">
-        <h3 className="text-base leading-snug font-semibold tracking-tight sm:text-lg">
+  const cls =
+    "group flex h-full flex-col justify-between gap-6 bg-bg-base p-6 transition-colors duration-200 hover:bg-bg-surface sm:p-8";
+
+  const inner = (
+    <>
+      <div className="flex items-start justify-between gap-3">
+        <span className="font-mono text-[11px] font-medium tracking-[0.12em] text-text-muted uppercase">
+          {issuer}
+        </span>
+        {credentialUrl && (
+          <ArrowUpRight
+            aria-hidden
+            className="size-4 shrink-0 text-text-muted opacity-0 transition-all duration-200 group-hover:text-accent group-hover:opacity-100"
+          />
+        )}
+      </div>
+      <div>
+        <h3
+          className={cn(
+            "text-base leading-snug font-semibold tracking-tight text-text-primary transition-colors duration-200 sm:text-lg",
+            credentialUrl && "group-hover:text-accent",
+          )}
+        >
           {title}
         </h3>
-        <p className="text-xs text-muted-foreground sm:text-sm">
-          {issuer} • {formattedDate}
-        </p>
-      </CardHeader>
+        <p className="mt-2 text-xs text-text-muted">{formattedDate}</p>
+      </div>
+    </>
+  );
 
-      {credentialUrl && (
-        <CardContent className="pt-0">
-          <Button asChild variant="ghost" size="sm">
-            <a
-              href={credentialUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View credential for ${title} (opens in a new tab)`}
-            >
-              <ExternalLink aria-hidden className="size-3.5" />
-              View credential
-            </a>
-          </Button>
-        </CardContent>
-      )}
-    </Card>
+  return credentialUrl ? (
+    <a
+      href={credentialUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`View credential for ${title} (opens in a new tab)`}
+      className={cls}
+    >
+      {inner}
+    </a>
+  ) : (
+    <div className={cls}>{inner}</div>
   );
 }

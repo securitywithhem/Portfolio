@@ -12,7 +12,9 @@ export function Certifications() {
     <SectionPremium id="certifications" spacing="normal" accentLine="top">
       <SectionHeader
         eyebrow="Credentials"
-        title="Certifications & Learning"
+        index="06"
+        title="Certifications &"
+        titleAccent="learning"
         subtitle="Professional credentials and continuous education"
       />
       <CertificationGrid certs={certs} />

@@ -2,21 +2,18 @@ import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Premium Section Wrapper
- * Ensures consistent spacing, styling, and animations across all sections
+ * Section wrapper — flat, high-contrast, editorial (Design System v2).
  *
  * Features:
- * - Consistent padding (vertical + horizontal)
- * - Optional background patterns
- * - Consistent max-width container
- * - Optional gradient or accent borders
- * - Built-in scroll reveal animation support
+ * - Consistent large vertical rhythm and ~1320px max-width container
+ * - Flat surfaces only (no blur, no gradient washes, no glow)
+ * - Optional hairline accent dividers
  */
 
 interface SectionPremiumProps {
   children: ReactNode;
   id?: string;
-  variant?: "default" | "dark" | "glass" | "accent";
+  variant?: "default" | "surface";
   spacing?: "compact" | "normal" | "spacious";
   accentLine?: "top" | "bottom" | "both" | "none";
   className?: string;
@@ -27,28 +24,25 @@ export function SectionPremium({
   id,
   variant = "default",
   spacing = "normal",
-  accentLine = "top",
+  accentLine = "none",
   className,
 }: SectionPremiumProps) {
   const spacingMap = {
     compact: "py-16 sm:py-24",
-    normal: "py-20 sm:py-32",
-    spacious: "py-24 sm:py-40",
+    normal: "py-24 sm:py-32",
+    spacious: "py-28 sm:py-40",
   };
 
+  // Flat backgrounds only — accent is never a background flood (v2 §1).
   const variants = {
-    default: "bg-gradient-to-b from-[#0B0C0E] to-[#0F1117]",
-    dark: "bg-gradient-to-b from-[#0B0C0E] to-[#0F1117]",
-    glass:
-      "bg-gradient-to-br from-[rgba(19,20,23,0.4)] via-[#0B0C0E] to-[#0B0C0E] backdrop-blur-sm border-t border-[rgba(94,234,212,0.15)]",
-    accent:
-      "bg-gradient-to-br from-[rgba(94,234,212,0.08)] via-[#0B0C0E] to-[#0B0C0E] border-t border-[rgba(94,234,212,0.25)]",
+    default: "bg-bg-base",
+    surface: "bg-bg-surface",
   };
 
   const accentLineStyles = {
-    top: "border-t border-[rgba(94,234,212,0.2)]",
-    bottom: "border-b border-[rgba(94,234,212,0.2)]",
-    both: "border-y border-[rgba(94,234,212,0.2)]",
+    top: "border-t border-border-subtle",
+    bottom: "border-b border-border-subtle",
+    both: "border-y border-border-subtle",
     none: "",
   };
 
@@ -56,26 +50,14 @@ export function SectionPremium({
     <section
       id={id}
       className={cn(
-        "relative w-full overflow-hidden",
+        "relative w-full",
         spacingMap[spacing],
         variants[variant],
         accentLine !== "none" && accentLineStyles[accentLine],
         className,
       )}
     >
-      {/* Subtle grid background */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.02]">
-        <div
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(94,234,212,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(94,234,212,0.5) 1px, transparent 1px)",
-            backgroundSize: "50px 50px",
-          }}
-        />
-      </div>
-
-      {/* Content container */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-12">
+      <div className="relative mx-auto w-full max-w-[1320px] px-6 sm:px-8 lg:px-12">
         {children}
       </div>
     </section>
@@ -83,11 +65,16 @@ export function SectionPremium({
 }
 
 /**
- * Section Header - consistent heading structure
+ * Section header — flat editorial heading with an optional italic accent word
+ * (v2 §3), preceded by a tracked-out eyebrow with an accent dot.
  */
 interface SectionHeaderProps {
   eyebrow?: string;
+  /** Section index marker, e.g. "02" (v2 §4 numbered markers). */
+  index?: string;
   title: string;
+  /** Optional trailing word rendered italic in the accent color. */
+  titleAccent?: string;
   subtitle?: string;
   centered?: boolean;
   maxWidth?: "sm" | "md" | "lg";
@@ -101,7 +88,9 @@ const maxWidthMap = {
 
 export function SectionHeader({
   eyebrow,
+  index,
   title,
+  titleAccent,
   subtitle,
   centered = true,
   maxWidth = "md",
@@ -114,41 +103,41 @@ export function SectionHeader({
         maxWidthMap[maxWidth],
       )}
     >
-      {eyebrow && (
+      {(eyebrow || index) && (
         <div
-          className="mb-4 inline-flex items-center gap-2 rounded-full border border-[rgba(94,234,212,0.3)] bg-gradient-to-r from-[rgba(94,234,212,0.1)] to-[rgba(94,234,212,0.05)] px-4 py-2 backdrop-blur-sm"
-          style={{
-            boxShadow:
-              "0 0 15px rgba(94,234,212,0.12), inset 0 1px 0 rgba(255,255,255,0.08)",
-          }}
+          className={cn(
+            "mb-4 flex items-center gap-2.5",
+            centered && "justify-center",
+          )}
         >
-          <span
-            className="inline-block h-2 w-2 rounded-full bg-[#5EEAD4]"
-            style={{
-              boxShadow: "0 0 8px rgba(94,234,212,0.5)",
-            }}
-          />
-          <span className="bg-gradient-to-r from-[#5EEAD4] to-[#7FFCE8] bg-clip-text font-mono text-xs tracking-widest text-transparent uppercase">
-            {eyebrow}
-          </span>
+          {index && (
+            <span className="font-mono text-xs font-medium tracking-[0.1em] text-accent">
+              {index}
+            </span>
+          )}
+          {eyebrow && (
+            <>
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" />
+              <span className="font-mono text-xs font-medium tracking-[0.12em] text-text-muted uppercase">
+                {eyebrow}
+              </span>
+            </>
+          )}
         </div>
       )}
 
-      <h2
-        className="sm:text-5xl mb-4 text-4xl font-black tracking-tight"
-        style={{
-          background:
-            "linear-gradient(135deg, #EDEDEE 0%, #5EEAD4 60%, #7FFCE8 100%)",
-          backgroundClip: "text",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-        }}
-      >
+      <h2 className="sm:text-5xl mb-4 text-4xl font-bold tracking-[-0.02em] text-text-primary">
         {title}
+        {titleAccent && (
+          <>
+            {" "}
+            <em className="font-normal text-accent italic">{titleAccent}</em>
+          </>
+        )}
       </h2>
 
       {subtitle && (
-        <p className="mx-auto max-w-3xl text-lg leading-relaxed text-[#8B8D92]">
+        <p className="mx-auto max-w-3xl text-lg leading-relaxed text-text-secondary">
           {subtitle}
         </p>
       )}
@@ -157,7 +146,7 @@ export function SectionHeader({
 }
 
 /**
- * Section Grid - consistent grid layout
+ * Section grid — consistent responsive grid layout.
  */
 interface SectionGridProps {
   children: ReactNode;

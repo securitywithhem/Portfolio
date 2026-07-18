@@ -3,33 +3,38 @@
 import { motion } from "motion/react";
 
 import { CertificationCard } from "@/components/certifications/certification-card";
-import { fadeUp, staggerChildren, subtleHover } from "@/lib/motion";
+import { fadeIn, staggerChildren } from "@/lib/motion";
 import type { Certificate } from "@/lib/types";
 
 /**
- * Responsive card grid with staggered reveal. Server component children
- * (CertificationCard) are passed through motion wrappers per
- * COMPONENT_ARCHITECTURE.md — variants only propagate through motion
- * components, so the grid parent and each card wrapper are client, while
- * the card itself stays server-renderable.
+ * Flat logo/name grid (Design System v2 §6 — the "enterprise partners" wall).
+ * Cells are separated by hairline borders (no cards, no shadow, no gap-fill
+ * blocks on partial rows): a top/left frame on the list plus right/bottom
+ * borders per cell. Opacity-only stagger so the hairline seams stay stable
+ * during the reveal.
  *
- * Used by both Certifications and TryHackMe sections so they share the
- * exact same grid layout, spacing, and reveal behavior.
+ * Shared by Certifications and TryHackMe so both render the same credential
+ * wall. Variants only propagate through motion components, hence the client
+ * boundary here while each CertificationCard stays server-renderable.
  */
 export function CertificationGrid({ certs }: { certs: Certificate[] }) {
   return (
-    <motion.div
+    <motion.ul
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
       variants={staggerChildren}
-      className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3"
+      className="grid grid-cols-1 border-t border-l border-border-subtle sm:grid-cols-2 lg:grid-cols-3"
     >
       {certs.map((cert) => (
-        <motion.div key={cert.id} variants={fadeUp} whileHover={subtleHover}>
+        <motion.li
+          key={cert.id}
+          variants={fadeIn}
+          className="border-r border-b border-border-subtle"
+        >
           <CertificationCard cert={cert} />
-        </motion.div>
+        </motion.li>
       ))}
-    </motion.div>
+    </motion.ul>
   );
 }

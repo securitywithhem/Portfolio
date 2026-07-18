@@ -1,9 +1,9 @@
 import {
   SectionPremium,
   SectionHeader,
-  SectionGrid,
 } from "@/components/layout/section-premium";
 import { GitHubCard } from "@/components/github/github-card";
+import { GitHubGrid, GitHubGridItem } from "@/components/github/github-grid";
 import { getProjects } from "@/lib/data";
 import { pinnedRepos } from "@/data/github-repos";
 
@@ -24,14 +24,18 @@ export async function GitHubSection() {
     <SectionPremium id="github" spacing="normal" accentLine="top">
       <SectionHeader
         eyebrow="GitHub"
-        title="Open Source Work"
+        index="08"
+        title="Open source"
+        titleAccent="work"
         subtitle="Security projects and tools on GitHub"
       />
-      <SectionGrid columns={3} gap="normal">
+      <GitHubGrid>
         {allRepos.map((url) => (
-          <GitHubCard key={url} url={url} />
+          <GitHubGridItem key={url}>
+            <GitHubCard url={url} />
+          </GitHubGridItem>
         ))}
-      </SectionGrid>
+      </GitHubGrid>
     </SectionPremium>
   );
 }

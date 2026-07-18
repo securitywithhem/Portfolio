@@ -12,7 +12,9 @@ export function TryHackMeSection() {
     <SectionPremium id="tryhackme" spacing="normal" accentLine="top">
       <SectionHeader
         eyebrow="TryHackMe"
-        title="Learning Paths & Rooms"
+        index="07"
+        title="Learning paths &"
+        titleAccent="rooms"
         subtitle="Hands-on security challenges and practice"
       />
       <CertificationGrid certs={achievements} />

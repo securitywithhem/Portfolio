@@ -3,72 +3,80 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Orange + Black Design System */
+/*
+ * Design System v2 — flat, high-contrast, editorial.
+ * Accent is a functional signal (CTAs, active states, key stats, links),
+ * NEVER a background flood. No blur, no gradient washes, no glow.
+ * Semantic token names below are mapped to the v2 palette so every component
+ * that consumes Tailwind classes (bg-background, text-foreground, text-primary,
+ * border-border, text-muted-foreground, …) picks up the new system for free.
+ */
 :root {
-  --background: #0a0a0a;
-  --foreground: #f5f5f5;
-  --card: #1a1a1a;
-  --card-foreground: #f5f5f5;
-  --popover: #1a1a1a;
-  --popover-foreground: #f5f5f5;
-  --primary: #ff8c00;
-  --primary-foreground: #0a0a0a;
-  --secondary: #2a2a2a;
-  --secondary-foreground: #f5f5f5;
-  --muted: #3a3a3a;
-  --muted-foreground: #a0a0a0;
-  --accent: #ff8c00;
-  --accent-foreground: #0a0a0a;
+  /* v2 raw palette */
+  --bg-base: #0a0a0b;
+  --bg-surface: #141416;
+  --bg-surface-hover: #1c1c1f;
+  --text-primary: #f5f5f3;
+  --text-secondary: #a3a3a0;
+  --text-muted: #6b6b68;
+  --border-subtle: #232325;
+  --accent: #f57a28;
+  --accent-hover: #ff8c3f;
+
+  /* semantic aliases consumed by existing components */
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
+  --card: var(--bg-surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-surface);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent);
+  --primary-foreground: var(--bg-base);
+  --secondary: var(--bg-surface-hover);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--bg-surface);
+  --muted-foreground: var(--text-secondary);
+  --accent-foreground: var(--bg-base);
   --destructive: #ef4444;
-  --destructive-foreground: #f5f5f5;
-  --border: #2a2a2a;
-  --input: #2a2a2a;
-  --ring: #ff8c00;
-  --radius: 0.625rem;
+  --destructive-foreground: #f5f5f3;
+  --border: var(--border-subtle);
+  --input: var(--border-subtle);
+  --ring: var(--accent);
+  --radius: 0.5rem;
+
+  /* motion tokens (v2 §5) */
+  --duration-fast: 200ms;
+  --duration-base: 500ms;
+  --duration-slow: 800ms;
+  --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/*
+ * Single flat editorial aesthetic regardless of OS theme. next-themes
+ * (attribute="class", defaultTheme="system") stamps .dark on <html> when the
+ * OS is dark, so .dark MUST inherit the same tokens — otherwise dark-mode
+ * visitors get a different palette. Re-alias here (custom props don't cascade
+ * their referenced values into a new scope automatically for @theme).
+ */
 .dark {
-  --background: #0a0a0a;
-  --foreground: #f5f5f5;
-  --card: #1a1a1a;
-  --card-foreground: #f5f5f5;
-  --popover: #1a1a1a;
-  --popover-foreground: #f5f5f5;
-  --primary: #ff8c00;
-  --primary-foreground: #0a0a0a;
-  --secondary: #2a2a2a;
-  --secondary-foreground: #f5f5f5;
-  --muted: #3a3a3a;
-  --muted-foreground: #a0a0a0;
-  --accent: #ff8c00;
-  --accent-foreground: #0a0a0a;
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
+  --card: var(--bg-surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-surface);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent);
+  --primary-foreground: var(--bg-base);
+  --secondary: var(--bg-surface-hover);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--bg-surface);
+  --muted-foreground: var(--text-secondary);
+  --accent-foreground: var(--bg-base);
   --destructive: #ef4444;
-  --destructive-foreground: #f5f5f5;
-  --border: #2a2a2a;
-  --input: #2a2a2a;
-  --ring: #ff8c00;
-}
-
-.dark {
-  --background: oklch(0.16 0.015 256);
-  --foreground: oklch(0.95 0.008 250);
-  --card: oklch(0.205 0.018 256);
-  --card-foreground: oklch(0.95 0.008 250);
-  --popover: oklch(0.205 0.018 256);
-  --popover-foreground: oklch(0.95 0.008 250);
-  --primary: oklch(0.65 0.15 258);
-  --primary-foreground: oklch(0.15 0.02 256);
-  --secondary: oklch(0.26 0.02 256);
-  --secondary-foreground: oklch(0.93 0.01 250);
-  --muted: oklch(0.24 0.02 256);
-  --muted-foreground: oklch(0.72 0.02 254);
-  --accent: oklch(0.29 0.05 258);
-  --accent-foreground: oklch(0.92 0.02 254);
-  --destructive: oklch(0.58 0.2 26);
-  --destructive-foreground: oklch(0.985 0.005 250);
-  --border: oklch(0.28 0.02 256);
-  --input: oklch(0.28 0.02 256);
-  --ring: oklch(0.65 0.15 258);
+  --destructive-foreground: #f5f5f3;
+  --border: var(--border-subtle);
+  --input: var(--border-subtle);
+  --ring: var(--accent);
 }
 
 @theme inline {
@@ -91,6 +99,16 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* v2 palette exposed directly (bg-surface, text-muted, accent-hover, …) */
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-hover: var(--bg-surface-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+  --color-accent-hover: var(--accent-hover);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -125,6 +143,11 @@
   --text-4xl--line-height: 2.5rem;
   --text-6xl: 3.75rem;
   --text-6xl--line-height: 1;
+  /* Oversized display steps for the editorial hero (v2 §3: 64–96px) */
+  --text-7xl: 4.5rem;
+  --text-7xl--line-height: 1;
+  --text-8xl: 6rem;
+  --text-8xl--line-height: 0.98;
 }
 
 @layer base {
@@ -177,15 +200,15 @@
 }
 
 /*
- * Glassmorphism surface — the only sanctioned glass treatment (UI/UX doc).
- * Deliberately subtle: translucent card surface, backdrop blur, soft border.
- * Apply to floating/overlay surfaces only, never to every card.
+ * v2 removes glassmorphism. This former "glass" utility is redefined as a
+ * FLAT opaque surface (no blur, no translucency) so existing `glass` class
+ * usages downgrade cleanly to the editorial surface treatment: solid
+ * bg-surface with a hairline border.
  */
 @utility glass {
   border-width: 1px;
-  border-color: color-mix(in oklab, var(--border) 60%, transparent);
-  background-color: color-mix(in oklab, var(--card) 65%, transparent);
-  backdrop-filter: blur(12px);
+  border-color: var(--border-subtle);
+  background-color: var(--bg-surface);
 }
 
 /*
@@ -247,22 +270,10 @@
     transition: none;
   }
 
-  /* Gradient text effect for headings */
+  /* v2: headings are flat high-contrast, not gradient-filled. Kept as a
+     solid-color alias so any lingering `.gradient-text` usage stays flat. */
   .gradient-text {
-    background: linear-gradient(
-      to right bottom,
-      var(--foreground),
-      var(--foreground),
-      color-mix(in oklch, var(--foreground) 70%, transparent)
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  /* Glow effect for interactive elements */
-  .glow-primary {
-    box-shadow: 0 0 20px color-mix(in oklch, var(--primary) 50%, transparent);
+    color: var(--text-primary);
   }
 
   /* Hover elevation with shadow */
@@ -307,77 +318,40 @@
     background-size: 1000px 100%;
   }
 
-  /* Orange glow orb backgrounds */
-  body::before {
-    content: "";
-    position: fixed;
-    top: -40%;
-    left: 10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(
-      circle,
-      rgba(255, 140, 0, 0.25),
-      transparent 70%
-    );
-    filter: blur(80px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  body::after {
-    content: "";
-    position: fixed;
-    bottom: -30%;
-    right: 5%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(
-      circle,
-      rgba(255, 140, 0, 0.2),
-      transparent 70%
-    );
-    filter: blur(100px);
-    pointer-events: none;
-    z-index: 0;
-    animation: float 6s ease-in-out infinite;
-  }
-
+  /*
+   * v2 §1: "Confidence comes from typography and whitespace, not decoration."
+   * The floating glow orbs and their float animation are removed entirely —
+   * the page background is a single flat --bg-base.
+   */
   main {
     position: relative;
     z-index: 1;
   }
 
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(30px);
-    }
+  /* Editorial buttons: flat, sharp transitions, accent as fill/hover signal.
+     No glow, no bounce. */
+  .btn-accent {
+    background-color: var(--accent);
+    color: var(--bg-base);
+    transition:
+      background-color var(--duration-fast) var(--ease-default),
+      transform var(--duration-fast) var(--ease-default);
   }
 
-  /* Orange accent for buttons and interactive elements */
-  button {
-    @apply transition-all duration-300;
+  .btn-accent:hover {
+    background-color: var(--accent-hover);
   }
 
-  button:hover {
-    @apply transition-all duration-300;
+  .btn-outline {
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    transition:
+      border-color var(--duration-fast) var(--ease-default),
+      color var(--duration-fast) var(--ease-default);
   }
 
-  /* Pill-shaped buttons */
-  .pill-button {
-    @apply rounded-full px-6 py-3 transition-all duration-300;
-  }
-
-  .pill-button-outlined {
-    @apply rounded-full border border-current px-6 py-3 transition-all duration-300 hover:border-[#FF8C00] hover:bg-[#FF8C00] hover:text-black;
-  }
-
-  /* Orange circular floating button */
-  .floating-button {
-    @apply fixed rounded-full bg-[#FF8C00] text-black transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(255,140,0,0.5)];
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
   }
 }

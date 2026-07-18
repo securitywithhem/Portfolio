@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { PageTransition } from "@/components/shared/page-transition";
+import { ScrollProgress } from "@/components/layout/scroll-progress";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { LayoutClient } from "@/components/layout/layout-client";
@@ -82,6 +83,7 @@ export default function RootLayout({
         <ThemeProvider>
           <MotionProvider>
             <LayoutClient>
+              <ScrollProgress />
               <PageTransition />
               <SiteHeader />
               {children}

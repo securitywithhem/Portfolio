@@ -3,12 +3,12 @@
 import { useMemo, useState } from "react";
 
 import { ProjectFilter } from "@/components/sections/project-filter";
-import { ProjectGrid } from "@/components/sections/project-grid";
+import { ProjectRows } from "@/components/sections/project-rows";
 import type { Project } from "@/lib/types";
 
 /**
  * Owns the filter selection — the one piece of state ProjectFilter and
- * ProjectGrid both need, so it has to live in their nearest shared client
+ * ProjectRows both need, so it has to live in their nearest shared client
  * ancestor rather than in the server-rendered Projects section above it.
  */
 export function ProjectExplorer({ projects }: { projects: Project[] }) {
@@ -36,7 +36,7 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
         Showing {filtered.length} of {projects.length} projects
         {active ? ` filtered by ${active}` : ""}
       </p>
-      <ProjectGrid projects={filtered} />
+      <ProjectRows projects={filtered} />
     </div>
   );
 }

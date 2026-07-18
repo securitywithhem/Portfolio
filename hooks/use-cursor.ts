@@ -17,19 +17,21 @@ export function useCursor() {
     if (!cursorRef.current) {
       const cursor = document.createElement("div");
       cursor.id = "custom-cursor";
+      // Flat editorial cursor (v2): a small light dot that inverts over
+      // content via mix-blend difference, no glow. Grows + turns accent on
+      // interactive elements.
       cursor.style.cssText = `
         position: fixed;
-        width: 12px;
-        height: 12px;
-        background: #000;
+        width: 10px;
+        height: 10px;
+        background: #f5f5f3;
         border-radius: 50%;
         pointer-events: none;
         z-index: 9999;
-        mix-blend-mode: multiply;
-        opacity: 0.8;
-        box-shadow: 0 0 8px rgba(255, 140, 0, 0.3);
+        mix-blend-mode: difference;
+        opacity: 0.9;
         transform: translate(-50%, -50%);
-        transition: width 0.2s, height 0.2s, background 0.2s;
+        transition: width 0.2s cubic-bezier(0.16,1,0.3,1), height 0.2s cubic-bezier(0.16,1,0.3,1), background 0.2s;
       `;
       document.body.appendChild(cursor);
       cursorRef.current = cursor;
@@ -61,18 +63,18 @@ export function useCursor() {
         target.tagName === "A" ||
         target.classList.contains("interactive")
       ) {
-        cursor.style.width = "24px";
-        cursor.style.height = "24px";
-        cursor.style.background = "#FF8C00";
-        cursor.style.boxShadow = "0 0 16px rgba(255, 140, 0, 0.6)";
+        cursor.style.width = "28px";
+        cursor.style.height = "28px";
+        cursor.style.background = "#f57a28";
+        cursor.style.mixBlendMode = "normal";
       }
     };
 
     const handleMouseLeaveInteractive = () => {
-      cursor.style.width = "12px";
-      cursor.style.height = "12px";
-      cursor.style.background = "#000";
-      cursor.style.boxShadow = "0 0 8px rgba(255, 140, 0, 0.3)";
+      cursor.style.width = "10px";
+      cursor.style.height = "10px";
+      cursor.style.background = "#f5f5f3";
+      cursor.style.mixBlendMode = "difference";
     };
 
     const handleMouseLeave = () => {
@@ -80,7 +82,7 @@ export function useCursor() {
     };
 
     const handleMouseEnter = () => {
-      cursor.style.opacity = "0.8";
+      cursor.style.opacity = "0.9";
     };
 
     window.addEventListener("mousemove", handleMouseMove);
