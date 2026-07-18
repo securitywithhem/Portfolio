@@ -120,6 +120,18 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  /*
+   * Smooth in-page scrolling (App Flow: "Smooth scrolling") with a global
+   * anchor offset: the sticky navbar is h-16 (4rem), so anchored sections
+   * stop 5rem down (1rem breathing room). Sections must NOT add their own
+   * scroll-mt-* — see the anchor contract in data/navigation.ts. The
+   * reduced-motion rule below flattens scroll-behavior back to auto.
+   */
+  html {
+    @apply scroll-pt-20 scroll-smooth;
+  }
+
   body {
     @apply bg-background font-sans text-foreground antialiased;
   }

@@ -1,12 +1,14 @@
 import { blogPosts } from "@/data/blog";
 import { certificates } from "@/data/certificates";
 import { experience } from "@/data/experience";
+import { navSections } from "@/data/navigation";
 import { profile } from "@/data/profile";
 import { projects } from "@/data/projects";
 import type {
   BlogPost,
   Certificate,
   Experience,
+  NavSection,
   Profile,
   Project,
 } from "@/lib/types";
@@ -21,6 +23,11 @@ import type {
 
 export function getProfile(): Profile {
   return profile;
+}
+
+/** In-page sections in scroll order — see data/navigation.ts for the anchor id contract. */
+export function getNavSections(): NavSection[] {
+  return [...navSections];
 }
 
 export function getProjects(): Project[] {

@@ -2,12 +2,14 @@ import { describe, expect, it } from "vitest";
 import { blogPosts } from "@/data/blog";
 import { certificates } from "@/data/certificates";
 import { experience } from "@/data/experience";
+import { navSections } from "@/data/navigation";
 import { profile } from "@/data/profile";
 import { projects } from "@/data/projects";
 import {
   blogPostsSchema,
   certificatesSchema,
   experiencesSchema,
+  navSectionsSchema,
   profileSchema,
   projectsSchema,
 } from "@/lib/validations";
@@ -50,6 +52,12 @@ describe("static data matches schemas", () => {
     expect(blogPostsSchema.safeParse(blogPosts)).toMatchObject({
       success: true,
     });
+  });
+
+  it("nav sections (incl. unique anchor ids)", () => {
+    const result = navSectionsSchema.safeParse(navSections);
+    expect(result.error?.issues ?? []).toEqual([]);
+    expect(result.success).toBe(true);
   });
 
   it("includes the PRD-named projects", () => {

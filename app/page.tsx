@@ -1,25 +1,39 @@
 import { Container } from "@/components/layout/container";
-import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { getNavSections, getProfile } from "@/lib/data";
 
 /**
- * TEMPORARY smoke-test page (Phase 1C) — exercises the full Phase 1 stack:
- * Next.js App Router + design tokens + shadcn primitives + dark mode.
- * Replaced by the real Hero/sections in Phase 2.
+ * TEMPORARY section scaffold (Phase 2.1) — one full-height placeholder per
+ * anchor in the nav contract (data/navigation.ts), so the navbar's smooth
+ * scroll and active-section highlight are exercisable end to end before the
+ * real sections exist. Each placeholder is replaced in Phases 2.2+; the
+ * anchor ids must not change.
  */
 export default function Home() {
+  const sections = getNavSections();
+  const { name, role } = getProfile();
+
   return (
-    <Container className="flex min-h-dvh flex-col items-center justify-center gap-6 text-center">
-      <p className="font-mono text-sm text-muted-foreground">
-        Phase 1 smoke test — replaced in Phase 2
-      </p>
-      <h1 className="text-4xl font-semibold tracking-tight">Hem Gabhawala</h1>
-      <p className="max-w-md text-base text-muted-foreground">
-        Cybersecurity portfolio under construction. Design tokens, dark mode,
-        and primitives are live — see /dev/tokens for the full reference.
-      </p>
-      <Separator className="max-w-48" />
-      <ThemeToggle />
-    </Container>
+    <main id="main">
+      {sections.map(({ id, label }, index) => (
+        <section
+          key={id}
+          id={id}
+          className="flex min-h-dvh flex-col items-center justify-center border-b"
+        >
+          <Container className="text-center">
+            {index === 0 ? (
+              <h1 className="text-4xl font-semibold tracking-tight">
+                {name} — {role}
+              </h1>
+            ) : (
+              <h2 className="text-2xl font-semibold tracking-tight">{label}</h2>
+            )}
+            <p className="mt-3 font-mono text-sm text-muted-foreground">
+              {label} placeholder — replaced in Phase 2.2+
+            </p>
+          </Container>
+        </section>
+      ))}
+    </main>
   );
 }

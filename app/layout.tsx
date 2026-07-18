@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SiteHeader } from "@/components/layout/site-header";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { env } from "@/lib/env";
@@ -56,7 +57,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
-          <MotionProvider>{children}</MotionProvider>
+          <MotionProvider>
+            <SiteHeader />
+            {children}
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>
