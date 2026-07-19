@@ -1,19 +1,13 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
 import { ArrowUpRight, MousePointerClick } from "lucide-react";
 import type { Scenario, Project } from "@/lib/types";
 import { useCapability } from "@/lib/capability";
 import { ACCENT_HEX } from "@/lib/accents";
 import { skillById } from "@/data/skills";
 import { cn } from "@/lib/utils";
-import { OffensiveFallback } from "./offensive/offensive-fallback";
-
-// Code-split: the 3D scene chunk downloads only when the full tier renders it.
-const OffensiveScene = dynamic(() => import("./offensive/offensive-scene"), {
-  ssr: false,
-});
+import { scenarioVisuals } from "./registry";
 
 export function ScenarioStage({
   scenario,
@@ -31,6 +25,7 @@ export function ScenarioStage({
   const [traced, setTraced] = useState(false);
 
   const accentHex = ACCENT_HEX[scenario.accent];
+  const visual = scenarioVisuals[scenario.id];
 
   // Which narrative beat is centered → drives both visual tiers.
   useEffect(() => {
@@ -51,9 +46,11 @@ export function ScenarioStage({
     return () => obs.disconnect();
   }, []);
 
-  const fallbackVisual = (
-    <OffensiveFallback activeBeat={activeBeat} traced={traced} />
-  );
+  const Fallback = visual?.Fallback;
+  const Scene = visual?.Scene;
+  const fallbackVisual = Fallback ? (
+    <Fallback activeBeat={activeBeat} traced={traced} />
+  ) : null;
 
   return (
     <div ref={stageRef} className="relative">
@@ -61,9 +58,9 @@ export function ScenarioStage({
         {/* Visual stage — pinned on desktop */}
         <div className="lg:sticky lg:top-16 lg:h-[calc(100dvh-4rem)]">
           <div className="relative h-[52vh] overflow-hidden rounded-[2px] border border-line bg-surface lg:h-full">
-            {tier === "full" ? (
+            {tier === "full" && Scene ? (
               <Suspense fallback={fallbackVisual}>
-                <OffensiveScene
+                <Scene
                   targetRef={stageRef}
                   keyframes={scenario.scene3D?.cameraKeyframes ?? []}
                   activeBeat={activeBeat}
