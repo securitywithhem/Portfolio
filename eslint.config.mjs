@@ -18,6 +18,7 @@ const eslintConfig = tseslint.config(
       ".next/**",
       "out/**",
       "build/**",
+      "legacy/**",
       "next-env.d.ts",
     ],
   },

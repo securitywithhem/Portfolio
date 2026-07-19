@@ -1,81 +1,91 @@
-import type { Metadata } from "next";
-import { Container } from "@/components/layout/container";
-import { About } from "@/components/sections/about";
-import { Hero } from "@/components/sections/hero";
-import { JourneyTimeline } from "@/components/sections/journey-timeline";
-import { Projects } from "@/components/sections/projects";
-import { Skills } from "@/components/sections/skills";
-import { ExperienceTimeline } from "@/components/experience/experience-timeline";
-import { Certifications } from "@/components/certifications/certifications";
-import { TryHackMeSection } from "@/components/certifications/tryhackme-section";
-import { GitHubSection } from "@/components/github/github-section";
-import { ContactSection } from "@/components/contact/contact-section";
-import { getNavSections } from "@/lib/data";
-import { homeMetadata } from "@/lib/seo/metadata";
-
-export const metadata: Metadata = homeMetadata();
-
-const IMPLEMENTED_IDS = [
-  "hero",
-  "about",
-  "journey",
-  "skills",
-  "experience",
-  "projects",
-  "certifications",
-  "tryhackme",
-  "github",
-  "contact",
-];
-
-function Placeholder({ id, label }: { id: string; label: string }) {
-  return (
-    <section
-      id={id}
-      className="flex min-h-dvh flex-col items-center justify-center border-b"
-    >
-      <Container className="text-center">
-        <h2 className="text-2xl font-semibold tracking-tight">{label}</h2>
-        <p className="mt-3 font-mono text-sm text-muted-foreground">
-          {label} placeholder — replaced in a later phase
-        </p>
-      </Container>
-    </section>
-  );
-}
-
 /**
- * Home page. Phases 2–4 complete + Phase 5 Contact/GitHub:
- * Hero, About, Journey, Skills (2–3), Projects (4A), Certifications & TryHackMe (4B),
- * Experience (4C), GitHub (5a), and Contact (5b). The remaining sections (Blog)
- * are TEMPORARY placeholders until Phase 5c.
- *
- * Layout follows App Flow order: Hero → About → Journey → Skills →
- * Experience → Projects → Certifications → TryHackMe → GitHub → Contact → [placeholders].
- *
- * Contact is the final conversion point before Resume Download.
+ * Phase 1 skeleton page — proves the Design System v3 foundation renders and
+ * builds. The real Hero / Navbar / Footer land in Phase 2; the four Scenarios
+ * in Phase 2.5 (gate) and Phase 4. This is intentionally minimal and will be
+ * replaced — it is not the launch home page.
  */
-export default function Home() {
-  const sections = getNavSections();
-  const afterContact = sections.filter(
-    ({ id }) => !IMPLEMENTED_IDS.includes(id),
-  );
 
+const SCENARIOS = [
+  {
+    unit: "SC-01",
+    title: "Offensive Security",
+    accent: "var(--accent-red-amber)",
+  },
+  { unit: "SC-02", title: "GRC & Compliance", accent: "var(--accent-blue)" },
+  {
+    unit: "SC-03",
+    title: "AI-Secured Systems",
+    accent: "var(--accent-violet)",
+  },
+  {
+    unit: "SC-04",
+    title: "Cloud & Infrastructure",
+    accent: "var(--accent-teal)",
+  },
+] as const;
+
+export default function Home() {
   return (
-    <main id="main">
-      <Hero />
-      <About />
-      <JourneyTimeline />
-      <Skills />
-      <ExperienceTimeline />
-      <Projects />
-      <Certifications />
-      <TryHackMeSection />
-      <GitHubSection />
-      <ContactSection />
-      {afterContact.map((section) => (
-        <Placeholder key={section.id} {...section} />
-      ))}
+    <main className="relative isolate min-h-dvh overflow-hidden">
+      <div
+        aria-hidden
+        className="precision-grid pointer-events-none absolute inset-0 -z-10"
+      />
+
+      <div className="mx-auto flex min-h-dvh max-w-5xl flex-col justify-between px-6 py-10">
+        <header className="flex items-center justify-between border-b border-line pb-4">
+          <span className="label-mono">HEM.GABHAWALA / PORTFOLIO</span>
+          <span className="label-mono">REV 3.0 · BUILD SKELETON</span>
+        </header>
+
+        <section className="py-16">
+          <p className="label-mono mb-6 text-accent">
+            [ SYSTEM · INITIALIZED ]
+          </p>
+          <h1 className="max-w-3xl text-5xl leading-[0.95] font-extrabold tracking-[-0.03em] text-balance sm:text-7xl">
+            Cybersecurity work,
+            <br />
+            rendered as <span className="text-accent">scenarios</span>.
+          </h1>
+          <p className="mt-8 max-w-xl text-base leading-relaxed text-fg-muted">
+            Design foundation online. Dark industrial substrate, two-typeface
+            telemetry, per-scenario accents. Hero, navigation, and the four
+            immersive scenarios build on top of this in the phases ahead.
+          </p>
+        </section>
+
+        <section
+          aria-label="Scenario index"
+          className="border-t border-line pt-6"
+        >
+          <p className="label-mono mb-4">SCENARIO INDEX / 04 UNITS</p>
+          <ul className="grid gap-px overflow-hidden rounded-[2px] border border-line bg-line sm:grid-cols-2">
+            {SCENARIOS.map((s) => (
+              <li
+                key={s.unit}
+                className="flex items-center gap-4 bg-surface px-5 py-4"
+              >
+                <span
+                  aria-hidden
+                  className="h-8 w-1 shrink-0 rounded-[1px]"
+                  style={{ backgroundColor: s.accent }}
+                />
+                <span className="label-mono shrink-0 text-fg-dim">
+                  {s.unit}
+                </span>
+                <span className="font-medium tracking-tight">{s.title}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <footer className="mt-10 flex items-center justify-between border-t border-line pt-4">
+          <span className="label-mono text-fg-dim">
+            STATUS · PHASE 1 COMPLETE
+          </span>
+          <span className="label-mono text-fg-dim">UNIT / D-01</span>
+        </footer>
+      </div>
     </main>
   );
 }

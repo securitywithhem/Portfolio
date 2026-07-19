@@ -1,85 +1,93 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
 
 /*
- * Design System v2 — flat, high-contrast, editorial.
- * Accent is a functional signal (CTAs, active states, key stats, links),
- * NEVER a background flood. No blur, no gradient washes, no glow.
- * Semantic token names below are mapped to the v2 palette so every component
- * that consumes Tailwind classes (bg-background, text-foreground, text-primary,
- * border-border, text-muted-foreground, …) picks up the new system for free.
+ * Design System v3 — Industrial Telemetry (see /DESIGN.md).
+ * Dark is the only mode at launch (not a toggle). Depth comes from layering,
+ * 1px hairlines, and contrast — never shadows or gradient washes.
+ * Direction: taste-skill brutalist (Tactical Telemetry), tempered by the
+ * typographic restraint the docs inherit from Apple/Linear/Vercel.
  */
+
 :root {
-  /* v2 raw palette */
-  --bg-base: #0a0a0b;
-  --bg-surface: #141416;
-  --bg-surface-hover: #1c1c1f;
-  --text-primary: #f5f5f3;
-  --text-secondary: #a3a3a0;
-  --text-muted: #6b6b68;
-  --border-subtle: #232325;
-  --accent: #f57a28;
-  --accent-hover: #ff8c3f;
+  /* ---- Substrate (deactivated CRT — never pure black) ---- */
+  --bg: #0a0a0b;
+  --surface: #111113;
+  --surface-2: #17171a;
 
-  /* semantic aliases consumed by existing components */
-  --background: var(--bg-base);
-  --foreground: var(--text-primary);
-  --card: var(--bg-surface);
-  --card-foreground: var(--text-primary);
-  --popover: var(--bg-surface);
-  --popover-foreground: var(--text-primary);
+  /* ---- Foreground (white phosphor) ---- */
+  --fg: #eaeaea;
+  --fg-muted: #8a8a90;
+  --fg-dim: #5a5a60;
+
+  /* ---- Structure ---- */
+  --line: #232327;
+  --line-strong: #333338;
+
+  /* ---- Per-scenario accents (one accent per scenario, not a global one) ----
+   * Each has a base, an -on (text placed on the accent), and a -soft (low-alpha
+   * fill). WCAG-AA verified against --bg per accent in the phase it ships. */
+  --accent-red-amber: #ff5a1f;
+  --accent-red-amber-on: #0a0a0b;
+  --accent-red-amber-soft: rgb(255 90 31 / 0.12);
+
+  --accent-blue: #3b9eff;
+  --accent-blue-on: #0a0a0b;
+  --accent-blue-soft: rgb(59 158 255 / 0.12);
+
+  --accent-violet: #9b7bff;
+  --accent-violet-on: #0a0a0b;
+  --accent-violet-soft: rgb(155 123 255 / 0.12);
+
+  --accent-teal: #2dd4bf;
+  --accent-teal-on: #0a0a0b;
+  --accent-teal-soft: rgb(45 212 191 / 0.12);
+
+  /* Global default accent = red-amber (Offensive Security is the flagship).
+   * Scenario sections re-point --accent locally so components stay accent-agnostic. */
+  --accent: var(--accent-red-amber);
+  --accent-on: var(--accent-red-amber-on);
+  --accent-soft: var(--accent-red-amber-soft);
+
+  /* ---- Semantic aliases consumed by shadcn primitives ---- */
+  --background: var(--bg);
+  --foreground: var(--fg);
+  --card: var(--surface);
+  --card-foreground: var(--fg);
+  --popover: var(--surface);
+  --popover-foreground: var(--fg);
   --primary: var(--accent);
-  --primary-foreground: var(--bg-base);
-  --secondary: var(--bg-surface-hover);
-  --secondary-foreground: var(--text-primary);
-  --muted: var(--bg-surface);
-  --muted-foreground: var(--text-secondary);
-  --accent-foreground: var(--bg-base);
-  --destructive: #b91c1c;
-  --destructive-foreground: #f5f5f3;
-  --border: var(--border-subtle);
-  --input: var(--border-subtle);
+  --primary-foreground: var(--accent-on);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--fg);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--fg-muted);
+  --accent-color: var(--surface-2);
+  --accent-foreground: var(--fg);
+  --destructive: #ff4d4d;
+  --destructive-foreground: var(--fg);
+  --border: var(--line);
+  --input: var(--line-strong);
   --ring: var(--accent);
-  --radius: 0.5rem;
 
-  /* motion tokens (v2 §5) */
-  --duration-fast: 200ms;
-  --duration-base: 500ms;
-  --duration-slow: 800ms;
-  --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/*
- * Single flat editorial aesthetic regardless of OS theme. next-themes
- * (attribute="class", defaultTheme="system") stamps .dark on <html> when the
- * OS is dark, so .dark MUST inherit the same tokens — otherwise dark-mode
- * visitors get a different palette. Re-alias here (custom props don't cascade
- * their referenced values into a new scope automatically for @theme).
- */
-.dark {
-  --background: var(--bg-base);
-  --foreground: var(--text-primary);
-  --card: var(--bg-surface);
-  --card-foreground: var(--text-primary);
-  --popover: var(--bg-surface);
-  --popover-foreground: var(--text-primary);
-  --primary: var(--accent);
-  --primary-foreground: var(--bg-base);
-  --secondary: var(--bg-surface-hover);
-  --secondary-foreground: var(--text-primary);
-  --muted: var(--bg-surface);
-  --muted-foreground: var(--text-secondary);
-  --accent-foreground: var(--bg-base);
-  --destructive: #b91c1c;
-  --destructive-foreground: #f5f5f3;
-  --border: var(--border-subtle);
-  --input: var(--border-subtle);
-  --ring: var(--accent);
+  /* Radius ceiling: 2px (docs allow 2–4px; we hold the low end). */
+  --radius: 2px;
 }
 
 @theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-dim: var(--fg-dim);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-on: var(--accent-on);
+  --color-accent-soft: var(--accent-soft);
+
+  /* shadcn semantic names */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -92,266 +100,74 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* v2 palette exposed directly (bg-surface, text-muted, accent-hover, …) */
-  --color-bg-base: var(--bg-base);
-  --color-bg-surface: var(--bg-surface);
-  --color-bg-surface-hover: var(--bg-surface-hover);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-  --color-border-subtle: var(--border-subtle);
-  --color-accent-hover: var(--accent-hover);
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", monospace;
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-
-  /*
-   * Deliberate, limited type scale (enterprise / Apple + Vercel direction).
-   * Tailwind's defaults beyond this set are removed so hierarchy stays
-   * intentional: body text, two supporting sizes, three heading steps,
-   * one display step.
-   */
-  --text-*: initial;
-  --text-xs: 0.75rem;
-  --text-xs--line-height: 1rem;
-  --text-sm: 0.875rem;
-  --text-sm--line-height: 1.25rem;
-  --text-base: 1rem;
-  --text-base--line-height: 1.5rem;
-  --text-lg: 1.125rem;
-  --text-lg--line-height: 1.75rem;
-  --text-xl: 1.25rem;
-  --text-xl--line-height: 1.75rem;
-  --text-2xl: 1.5rem;
-  --text-2xl--line-height: 2rem;
-  --text-3xl: 1.875rem;
-  --text-3xl--line-height: 2.25rem;
-  --text-4xl: 2.25rem;
-  --text-4xl--line-height: 2.5rem;
-  --text-6xl: 3.75rem;
-  --text-6xl--line-height: 1;
-  /* Oversized display steps for the editorial hero (v2 §3: 64–96px) */
-  --text-7xl: 4.5rem;
-  --text-7xl--line-height: 1;
-  --text-8xl: 6rem;
-  --text-8xl--line-height: 0.98;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
   }
 
-  /*
-   * Smooth in-page scrolling (App Flow: "Smooth scrolling") with a global
-   * anchor offset: the sticky navbar is h-16 (4rem), so anchored sections
-   * stop 5rem down (1rem breathing room). Sections must NOT add their own
-   * scroll-mt-* — see the anchor contract in data/navigation.ts. The
-   * reduced-motion rule below flattens scroll-behavior back to auto.
-   */
   html {
-    @apply scroll-pt-20 scroll-smooth;
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
-    @apply bg-background font-sans text-foreground antialiased;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
-  /*
-   * Global focus ring (accessibility requirement): every focusable element
-   * gets a visible ring in the accent color, both themes. shadcn primitives
-   * opt out via `outline-none` and render their own ring from the same
-   * --ring token, so the treatment stays consistent everywhere.
-   */
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-on);
+  }
+
+  /* Visible, precise focus ring — accessibility, not decoration. */
   :focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
-  }
-
-  /*
-   * CSS-level reduced-motion support. Framer Motion presets additionally
-   * respect this via MotionConfig reducedMotion="user"; this rule covers
-   * CSS transitions/animations (tw-animate-css, hover transitions, smooth
-   * scrolling) for users who opt out of motion.
-   */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    ::before,
-    ::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
-}
-
-/*
- * v2 removes glassmorphism. This former "glass" utility is redefined as a
- * FLAT opaque surface (no blur, no translucency) so existing `glass` class
- * usages downgrade cleanly to the editorial surface treatment: solid
- * bg-surface with a hairline border.
- */
-@utility glass {
-  border-width: 1px;
-  border-color: var(--border-subtle);
-  background-color: var(--bg-surface);
-}
-
-/*
- * Premium Motion Layer — GSAP animations + micro-interactions.
- * Part of the Complex Motion tier (8/10).
- */
-
-/* Loading pulse animation */
-@keyframes pulse-glow {
-  0%,
-  100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 60%, transparent);
-  }
-  50% {
-    opacity: 0.8;
-    box-shadow: 0 0 0 8px color-mix(in oklch, var(--primary) 0%, transparent);
-  }
-}
-
-/* Smooth color transition */
-@keyframes color-shift {
-  0% {
-    color: var(--foreground);
-  }
-  50% {
-    color: var(--primary);
-  }
-  100% {
-    color: var(--foreground);
-  }
-}
-
-/* Smooth gradient animation for loading states */
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
   }
 }
 
 @layer utilities {
-  /* Smooth transitions for interactive elements */
-  .transition-smooth {
-    transition-property: all;
-    transition-duration: 300ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Uppercase monospace telemetry label — nav, metadata, unit IDs, coordinates. */
+  .label-mono {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
   }
 
-  /* Will-change for GPU acceleration during animations */
-  .will-animate {
-    will-change: transform, opacity;
-  }
-
-  /* Prevent layout shift during hover animations */
-  .hover-stable {
-    transition: none;
-  }
-
-  /* v2: headings are flat high-contrast, not gradient-filled. Kept as a
-     solid-color alias so any lingering `.gradient-text` usage stays flat. */
-  .gradient-text {
-    color: var(--text-primary);
-  }
-
-  /* Hover elevation with shadow */
-  .hover-elevate {
-    transition: none;
-    will-change: transform, opacity;
-  }
-
-  /* Smooth focus state */
-  .focus-ring {
-    outline: none;
-    box-shadow:
-      0 0 0 2px var(--primary),
-      0 0 0 4px var(--background);
-    transition-property: all;
-    transition-duration: 200ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .animate-color-shift {
-    animation: color-shift 3s ease-in-out infinite;
-  }
-
-  /* Magnetic hover effect baseline */
-  .magnetic-base {
-    transition: none;
-    will-change: transform, opacity;
-  }
-
-  .animate-shimmer {
-    animation: shimmer 3s infinite;
-    background: linear-gradient(
-      90deg,
-      var(--muted) 25%,
-      var(--accent) 50%,
-      var(--muted) 75%
-    );
-    background-size: 1000px 100%;
-  }
-
-  /*
-   * v2 §1: "Confidence comes from typography and whitespace, not decoration."
-   * The floating glow orbs and their float animation are removed entirely —
-   * the page background is a single flat --bg-base.
-   */
-  main {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Editorial buttons: flat, sharp transitions, accent as fill/hover signal.
-     No glow, no bounce. */
-  .btn-accent {
-    background-color: var(--accent);
-    color: var(--bg-base);
-    transition:
-      background-color var(--duration-fast) var(--ease-default),
-      transform var(--duration-fast) var(--ease-default);
-  }
-
-  .btn-accent:hover {
-    background-color: var(--accent-hover);
-  }
-
-  .btn-outline {
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
-    transition:
-      border-color var(--duration-fast) var(--ease-default),
-      color var(--duration-fast) var(--ease-default);
-  }
-
-  .btn-outline:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+  /* Restrained blueprint grid — structure, not decoration. Kept faint. */
+  .precision-grid {
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: center center;
+    opacity: 0.35;
   }
 }
