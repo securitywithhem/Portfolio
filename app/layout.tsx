@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Footer } from "@/components/layout/footer";
+import { CapabilityProvider } from "@/lib/capability";
 import "@/styles/globals.css";
 
 /**
@@ -40,9 +41,11 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <SiteHeader />
-        {children}
-        <Footer />
+        <CapabilityProvider>
+          <SiteHeader />
+          {children}
+          <Footer />
+        </CapabilityProvider>
       </body>
     </html>
   );

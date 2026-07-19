@@ -1,7 +1,11 @@
 import { Hero } from "@/components/sections/hero";
+import { ScenarioSection } from "@/components/scenarios/scenario-section";
 import { navLeaves } from "@/data/navigation";
 import { accentScope } from "@/lib/accents";
 import type { NavLeaf } from "@/lib/types";
+
+/** Scenario anchors already built to the real two-tier pattern. */
+const BUILT_SCENARIOS = new Set(["scenario-offensive"]);
 
 /**
  * Home. Phase 2 ships Hero + the shell (nav/footer). Every other nav anchor is
@@ -45,9 +49,13 @@ export default function Home() {
   return (
     <main id="main">
       <Hero />
-      {rest.map((leaf) => (
-        <SectionPlaceholder key={leaf.id} leaf={leaf} />
-      ))}
+      {rest.map((leaf) =>
+        BUILT_SCENARIOS.has(leaf.id) ? (
+          <ScenarioSection key={leaf.id} scenarioId={leaf.id} />
+        ) : (
+          <SectionPlaceholder key={leaf.id} leaf={leaf} />
+        ),
+      )}
     </main>
   );
 }
