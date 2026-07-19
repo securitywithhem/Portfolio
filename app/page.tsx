@@ -8,7 +8,11 @@ import { accentScope } from "@/lib/accents";
 import type { NavLeaf } from "@/lib/types";
 
 /** Scenario anchors already built to the real two-tier pattern (Phase 2.5). */
-const BUILT_SCENARIOS = new Set(["scenario-offensive", "scenario-grc"]);
+const BUILT_SCENARIOS = new Set([
+  "scenario-offensive",
+  "scenario-grc",
+  "scenario-ai",
+]);
 
 /** Non-scenario anchors with a real section built (Phase 3+). */
 const SECTION_COMPONENTS: Record<string, () => React.ReactElement> = {
