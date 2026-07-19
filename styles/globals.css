@@ -17,7 +17,7 @@
   /* ---- Foreground (white phosphor) ---- */
   --fg: #eaeaea;
   --fg-muted: #8a8a90;
-  --fg-dim: #5a5a60;
+  --fg-dim: #71717a;
 
   /* ---- Structure ---- */
   --line: #232327;
@@ -123,6 +123,9 @@
   html {
     scroll-behavior: smooth;
     color-scheme: dark;
+    /* Offset in-page jumps below the 4rem sticky navbar. Sections must NOT add
+     * their own scroll-margin — this is the single global source. */
+    scroll-padding-top: 5rem;
   }
 
   @media (prefers-reduced-motion: reduce) {

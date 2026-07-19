@@ -23,18 +23,21 @@ Restraint over theatrics — the precision grid is _structure_, not decoration.
 
 ## Color (dark substrate — the only mode at launch)
 
-| Token           | Value     | Use                                       |
-| --------------- | --------- | ----------------------------------------- |
-| `--bg`          | `#0A0A0B` | Base (deactivated CRT — never pure black) |
-| `--surface`     | `#111113` | Raised compartments / cards               |
-| `--surface-2`   | `#17171A` | Nested / hover surface                    |
-| `--fg`          | `#EAEAEA` | Primary text (white phosphor)             |
-| `--fg-muted`    | `#8A8A90` | Metadata, secondary                       |
-| `--fg-dim`      | `#5A5A60` | Tertiary / disabled                       |
-| `--line`        | `#232327` | Hairline borders / grid                   |
-| `--line-strong` | `#333338` | Emphasized dividers                       |
+| Token           | Value     | Use                                          |
+| --------------- | --------- | -------------------------------------------- |
+| `--bg`          | `#0A0A0B` | Base (deactivated CRT — never pure black)    |
+| `--surface`     | `#111113` | Raised compartments / cards                  |
+| `--surface-2`   | `#17171A` | Nested / hover surface                       |
+| `--fg`          | `#EAEAEA` | Primary text (white phosphor)                |
+| `--fg-muted`    | `#8A8A90` | Metadata, secondary (5.77:1 — AA small text) |
+| `--fg-dim`      | `#71717A` | Decorative separators / tertiary UI (4.09:1) |
+| `--line`        | `#232327` | Hairline borders / grid                      |
+| `--line-strong` | `#333338` | Emphasized dividers                          |
 
-### Per-scenario accents (WCAG-AA checked on `--bg` in Phase where each ships)
+### Per-scenario accents — WCAG-AA verified on `--bg` (Phase 2, via culori)
+
+All four pass AA: as large text/UI on `--bg` (6.3–10.6:1) and as button
+background with `--accent-on` text (6.3–10.6:1).
 
 | Scenario               | Slug        | Accent           | Hex (base) |
 | ---------------------- | ----------- | ---------------- | ---------- |
