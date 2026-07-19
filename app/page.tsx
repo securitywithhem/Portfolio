@@ -4,6 +4,8 @@ import { JourneyTimeline } from "@/components/sections/journey-timeline";
 import { Skills } from "@/components/sections/skills";
 import { Certifications } from "@/components/sections/certifications";
 import { TryHackMe } from "@/components/sections/tryhackme";
+import { GitHubSection } from "@/components/sections/github";
+import { Contact } from "@/components/sections/contact";
 import { ScenarioSection } from "@/components/scenarios/scenario-section";
 import { navLeaves } from "@/data/navigation";
 import { accentScope } from "@/lib/accents";
@@ -24,6 +26,7 @@ const SECTION_COMPONENTS: Record<string, () => React.ReactElement> = {
   skills: Skills,
   certifications: Certifications,
   tryhackme: TryHackMe,
+  contact: Contact,
 };
 
 /**
@@ -71,6 +74,8 @@ export default function Home() {
         if (BUILT_SCENARIOS.has(leaf.id)) {
           return <ScenarioSection key={leaf.id} scenarioId={leaf.id} />;
         }
+        // GitHub is an async server component (live fetch) — rendered directly.
+        if (leaf.id === "github") return <GitHubSection key={leaf.id} />;
         const Section = SECTION_COMPONENTS[leaf.id];
         if (Section) return <Section key={leaf.id} />;
         return <SectionPlaceholder key={leaf.id} leaf={leaf} />;

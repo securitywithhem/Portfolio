@@ -3,6 +3,13 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Footer } from "@/components/layout/footer";
 import { CapabilityProvider } from "@/lib/capability";
+import {
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+  SITE_DESCRIPTION,
+} from "@/lib/seo/config";
+import { generatePersonSchema, generateWebsiteSchema } from "@/lib/seo/jsonld";
 import "@/styles/globals.css";
 
 /**
@@ -21,12 +28,43 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-// Minimal metadata for Phase 1. Full SEO (OG/Twitter/JSON-LD/sitemap) lands in
-// Phase 5 against the server-rendered DOM, per the Implementation Plan.
+// OpenGraph/Twitter images are auto-populated by Next from app/opengraph-image.tsx.
 export const metadata: Metadata = {
-  title: "Hem Gabhawala — Cybersecurity Portfolio",
-  description:
-    "Immersive, scenario-based cybersecurity portfolio: offensive security, GRC & compliance, AI-secured systems, and cloud infrastructure.",
+  metadataBase: new URL(SITE_URL),
+  title: { default: SITE_TITLE, template: `%s — ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  keywords: [
+    "cybersecurity",
+    "penetration testing",
+    "VAPT",
+    "GRC",
+    "AI security",
+    "cloud security",
+    "portfolio",
+    SITE_NAME,
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
@@ -35,6 +73,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-dvh bg-bg text-fg antialiased">
+        <script
+          type="application/ld+json"
+          // Structured data (data, not executed script). Content is built from
+          // static site data, so this is safe to inline.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              generatePersonSchema(),
+              generateWebsiteSchema(),
+            ]),
+          }}
+        />
         <a
           href="#hero"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-[2px] focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-on"

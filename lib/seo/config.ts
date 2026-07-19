@@ -1,0 +1,14 @@
+import { env } from "@/lib/env";
+import { profile } from "@/data/profile";
+
+export const SITE_NAME = profile.name;
+export const SITE_URL = env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+export const SITE_TITLE = `${profile.name} — Cybersecurity Portfolio`;
+export const SITE_DESCRIPTION =
+  "Immersive, scenario-based cybersecurity portfolio — offensive security (VAPT), GRC & compliance, AI-secured systems, and cloud infrastructure. Fast, accessible, crawlable.";
+export const CONTACT_EMAIL = profile.email;
+export const SOCIAL_URLS = profile.socials.map((s) => s.url);
+
+export function getAbsoluteUrl(path: string): string {
+  return new URL(path, SITE_URL).toString();
+}

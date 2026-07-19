@@ -97,6 +97,12 @@ export interface Certificate {
   credentialUrl: string | null;
 }
 
+export interface ContactFormInput {
+  name: string;
+  email: string;
+  message: string;
+}
+
 export interface NarrativeBeat {
   id: string;
   order: number;

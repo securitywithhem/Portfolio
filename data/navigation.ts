@@ -23,7 +23,6 @@ export const navLeaves: NavLeaf[] = [
   { id: "certifications", label: "Certifications" },
   { id: "tryhackme", label: "TryHackMe" },
   { id: "github", label: "GitHub" },
-  { id: "blog", label: "Blog" },
   { id: "contact", label: "Contact" },
 ];
 

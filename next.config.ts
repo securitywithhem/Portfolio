@@ -1,27 +1,42 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV !== "production";
+
 /**
- * Baseline security headers. The CSP ships as Report-Only until Phase 5,
- * when the contact form / API routes land and the policy is tightened and
- * switched to enforcing. `unsafe-inline`/`unsafe-eval` in script-src are
- * required by Next.js dev tooling and will be replaced with nonces/hashes
- * at enforcement time.
+ * Content Security Policy.
+ *
+ * - `unsafe-eval` is dropped in production (three.js/R3F/GSAP don't need it);
+ *   kept in dev only for Turbopack HMR.
+ * - `unsafe-inline` remains on script-src because Next's statically-rendered
+ *   pages emit inline hydration/bootstrap scripts (and we inline JSON-LD).
+ *   Eliminating it entirely requires nonce-based CSP, which forces dynamic
+ *   rendering — a perf tradeoff we deliberately avoid for a static portfolio
+ *   with no third-party scripts or user-generated HTML. Documented, not blanket.
+ * - style-src allows inline styles (accent-scope CSS vars, Framer Motion).
+ * - dev also needs ws: for HMR websockets.
  */
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data:",
   "font-src 'self'",
-  "connect-src 'self'",
+  `connect-src 'self'${isDev ? " ws:" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
+  "upgrade-insecure-requests",
 ].join("; ");
 
 const securityHeaders = [
-  { key: "Content-Security-Policy-Report-Only", value: contentSecurityPolicy },
+  {
+    // Enforcing in production; Report-Only in dev so tooling can't be blocked.
+    key: isDev
+      ? "Content-Security-Policy-Report-Only"
+      : "Content-Security-Policy",
+    value: contentSecurityPolicy,
+  },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
