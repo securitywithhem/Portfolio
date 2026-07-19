@@ -125,10 +125,12 @@ function SceneContent({
   accent: string;
 }) {
   const { camera } = useThree();
+  const lookTarget = useRef(new THREE.Vector3());
   useFrame(() => {
     const { pos, look } = sampleCamera(keyframes, progressRef.current);
-    camera.position.lerp(pos, 0.08);
-    camera.lookAt(look);
+    camera.position.lerp(pos, 0.12);
+    lookTarget.current.lerp(look, 0.12);
+    camera.lookAt(lookTarget.current);
   });
 
   return (
@@ -210,7 +212,8 @@ export default function OffensiveScene({
       trigger: el,
       start: "top top",
       end: "bottom bottom",
-      scrub: true,
+      // Numeric scrub adds ~0.8s inertial catch-up → smoother than direct.
+      scrub: 0.8,
       onUpdate: (self) => {
         progressRef.current = self.progress;
       },

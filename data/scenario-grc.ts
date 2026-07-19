@@ -45,10 +45,13 @@ export const scenarioGrc: Scenario = {
   },
   payoffProjectId: "proj-dharma",
   scene3D: {
+    // Pulled back (z ~8.5) so the full chain frames without clipping; 4 keys
+    // for a smooth S-curve descent with a gentle orbit.
     cameraKeyframes: [
-      { progress: 0, position: [0, 2.5, 7], lookAt: [0, 2, 0] },
-      { progress: 0.5, position: [2.4, 0, 6], lookAt: [0, 0, 0] },
-      { progress: 1, position: [0, -2.6, 7], lookAt: [0, -2.2, 0] },
+      { progress: 0, position: [0.4, 2.9, 8.6], lookAt: [0, 2.2, 0] },
+      { progress: 0.35, position: [2.1, 1.1, 7.8], lookAt: [0, 0.7, 0] },
+      { progress: 0.7, position: [2.1, -1.1, 7.8], lookAt: [0, -0.9, 0] },
+      { progress: 1, position: [0.4, -2.9, 8.6], lookAt: [0, -2.2, 0] },
     ],
   },
   fallback: {
