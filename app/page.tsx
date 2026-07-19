@@ -2,6 +2,8 @@ import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { JourneyTimeline } from "@/components/sections/journey-timeline";
 import { Skills } from "@/components/sections/skills";
+import { Certifications } from "@/components/sections/certifications";
+import { TryHackMe } from "@/components/sections/tryhackme";
 import { ScenarioSection } from "@/components/scenarios/scenario-section";
 import { navLeaves } from "@/data/navigation";
 import { accentScope } from "@/lib/accents";
@@ -20,6 +22,8 @@ const SECTION_COMPONENTS: Record<string, () => React.ReactElement> = {
   about: About,
   journey: JourneyTimeline,
   skills: Skills,
+  certifications: Certifications,
+  tryhackme: TryHackMe,
 };
 
 /**

@@ -88,6 +88,15 @@ export interface TimelineEvent {
   category: "education" | "experience" | "milestone";
 }
 
+export interface Certificate {
+  id: string;
+  title: string;
+  issuer: string;
+  /** YYYY-MM-DD. */
+  date: string;
+  credentialUrl: string | null;
+}
+
 export interface NarrativeBeat {
   id: string;
   order: number;
