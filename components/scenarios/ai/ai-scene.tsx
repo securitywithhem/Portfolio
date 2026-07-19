@@ -137,7 +137,7 @@ function SceneContent({
           <SceneLabel
             key={`label-${field.id}`}
             position={pos}
-            text={`${field.label} · ${revealed ? field.plain : field.cipher}`}
+            text={revealed ? field.plain : field.label}
             active={reached}
             accent={accent}
             offsetY={0}

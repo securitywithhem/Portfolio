@@ -170,7 +170,7 @@ function SceneContent({
           <SceneLabel
             key={`label-${e.id}`}
             position={pos}
-            text={`#${e.hash} ${e.label}`}
+            text={e.short}
             active={e.stage <= activeBeat}
             accent={accent}
             offsetY={0}
