@@ -88,7 +88,7 @@ export function ProjectRows({ projects }: { projects: Project[] }) {
                       )}
                     </span>
                     <span className="mt-2 block truncate text-sm text-text-muted">
-                      {project.techStack.join(" · ")}
+                      {project.tagline ?? project.techStack.join(" · ")}
                     </span>
                   </span>
 

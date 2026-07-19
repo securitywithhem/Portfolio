@@ -7,7 +7,7 @@ import { FadeInView } from "@/components/shared/fade-in-view";
 import { getProfile } from "@/lib/data";
 
 export function About() {
-  const { aboutBio, focusAreas } = getProfile();
+  const { aboutBio, aboutPullQuote, focusAreas } = getProfile();
 
   return (
     <SectionPremium id="about" spacing="normal" accentLine="top">
@@ -15,11 +15,15 @@ export function About() {
         <SectionHeader
           eyebrow="About"
           index="01"
-          title="About"
-          titleAccent="me"
-          subtitle="Security researcher and pentesting specialist"
+          title="I didn't start in GRC and AI Security."
+          titleAccent="I earned my way there."
+          subtitle="From finding the vulnerabilities to building the systems that prevent them."
         />
-        <AboutContent aboutBio={aboutBio} focusAreas={focusAreas} />
+        <AboutContent
+          aboutBio={aboutBio}
+          pullQuote={aboutPullQuote}
+          focusAreas={focusAreas}
+        />
       </FadeInView>
     </SectionPremium>
   );

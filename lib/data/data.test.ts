@@ -93,7 +93,11 @@ describe("static data matches schemas", () => {
   it("includes the PRD-named projects", () => {
     const titles = projects.map((p) => p.title);
     expect(titles).toEqual(
-      expect.arrayContaining(["VaultIQ", "Dharma", "API Pentesting"]),
+      expect.arrayContaining([
+        "VaultIQ",
+        "Dharma",
+        "Enterprise API Security & Penetration Testing Framework",
+      ]),
     );
   });
 });

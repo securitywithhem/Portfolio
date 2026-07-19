@@ -8,14 +8,16 @@ import { Button } from "@/components/ui/button";
 import type { Profile } from "@/lib/types";
 
 interface HeroEliteProps {
+  bio: string;
   socials: Profile["socials"];
   resumeUrl: string;
 }
 
 const STATS = [
-  { value: "3", label: "Featured projects" },
-  { value: "Top 5%", label: "TryHackMe rank" },
-  { value: "12+", label: "Certifications" },
+  { value: "Top 2%", label: "TryHackMe" },
+  { value: "9+", label: "Certifications" },
+  { value: "175+", label: "Labs completed" },
+  { value: "VAPT → GRC/AI", label: "Career trajectory" },
 ] as const;
 
 /**
@@ -25,7 +27,7 @@ const STATS = [
  * No grid, no glow, no blur, no gradient washes — confidence from type + space.
  * Motion: line-by-line headline reveal + staggered children, expo-out easing.
  */
-export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
+export function HeroElite({ bio, socials, resumeUrl }: HeroEliteProps) {
   const eyebrowRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const roleLineRef = useRef<HTMLDivElement>(null);
@@ -153,19 +155,24 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
         <div ref={eyebrowRef} className="mb-8 inline-flex items-center gap-2.5">
           <span className="h-1.5 w-1.5 rounded-full bg-accent" />
           <span className="font-mono text-xs font-medium tracking-[0.12em] text-text-muted uppercase">
-            open to security engineering roles
+            Cybersecurity · VAPT → GRC &amp; AI Security
           </span>
         </div>
 
         {/* Oversized mixed-weight display headline with italic accent phrase */}
-        <h1 className="max-w-5xl text-[2.75rem] leading-[1.02] tracking-[-0.02em] text-text-primary sm:text-6xl lg:text-8xl">
-          <span className="block font-bold">Hem Gabhawala</span>
+        <h1 className="sm:text-5xl max-w-5xl text-4xl leading-[1.05] tracking-[-0.02em] text-text-primary lg:text-6xl">
           <span className="block font-light text-text-secondary">
-            builds systems attackers
+            I spent two years finding
           </span>
           <span className="block font-light text-text-secondary">
-            can&apos;t{" "}
-            <em className="font-normal text-accent italic">quietly break.</em>
+            how systems break.
+          </span>
+          <span className="mt-4 block font-semibold text-text-primary">
+            Now I build the{" "}
+            <em className="font-normal text-accent italic">governance</em>
+          </span>
+          <span className="block font-semibold text-text-primary">
+            that stops it from happening again.
           </span>
         </h1>
 
@@ -187,9 +194,7 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
           ref={bioRef}
           className="mt-6 max-w-2xl text-base leading-relaxed text-text-secondary sm:text-lg"
         >
-          Cybersecurity engineer focused on offensive security, application
-          penetration testing, and hardened system design &mdash; VaultIQ,
-          Dharma, and API pentest work included below.
+          {bio}
         </p>
 
         {/* CTAs — flat, accent fill + outline, subtle hover */}
@@ -198,14 +203,14 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
             asChild
             className="rounded-full bg-accent px-8 py-3 text-sm font-semibold text-bg-base transition-[background-color,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] hover:bg-accent-hover"
           >
-            <a href="#projects">View projects →</a>
+            <a href="#projects">See my GRC &amp; AI Security work →</a>
           </Button>
           <Button
             asChild
             className="rounded-full border border-border-subtle bg-transparent px-8 py-3 text-sm font-semibold text-text-primary transition-[border-color,color,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.02] hover:border-accent hover:text-accent"
           >
             <a href={resumeUrl} download>
-              Download resume
+              Download resume ↓
             </a>
           </Button>
         </div>
@@ -213,11 +218,11 @@ export function HeroElite({ socials, resumeUrl }: HeroEliteProps) {
         {/* Stat counters — flat, accent numerals, hairline dividers */}
         <div
           ref={statsRef}
-          className="mt-20 grid max-w-2xl grid-cols-3 gap-px overflow-hidden border-y border-border-subtle"
+          className="mt-20 grid max-w-3xl grid-cols-2 gap-px overflow-hidden border-y border-border-subtle sm:grid-cols-4"
         >
           {STATS.map((stat) => (
-            <div key={stat.label} className="bg-bg-base px-2 py-6">
-              <div className="text-3xl font-bold tracking-tight text-accent sm:text-4xl">
+            <div key={stat.label} className="bg-bg-base px-3 py-6">
+              <div className="text-xl font-bold tracking-tight text-accent sm:text-2xl lg:text-3xl">
                 {stat.value}
               </div>
               <div className="mt-2 text-xs tracking-[0.1em] text-text-muted uppercase">

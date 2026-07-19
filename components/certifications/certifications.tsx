@@ -13,9 +13,9 @@ export function Certifications() {
       <SectionHeader
         eyebrow="Credentials"
         index="06"
-        title="Certifications &"
-        titleAccent="learning"
-        subtitle="Professional credentials and continuous education"
+        title="Certifications that trace the same arc:"
+        titleAccent="offense first, governance next."
+        subtitle="Professional credentials across offensive security, risk, and AI foundations."
       />
       <CertificationGrid certs={certs} />
     </SectionPremium>

@@ -11,7 +11,11 @@ export function Hero() {
 
   return (
     <section id="hero">
-      <HeroElite socials={profile.socials} resumeUrl={profile.resumeUrl} />
+      <HeroElite
+        bio={profile.bio}
+        socials={profile.socials}
+        resumeUrl={profile.resumeUrl}
+      />
     </section>
   );
 }

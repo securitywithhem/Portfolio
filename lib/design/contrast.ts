@@ -46,8 +46,36 @@ function parseBlock(css: string, selector: string): ThemeVars {
   return vars;
 }
 
-/** Returns `{ light, dark }` maps of token name → oklch() string. */
+/**
+ * Resolves `var(--x)` references within a scope. Semantic tokens in globals.css
+ * alias the raw v2 palette (e.g. `--foreground: var(--text-primary)`), and the
+ * raw palette is defined in `:root`, so `.dark` is resolved against a scope of
+ * `{ ...root, ...dark }`. Non-var values (hex, oklch, cubic-bezier) pass through.
+ */
+function resolveVars(vars: ThemeVars, base: ThemeVars): ThemeVars {
+  const scope = { ...base, ...vars };
+  const resolve = (value: string, depth = 0): string => {
+    const m = /^var\(\s*--([a-z0-9-]+)\s*\)$/.exec(value.trim());
+    if (m?.[1] && depth < 10 && scope[m[1]] !== undefined) {
+      return resolve(scope[m[1]] as string, depth + 1);
+    }
+    return value.trim();
+  };
+  const out: ThemeVars = {};
+  for (const [k, v] of Object.entries(vars)) out[k] = resolve(v);
+  return out;
+}
+
+/** Returns `{ light, dark }` maps of token name → resolved color string. */
 export function readThemes(): { light: ThemeVars; dark: ThemeVars } {
   const css = fs.readFileSync(GLOBALS_CSS, "utf8");
-  return { light: parseBlock(css, ":root"), dark: parseBlock(css, ".dark") };
+  const root = parseBlock(css, ":root");
+  const dark = parseBlock(css, ".dark");
+  // In the browser both :root and .dark apply to <html>, so the effective
+  // dark palette is :root overlaid with .dark's overrides (raw-palette tokens
+  // like --accent live only in :root and cascade through).
+  return {
+    light: resolveVars(root, root),
+    dark: resolveVars({ ...root, ...dark }, root),
+  };
 }

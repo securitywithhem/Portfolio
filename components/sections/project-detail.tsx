@@ -19,7 +19,8 @@ import type { Project } from "@/lib/types";
  * needed here.
  */
 export default function ProjectDetail({ project }: { project: Project }) {
-  const { title, description, techStack, github, live } = project;
+  const { title, tagline, description, whyItMatters, techStack, github, live } =
+    project;
 
   return (
     <>
@@ -30,9 +31,26 @@ export default function ProjectDetail({ project }: { project: Project }) {
         </DialogDescription>
       </DialogHeader>
 
+      {tagline && (
+        <p className="-mt-1 text-sm font-medium text-accent italic">
+          {tagline}
+        </p>
+      )}
+
       <p className="text-sm text-muted-foreground sm:text-base">
         {description}
       </p>
+
+      {whyItMatters && (
+        <div className="border-l-2 border-accent pl-4">
+          <p className="text-sm leading-relaxed text-text-secondary">
+            <span className="font-semibold text-text-primary">
+              Why it matters:{" "}
+            </span>
+            {whyItMatters}
+          </p>
+        </div>
+      )}
 
       <ul className="flex flex-wrap gap-2">
         {techStack.map((tech) => (

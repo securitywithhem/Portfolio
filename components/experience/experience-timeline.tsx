@@ -29,9 +29,9 @@ export function ExperienceTimeline() {
       <SectionHeader
         eyebrow="Experience"
         index="04"
-        title="Practical security"
-        titleAccent="work"
-        subtitle="Professional roles and hands-on security experience"
+        title="The offensive foundation"
+        titleAccent="everything else is built on."
+        subtitle="The hands-on VAPT work that grounds the GRC and AI Security direction."
       />
       <NumberedDetailList items={items} ariaLabel="Work experience" />
     </SectionPremium>

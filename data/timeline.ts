@@ -3,39 +3,57 @@ import type { TimelineEvent } from "@/lib/types";
 /**
  * DATA-RELATIONSHIP DECISION (Phase 3B) — read before adding an entry.
  *
- * The Backend Schema has no Timeline entity; Journey must either derive
- * from Experience or stand alone. Decision: **hybrid, not a fork.**
+ * The Backend Schema has no Timeline entity; Journey is a hybrid, not a fork:
+ * Experience and (formal) Certificate facts have one source of truth in
+ * /data/experience.ts and /data/certificates.ts and are mapped into
+ * TimelineEvent shape at read time in lib/data/index.ts#getTimelineEvents().
+ * Only narrative milestones that belong to neither schema live here.
  *
- * - Experience and Certificate facts (roles, cert dates/issuers) already
- *   have exactly one source of truth — /data/experience.ts and
- *   /data/certificates.ts. Journey does not re-type those facts here; it
- *   maps them into TimelineEvent shape at read time in
- *   lib/data/index.ts#getTimelineEvents(). Editing an experience or
- *   certificate updates both its dedicated Phase 4 section AND its
- *   Journey entry from one edit.
- * - Journey is broader than either: it also narrates milestones that
- *   belong to neither schema (starting a degree, a ranking, an award) —
- *   those live here, and only here.
+ * So the HackersVilla internship and the Google/AWS certificates are NOT
+ * re-typed below — they surface automatically. The milestones here fill in
+ * the rest of the VAPT → GRC & AI Security arc (positioning v2).
  *
- * Out of chronological order deliberately (tryhackme-top-5 before
- * started-btech) — getTimelineEvents() sorts explicitly; this file's
- * order must never be relied upon.
+ * Order here is irrelevant — getTimelineEvents() sorts by date ascending.
  */
 export const timelineMilestones = [
   {
-    id: "tryhackme-top-5",
-    date: "2025-09",
-    title: "Ranked top 5% on TryHackMe",
+    id: "started-btech",
+    date: "2023-08",
+    title: "Started B.Tech, Computer Science (Cybersecurity)",
     description:
-      "Completed 170+ rooms across offensive and defensive tracks — web exploitation, privilege escalation, and network attacks.",
+      "Enrolled at Navrachana University, Vadodara. Chose the cybersecurity specialization deliberately, not by default.",
+    category: "education",
+  },
+  {
+    id: "thm-pre-security",
+    date: "2024-12",
+    title: "Completed Pre Security foundations on TryHackMe",
+    description:
+      "Foundations in networking, Linux, and Windows — the base every later skill builds on.",
     category: "milestone",
   },
   {
-    id: "started-btech",
-    date: "2022-08",
-    title: "Started B.Tech in Computer Science (Cybersecurity)",
+    id: "thm-top-2",
+    date: "2025-09",
+    title: "Reached the top 2% on TryHackMe",
     description:
-      "Enrolled at Navrachana University, Vadodara, specializing in cybersecurity within the CSE program.",
-    category: "education",
+      "Escalated from offensive pentesting into privilege escalation, Active Directory attacks, and OWASP web exploitation across 175+ labs — landing in the top 2% of all users globally.",
+    category: "milestone",
+  },
+  {
+    id: "built-dharma-vaultiq",
+    date: "2026-01",
+    title: "Built Dharma (GRC) and VaultIQ (AI Security)",
+    description:
+      "Turned offensive knowledge into preventive architecture: a compliance platform with tamper-evident audit trails, and a zero-knowledge AI platform secured by design.",
+    category: "milestone",
+  },
+  {
+    id: "pursuing-grc-ai",
+    date: "2026-07",
+    title: "Pursuing roles in GRC and AI Security",
+    description:
+      "Bringing a VAPT practitioner's understanding of real attack paths into risk governance and AI system security.",
+    category: "milestone",
   },
 ] satisfies TimelineEvent[];

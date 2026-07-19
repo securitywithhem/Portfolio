@@ -13,9 +13,9 @@ export function Projects() {
       <SectionHeader
         eyebrow="Portfolio"
         index="05"
-        title="What I've"
-        titleAccent="built"
-        subtitle="Security projects, tools, and pentesting work"
+        title="Two projects that prove the trajectory."
+        titleAccent="One that proves the offense behind it."
+        subtitle="Dharma (GRC) and VaultIQ (AI Security), grounded in the offensive API work below."
       />
       <ProjectExplorer projects={projects} />
     </SectionPremium>

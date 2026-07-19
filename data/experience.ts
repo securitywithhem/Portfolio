@@ -1,19 +1,21 @@
 import type { Experience } from "@/lib/types";
 
 /**
- * Work/internship history, most recent first. Entries are realistic
- * placeholders — replace with actual roles before launch (data/README.md).
+ * Work/internship history, most recent first. The HackersVilla VAPT
+ * internship is the offensive foundation the GRC / AI Security positioning
+ * is built on (positioning v2).
  */
 export const experience = [
   {
-    company: "Placeholder Security Co.",
-    role: "Cybersecurity Intern",
-    startDate: "2025-05",
-    endDate: null,
+    company: "HackersVilla Cybersecurity Pvt. Ltd.",
+    role: "VAPT Intern (Cybersecurity Analyst)",
+    startDate: "2024-03",
+    endDate: "2024-05",
     achievements: [
-      "Performed vulnerability assessments across internal web applications and reported findings with CVSS scoring.",
-      "Automated recurring reconnaissance tasks with Python, cutting manual triage time.",
-      "Assisted with API penetration tests following the OWASP API Security Top 10.",
+      "Performed live vulnerability assessments and penetration testing on real systems — identifying the kinds of gaps that GRC frameworks and AI security controls exist to close.",
+      "Conducted network reconnaissance to map attack surfaces the way a real adversary would, then translated findings into remediation reports for engineering teams to act on.",
+      "Applied risk management techniques and security best practices day-to-day — the first hands-on exposure to thinking about risk at a program level, not just an exploit level.",
+      "Built the core instinct this whole career direction runs on: you can't govern or secure what you don't understand how to break.",
     ],
   },
 ] satisfies Experience[];

@@ -5,7 +5,11 @@ export interface Project {
   title: string;
   /** URL segment for the project detail page; unique across all projects. */
   slug: string;
+  /** One-line positioning statement shown under the title in project rows. */
+  tagline?: string;
   description: string;
+  /** Recruiter-facing "why this matters" note shown in the project dialog. */
+  whyItMatters?: string;
   techStack: string[];
   /** Paths under /public (e.g. "/images/projects/vaultiq-1.png"). */
   images: string[];

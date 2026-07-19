@@ -1,8 +1,10 @@
 export function AboutContent({
   aboutBio,
+  pullQuote,
   focusAreas,
 }: {
   aboutBio: string[];
+  pullQuote?: string;
   focusAreas: string[];
 }) {
   return (
@@ -11,12 +13,18 @@ export function AboutContent({
         {aboutBio.map((paragraph) => (
           <p
             key={paragraph}
-            className="max-w-3xl text-lg leading-relaxed text-[#8B8D92] sm:text-xl"
+            className="max-w-3xl text-lg leading-relaxed text-text-secondary sm:text-xl"
           >
             {paragraph}
           </p>
         ))}
       </div>
+
+      {pullQuote && (
+        <blockquote className="max-w-3xl border-l-2 border-accent pl-6 text-xl leading-snug font-medium text-text-primary italic sm:text-2xl">
+          “{pullQuote}”
+        </blockquote>
+      )}
 
       <div className="flex flex-wrap gap-3">
         {focusAreas.map((area) => (

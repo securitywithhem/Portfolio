@@ -21,6 +21,10 @@ export interface Profile {
    * Hero's "Download Resume" CTA.
    */
   resumeUrl: string;
+  /** Public contact email, shown in the Contact section's direct-contact block. */
+  email?: string;
+  /** Location string (e.g. "Vadodara, Gujarat, India") for the Contact block. */
+  location?: string;
   /**
    * Extended narrative for the About section, one entry per paragraph.
    * Extension to the Backend Schema's Profile entity, added in Phase 3A —
@@ -28,6 +32,8 @@ export interface Profile {
    * establish credibility without repeating the Hero verbatim.
    */
   aboutBio: string[];
+  /** Optional pull-quote rendered as an emphasis line in the About section. */
+  aboutPullQuote?: string;
   /** Short focus-area tags shown in About, bridging into the Skills section. */
   focusAreas: string[];
 }
