@@ -14,7 +14,7 @@ export function ScenarioStage({
   project,
 }: {
   scenario: Scenario;
-  project: Project;
+  project: Project | null;
 }) {
   const { capability, detected } = useCapability();
   const tier = detected ? capability.tier : "fallback";
@@ -26,6 +26,14 @@ export function ScenarioStage({
 
   const accentHex = ACCENT_HEX[scenario.accent];
   const visual = scenarioVisuals[scenario.id];
+
+  // For the capability payoff (no owning project): unique skills across beats.
+  const payoffSkills = Array.from(
+    new Set(scenario.narrativeBeats.flatMap((b) => b.relatedSkillIds)),
+  ).flatMap((id) => {
+    const s = skillById.get(id);
+    return s ? [s] : [];
+  });
 
   // Which narrative beat is centered → drives both visual tiers.
   useEffect(() => {
@@ -148,35 +156,60 @@ export function ScenarioStage({
             ))}
           </ol>
 
-          {/* Payoff */}
+          {/* Payoff — project card, or capability payoff when cert-backed */}
           <div className="mt-[16vh] rounded-[2px] border border-line bg-surface p-6">
-            <p className="label-mono mb-3 text-accent">PAYOFF · PROJECT</p>
-            <h3 className="text-xl font-bold tracking-tight">
-              {project.title}
-            </h3>
-            {project.tagline && (
-              <p className="mt-2 text-sm text-fg-muted">{project.tagline}</p>
-            )}
-            <p className="mt-4 text-sm leading-relaxed text-fg-muted">
-              {project.description}
-            </p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {project.techStack.map((t) => (
-                <li key={t} className="label-mono text-fg-dim">
-                  {t}
-                </li>
-              ))}
-            </ul>
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 text-sm text-fg transition-colors hover:text-accent"
-              >
-                View on GitHub
-                <ArrowUpRight size={14} aria-hidden />
-              </a>
+            {project ? (
+              <>
+                <p className="label-mono mb-3 text-accent">PAYOFF · PROJECT</p>
+                <h3 className="text-xl font-bold tracking-tight">
+                  {project.title}
+                </h3>
+                {project.tagline && (
+                  <p className="mt-2 text-sm text-fg-muted">
+                    {project.tagline}
+                  </p>
+                )}
+                <p className="mt-4 text-sm leading-relaxed text-fg-muted">
+                  {project.description}
+                </p>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {project.techStack.map((t) => (
+                    <li key={t} className="label-mono">
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline-flex items-center gap-2 text-sm text-fg transition-colors hover:text-accent"
+                  >
+                    View on GitHub
+                    <ArrowUpRight size={14} aria-hidden />
+                  </a>
+                )}
+              </>
+            ) : (
+              <>
+                <p className="label-mono mb-3 text-accent">
+                  PAYOFF · CAPABILITY
+                </p>
+                <p className="text-sm leading-relaxed text-fg-muted">
+                  {scenario.payoffSummary}
+                </p>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {payoffSkills.map((skill) => (
+                    <li
+                      key={skill.id}
+                      className="rounded-[2px] border border-line px-3 py-1.5 text-sm text-fg-muted"
+                    >
+                      {skill.name}
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           </div>
         </div>

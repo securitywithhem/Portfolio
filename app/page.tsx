@@ -12,6 +12,7 @@ const BUILT_SCENARIOS = new Set([
   "scenario-offensive",
   "scenario-grc",
   "scenario-ai",
+  "scenario-cloud",
 ]);
 
 /** Non-scenario anchors with a real section built (Phase 3+). */

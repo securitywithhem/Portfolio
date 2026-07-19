@@ -2,6 +2,7 @@ import type { Scenario } from "@/lib/types";
 import { scenarioOffensive } from "@/data/scenario-offensive";
 import { scenarioGrc } from "@/data/scenario-grc";
 import { scenarioAi } from "@/data/scenario-ai";
+import { scenarioCloud } from "@/data/scenario-cloud";
 import { projectById } from "@/data/projects";
 import { skillById } from "@/data/skills";
 import { assertScenarioIntegrity } from "./integrity";
@@ -12,14 +13,24 @@ import { assertScenarioIntegrity } from "./integrity";
  * skills. A violation throws and fails the build. Phase 2.5 registers only the
  * flagship (Offensive Security); Phase 4 adds the other three.
  */
-const all: Scenario[] = [scenarioOffensive, scenarioGrc, scenarioAi];
+const all: Scenario[] = [
+  scenarioOffensive,
+  scenarioGrc,
+  scenarioAi,
+  scenarioCloud,
+];
 
 for (const s of all) {
   assertScenarioIntegrity(s);
 
-  if (!projectById.has(s.payoffProjectId)) {
+  if (s.payoffProjectId !== null && !projectById.has(s.payoffProjectId)) {
     throw new Error(
       `[scenario:${s.id}] payoffProjectId "${s.payoffProjectId}" has no matching project`,
+    );
+  }
+  if (s.payoffProjectId === null && !s.payoffSummary) {
+    throw new Error(
+      `[scenario:${s.id}] a scenario with no payoff project must provide payoffSummary`,
     );
   }
 

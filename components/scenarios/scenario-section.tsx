@@ -12,8 +12,9 @@ import { ScenarioStage } from "./scenario-stage";
 export function ScenarioSection({ scenarioId }: { scenarioId: string }) {
   const scenario = getScenario(scenarioId);
   if (!scenario) return null;
-  const project = projectById.get(scenario.payoffProjectId);
-  if (!project) return null;
+  const project = scenario.payoffProjectId
+    ? (projectById.get(scenario.payoffProjectId) ?? null)
+    : null;
 
   return (
     <section

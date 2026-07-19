@@ -137,8 +137,10 @@ export interface Scenario extends ScenarioMeta {
   summary: string;
   narrativeBeats: NarrativeBeat[];
   interactiveMoment: InteractiveMoment;
-  /** References Project.id. */
-  payoffProjectId: string;
+  /** References Project.id — null when the payoff is capability/cert-backed. */
+  payoffProjectId: string | null;
+  /** Payoff shown when there is no owning project (e.g. cert-backed cloud). */
+  payoffSummary?: string;
   scene3D: Scene3D | null;
   fallback: ScenarioFallback;
 }

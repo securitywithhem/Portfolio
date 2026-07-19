@@ -6,6 +6,7 @@ import type { CameraKeyframe } from "@/lib/types";
 import { OffensiveFallback } from "./offensive/offensive-fallback";
 import { GrcFallback } from "./grc/grc-fallback";
 import { AiFallback } from "./ai/ai-fallback";
+import { CloudFallback } from "./cloud/cloud-fallback";
 
 /** Uniform props every scenario's 2D fallback visual accepts. */
 export interface ScenarioVisualProps {
@@ -45,5 +46,9 @@ export const scenarioVisuals: Record<string, VisualEntry> = {
   "scenario-ai": {
     Fallback: AiFallback,
     Scene: dynamic(() => import("./ai/ai-scene"), { ssr: false }),
+  },
+  "scenario-cloud": {
+    Fallback: CloudFallback,
+    Scene: dynamic(() => import("./cloud/cloud-scene"), { ssr: false }),
   },
 };
