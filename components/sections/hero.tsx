@@ -28,7 +28,7 @@ export function Hero() {
 
       <div className="mx-auto w-full max-w-6xl px-6 py-20">
         {/* Telemetry status line */}
-        <Reveal>
+        <Reveal mode="slide">
           <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-2">
             <span className="label-mono flex items-center gap-2 text-accent">
               <span
@@ -41,14 +41,14 @@ export function Hero() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.05}>
+        <Reveal delay={0.05} mode="slide">
           <p className="label-mono mb-5 text-fg">
             {profile.name} <span className="text-fg-dim">/</span> Cybersecurity
             Engineer
           </p>
         </Reveal>
 
-        <Reveal delay={0.1}>
+        <Reveal delay={0.1} mode="slide">
           <h1
             id="hero-heading"
             className="max-w-4xl text-5xl leading-[0.95] font-extrabold tracking-[-0.03em] text-balance sm:text-6xl lg:text-7xl"
@@ -58,7 +58,7 @@ export function Hero() {
           </h1>
         </Reveal>
 
-        <Reveal delay={0.15}>
+        <Reveal delay={0.15} mode="slide">
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-fg-muted">
             I started in offensive security — VAPT, penetration testing, network
             reconnaissance — and I&apos;m turning that attacker&apos;s instinct
@@ -67,7 +67,7 @@ export function Hero() {
           </p>
         </Reveal>
 
-        <Reveal delay={0.2}>
+        <Reveal delay={0.2} mode="slide">
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <a
               href={`#${firstScenario.id}`}
@@ -87,7 +87,7 @@ export function Hero() {
         </Reveal>
 
         {/* Focus areas — mono chips */}
-        <Reveal delay={0.25}>
+        <Reveal delay={0.25} mode="slide">
           <ul className="mt-14 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-6">
             {profile.focusAreas.map((area) => (
               <li key={area} className="label-mono text-fg-muted">
