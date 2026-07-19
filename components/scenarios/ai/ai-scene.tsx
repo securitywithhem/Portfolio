@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { CameraKeyframe } from "@/lib/types";
 import { FIELDS, gridCell } from "./vault";
+import { SceneLabel } from "../scene-label";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -125,6 +126,21 @@ function SceneContent({
             reached={reached}
             revealed={traced && reached}
             accent={accent}
+          />
+        );
+      })}
+
+      {WORLD.map(({ field, pos }) => {
+        const reached = field.stage <= activeBeat;
+        const revealed = traced && reached;
+        return (
+          <SceneLabel
+            key={`label-${field.id}`}
+            position={pos}
+            text={`${field.label} · ${revealed ? field.plain : field.cipher}`}
+            active={reached}
+            accent={accent}
+            offsetY={0}
           />
         );
       })}

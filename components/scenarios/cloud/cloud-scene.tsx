@@ -9,6 +9,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { CameraKeyframe } from "@/lib/types";
 import { NODES, EDGES, nodeById } from "./architecture";
+import { SceneLabel } from "../scene-label";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -148,6 +149,22 @@ function SceneContent({
           accent={accent}
         />
       ))}
+
+      {NODES.map((n) => {
+        const pos = WORLD.get(n.id);
+        if (!pos) return null;
+        const focus = traced && Boolean(n.inspect);
+        return (
+          <SceneLabel
+            key={`label-${n.id}`}
+            position={pos}
+            text={n.label}
+            active={n.stage <= activeBeat || focus}
+            accent={accent}
+            offsetY={0}
+          />
+        );
+      })}
 
       <EffectComposer>
         <Bloom

@@ -16,6 +16,7 @@ import {
   edgeKey,
   KILL_CHAIN_EDGES,
 } from "./topology";
+import { SceneLabel } from "../scene-label";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -169,6 +170,20 @@ function SceneContent({
           accent={accent}
         />
       ))}
+
+      {NODES.map((n) => {
+        const pos = WORLD.get(n.id);
+        if (!pos) return null;
+        return (
+          <SceneLabel
+            key={`label-${n.id}`}
+            position={pos}
+            text={n.label}
+            active={n.stage <= activeBeat}
+            accent={accent}
+          />
+        );
+      })}
 
       {traced && <TraceMarker accent={accent} />}
 

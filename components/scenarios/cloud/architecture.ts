@@ -21,15 +21,15 @@ export interface CloudEdge {
 }
 
 export const NODES: CloudNode[] = [
-  { id: "cf", label: "CloudFront", x: 12, y: 50, stage: 1 },
+  { id: "cf", label: "CloudFront", x: 13, y: 50, stage: 1 },
   { id: "alb", label: "ALB", x: 32, y: 50, stage: 1 },
   { id: "ecs", label: "ECS · Docker", x: 54, y: 28, stage: 0 },
   { id: "api", label: "FastAPI", x: 54, y: 72, stage: 0 },
-  { id: "data", label: "RDS · S3", x: 76, y: 50, stage: 1 },
+  { id: "data", label: "RDS · S3", x: 70, y: 50, stage: 1 },
   {
     id: "iam",
     label: "IAM",
-    x: 92,
+    x: 89,
     y: 50,
     stage: 2,
     inspect: true,

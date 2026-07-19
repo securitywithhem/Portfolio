@@ -71,7 +71,7 @@ export function CloudFallback({
               y={n.y + 1}
               textAnchor="middle"
               className="font-mono"
-              fontSize={2.6}
+              fontSize={2.1}
               fill={reached ? "var(--fg)" : "var(--fg-muted)"}
             >
               {n.label}
