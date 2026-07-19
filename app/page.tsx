@@ -1,17 +1,26 @@
 import { Hero } from "@/components/sections/hero";
+import { About } from "@/components/sections/about";
+import { JourneyTimeline } from "@/components/sections/journey-timeline";
+import { Skills } from "@/components/sections/skills";
 import { ScenarioSection } from "@/components/scenarios/scenario-section";
 import { navLeaves } from "@/data/navigation";
 import { accentScope } from "@/lib/accents";
 import type { NavLeaf } from "@/lib/types";
 
-/** Scenario anchors already built to the real two-tier pattern. */
+/** Scenario anchors already built to the real two-tier pattern (Phase 2.5). */
 const BUILT_SCENARIOS = new Set(["scenario-offensive"]);
 
+/** Non-scenario anchors with a real section built (Phase 3+). */
+const SECTION_COMPONENTS: Record<string, () => React.ReactElement> = {
+  about: About,
+  journey: JourneyTimeline,
+  skills: Skills,
+};
+
 /**
- * Home. Phase 2 ships Hero + the shell (nav/footer). Every other nav anchor is
- * a labelled placeholder so navigation, scroll-spy, and the per-scenario active
- * highlight are fully wired and testable now — each is replaced by its real
- * section in later phases (scenarios in 2.5/4, About/Skills/Journey in 3, etc.).
+ * Home. Sections render in App Flow order. Remaining anchors are labelled
+ * placeholders (scenarios 2–4 in Phase 4; certifications/tryhackme/github/blog/
+ * contact in Phase 4–5) so navigation + scroll-spy stay fully wired.
  */
 function SectionPlaceholder({ leaf }: { leaf: NavLeaf }) {
   const scenario = leaf.scenario;
@@ -49,13 +58,14 @@ export default function Home() {
   return (
     <main id="main">
       <Hero />
-      {rest.map((leaf) =>
-        BUILT_SCENARIOS.has(leaf.id) ? (
-          <ScenarioSection key={leaf.id} scenarioId={leaf.id} />
-        ) : (
-          <SectionPlaceholder key={leaf.id} leaf={leaf} />
-        ),
-      )}
+      {rest.map((leaf) => {
+        if (BUILT_SCENARIOS.has(leaf.id)) {
+          return <ScenarioSection key={leaf.id} scenarioId={leaf.id} />;
+        }
+        const Section = SECTION_COMPONENTS[leaf.id];
+        if (Section) return <Section key={leaf.id} />;
+        return <SectionPlaceholder key={leaf.id} leaf={leaf} />;
+      })}
     </main>
   );
 }

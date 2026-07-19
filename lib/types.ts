@@ -71,6 +71,23 @@ export interface Skill {
   proficiencyNote?: string;
 }
 
+/** Narrative display grouping for the Skills section (view model). */
+export interface SkillGroup {
+  id: string;
+  title: string;
+  /** References Skill.id, in display order. */
+  skillIds: string[];
+}
+
+export interface TimelineEvent {
+  id: string;
+  /** YYYY-MM. */
+  date: string;
+  title: string;
+  description: string;
+  category: "education" | "experience" | "milestone";
+}
+
 export interface NarrativeBeat {
   id: string;
   order: number;
