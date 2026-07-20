@@ -1,5 +1,6 @@
 import { Reveal } from "@/components/shared/reveal";
 import { JourneyRail } from "@/components/sections/journey/journey-rail";
+import { JourneyNode } from "@/components/sections/journey/journey-node";
 import { timelineSorted } from "@/data/timeline";
 import type { TimelineEvent } from "@/lib/types";
 
@@ -51,16 +52,11 @@ export function JourneyTimeline() {
           From breaking systems to building the guardrails.
         </h2>
 
-        <JourneyRail count={timelineSorted.length}>
+        <JourneyRail>
           <ol className="mt-14 border-l border-line">
             {timelineSorted.map((event, i) => (
               <li key={event.id} className="relative pb-12 pl-8 last:pb-0">
-                {/* Node marker on the rail — pulsing ring is pure CSS, stripped
-                    entirely under reduced-motion (see .node-pulse in globals.css). */}
-                <span
-                  aria-hidden
-                  className="node-pulse absolute top-1.5 left-0 h-2.5 w-2.5 -translate-x-1/2 rounded-full border border-accent bg-bg"
-                />
+                <JourneyNode />
                 <Reveal inView delay={Math.min(i, 3) * 0.05}>
                   <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
                     <time

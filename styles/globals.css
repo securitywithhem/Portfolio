@@ -173,34 +173,4 @@
     background-position: center center;
     opacity: 0.35;
   }
-
-  /* Pulsing ring on timeline/telemetry node markers. Pure CSS so it needs no
-   * client component; the animation itself is stripped under reduced-motion
-   * (not just paused) so no keyframe work happens at all. */
-  .node-pulse {
-    position: relative;
-  }
-  .node-pulse::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    border-radius: 9999px;
-    border: 1px solid var(--accent);
-    opacity: 0;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .node-pulse::after {
-      animation: node-pulse-ring 2.4s ease-out infinite;
-    }
-  }
-  @keyframes node-pulse-ring {
-    0% {
-      opacity: 0.5;
-      transform: scale(0.6);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(1.8);
-    }
-  }
 }
