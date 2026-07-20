@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/shared/reveal";
+import { JourneyRail } from "@/components/sections/journey/journey-rail";
 import { timelineSorted } from "@/data/timeline";
 import type { TimelineEvent } from "@/lib/types";
 
@@ -50,36 +51,39 @@ export function JourneyTimeline() {
           From breaking systems to building the guardrails.
         </h2>
 
-        <ol className="mt-14 border-l border-line">
-          {timelineSorted.map((event, i) => (
-            <li key={event.id} className="relative pb-12 pl-8 last:pb-0">
-              {/* Node marker on the rail */}
-              <span
-                aria-hidden
-                className="absolute top-1.5 left-0 h-2.5 w-2.5 -translate-x-1/2 rounded-full border border-accent bg-bg"
-              />
-              <Reveal delay={i * 0.05}>
-                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  <time
-                    dateTime={event.date}
-                    className="label-mono text-accent"
-                  >
-                    {formatDate(event.date)}
-                  </time>
-                  <span className="label-mono">
-                    {CATEGORY_LABEL[event.category]}
-                  </span>
-                </div>
-                <h3 className="mt-2 text-lg font-semibold tracking-tight">
-                  {event.title}
-                </h3>
-                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-fg-muted">
-                  {event.description}
-                </p>
-              </Reveal>
-            </li>
-          ))}
-        </ol>
+        <JourneyRail count={timelineSorted.length}>
+          <ol className="mt-14 border-l border-line">
+            {timelineSorted.map((event, i) => (
+              <li key={event.id} className="relative pb-12 pl-8 last:pb-0">
+                {/* Node marker on the rail — pulsing ring is pure CSS, stripped
+                    entirely under reduced-motion (see .node-pulse in globals.css). */}
+                <span
+                  aria-hidden
+                  className="node-pulse absolute top-1.5 left-0 h-2.5 w-2.5 -translate-x-1/2 rounded-full border border-accent bg-bg"
+                />
+                <Reveal inView delay={Math.min(i, 3) * 0.05}>
+                  <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                    <time
+                      dateTime={event.date}
+                      className="label-mono text-accent"
+                    >
+                      {formatDate(event.date)}
+                    </time>
+                    <span className="label-mono">
+                      {CATEGORY_LABEL[event.category]}
+                    </span>
+                  </div>
+                  <h3 className="mt-2 text-lg font-semibold tracking-tight">
+                    {event.title}
+                  </h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-fg-muted">
+                    {event.description}
+                  </p>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+        </JourneyRail>
       </div>
     </section>
   );

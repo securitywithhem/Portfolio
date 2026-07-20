@@ -15,17 +15,25 @@ import type { ReactNode } from "react";
  *  - "slide" transform-only, opacity stays 1 so the element PAINTS immediately.
  *            Use for above-the-fold / LCP-candidate content — a JS-gated
  *            opacity:0 there would delay Largest Contentful Paint.
+ *
+ * inView: trigger on scroll-into-view (once) instead of on mount — for content
+ * further down the page where an on-mount delay would've already elapsed
+ * before the visitor scrolls there. Small y-offset per ui-ux-pro-max scroll
+ * reveal guidance (8-16px reads as a fade, not a slide); toggleActions-style
+ * "once" avoids re-triggering on scroll direction changes.
  */
 export function Reveal({
   children,
   delay = 0,
   className,
   mode = "fade",
+  inView = false,
 }: {
   children: ReactNode;
   delay?: number;
   className?: string;
   mode?: "fade" | "slide";
+  inView?: boolean;
 }) {
   const reduce = useReducedMotion();
 
@@ -33,13 +41,28 @@ export function Reveal({
 
   const initial = mode === "slide" ? { y: 14 } : { opacity: 0, y: 12 };
   const animate = mode === "slide" ? { y: 0 } : { opacity: 1, y: 0 };
+  const transition = { duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] as const };
+
+  if (inView) {
+    return (
+      <motion.div
+        className={className}
+        initial={initial}
+        whileInView={animate}
+        viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+        transition={transition}
+      >
+        {children}
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
       className={className}
       initial={initial}
       animate={animate}
-      transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={transition}
     >
       {children}
     </motion.div>
