@@ -101,7 +101,7 @@ export function SiteHeader() {
               "hidden sm:inline-flex",
             )}
           >
-            Résumé
+            Resume
           </a>
           <button
             type="button"
@@ -161,7 +161,7 @@ export function SiteHeader() {
                   "w-full",
                 )}
               >
-                Download Résumé
+                Download resume
               </a>
             </li>
           </ul>

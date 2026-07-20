@@ -81,7 +81,7 @@ export function Hero() {
               download
               className={cn(buttonVariants({ variant: "outline", size: "md" }))}
             >
-              Download résumé
+              Download resume
             </a>
           </div>
         </Reveal>

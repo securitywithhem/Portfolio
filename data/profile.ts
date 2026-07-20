@@ -6,7 +6,7 @@ import type { Profile } from "@/lib/types";
  * /public come from the current resume — replace both together on update.
  */
 export const profile = {
-  name: "Hem Gabhawala",
+  name: "Hem Nikesh Gabhawala",
   role: "Cybersecurity Engineer · VAPT → GRC & AI Security",
   bio: "I'm Hem — a cybersecurity engineer who started in offensive security (VAPT, penetration testing, network reconnaissance) and is now moving toward Governance, Risk & Compliance and AI Security, where that offensive instinct becomes preventive architecture. I've built a self-hosted GRC platform with tamper-evident audit trails and a zero-knowledge AI platform secured from the ground up — because I'd rather design the guardrails than just report where they're missing.",
   socials: [
