@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Line } from "@react-three/drei";
+import { Line, Edges } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -66,15 +66,22 @@ function LedgerBlock({
 }) {
   const pos = WORLD.get(id);
   if (!pos) return null;
+  // Surface stays dark always — state is signaled by the edge outline and a
+  // low emissive tint, never by filling the block with the accent color
+  // (that reads as a neon slab, not a technical panel).
   return (
     <mesh position={pos}>
       <boxGeometry args={[2.4, 0.8, 0.45]} />
       <meshStandardMaterial
-        color={verified ? accent : "#15151a"}
-        emissive={reached ? accent : "#26262c"}
-        emissiveIntensity={reached ? (verified ? 1.9 : 1.1) : 0.22}
-        roughness={0.45}
-        metalness={0.1}
+        color="#111114"
+        emissive={accent}
+        emissiveIntensity={verified ? 0.22 : reached ? 0.08 : 0}
+        roughness={0.6}
+        metalness={0.05}
+      />
+      <Edges
+        color={reached ? accent : "#3a3a42"}
+        linewidth={verified ? 2 : 1}
       />
     </mesh>
   );
@@ -99,7 +106,7 @@ function VerifyPulse({ accent }: { accent: string }) {
       <meshStandardMaterial
         color={accent}
         emissive={accent}
-        emissiveIntensity={3}
+        emissiveIntensity={1.8}
       />
     </mesh>
   );
@@ -173,7 +180,7 @@ function SceneContent({
             text={e.short}
             active={e.stage <= activeBeat}
             accent={accent}
-            offsetY={0}
+            offsetY={-0.65}
           />
         );
       })}
@@ -182,8 +189,8 @@ function SceneContent({
 
       <EffectComposer>
         <Bloom
-          intensity={0.5}
-          luminanceThreshold={0.25}
+          intensity={0.3}
+          luminanceThreshold={0.5}
           luminanceSmoothing={0.4}
           mipmapBlur
         />

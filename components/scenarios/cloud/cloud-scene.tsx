@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Line } from "@react-three/drei";
+import { Line, Edges } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -67,25 +67,29 @@ function ServiceNode({
     if (ring.current) ring.current.rotation.z = state.clock.elapsedTime * 0.6;
   });
   if (!pos) return null;
+  // Surface stays dark always; state reads through the edge outline + a low
+  // emissive tint. The inspect ring stays as a distinct "selected" affordance
+  // but at a restrained intensity so it reads as a UI focus ring, not a flare.
   return (
     <group position={pos}>
-      <mesh scale={focus ? 1.15 : 1}>
+      <mesh scale={focus ? 1.1 : 1}>
         <boxGeometry args={[1.7, 0.85, 0.32]} />
         <meshStandardMaterial
-          color={focus ? accent : "#15151a"}
-          emissive={reached ? accent : "#26262c"}
-          emissiveIntensity={reached ? (focus ? 2.2 : 1.0) : 0.2}
-          roughness={0.45}
-          metalness={0.1}
+          color="#111114"
+          emissive={accent}
+          emissiveIntensity={focus ? 0.24 : reached ? 0.08 : 0}
+          roughness={0.6}
+          metalness={0.05}
         />
+        <Edges color={reached ? accent : "#3a3a42"} linewidth={focus ? 2 : 1} />
       </mesh>
       {focus && (
         <mesh ref={ring}>
-          <torusGeometry args={[1.15, 0.03, 12, 40]} />
+          <torusGeometry args={[1.15, 0.02, 12, 40]} />
           <meshStandardMaterial
             color={accent}
             emissive={accent}
-            emissiveIntensity={2.4}
+            emissiveIntensity={0.8}
           />
         </mesh>
       )}
@@ -161,15 +165,15 @@ function SceneContent({
             text={n.label}
             active={n.stage <= activeBeat || focus}
             accent={accent}
-            offsetY={0}
+            offsetY={-0.65}
           />
         );
       })}
 
       <EffectComposer>
         <Bloom
-          intensity={0.55}
-          luminanceThreshold={0.25}
+          intensity={0.3}
+          luminanceThreshold={0.5}
           luminanceSmoothing={0.4}
           mipmapBlur
         />

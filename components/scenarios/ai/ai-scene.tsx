@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Edges } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -64,25 +65,23 @@ function Panel({
   revealed: boolean;
   accent: string;
 }) {
+  // Surface stays dark always; state reads through the edge outline and a low
+  // emissive tint. The lock/unlock story is carried by the label text itself
+  // (cipher -> plaintext on reveal), not a separate glowing bar mesh.
   return (
     <group position={pos}>
       <mesh>
         <boxGeometry args={[2.8, 1.7, 0.16]} />
         <meshStandardMaterial
-          color={revealed ? accent : "#15151a"}
-          emissive={reached ? accent : "#26262c"}
-          emissiveIntensity={reached ? (revealed ? 2.0 : 0.9) : 0.2}
-          roughness={0.5}
-          metalness={0.1}
+          color="#111114"
+          emissive={accent}
+          emissiveIntensity={revealed ? 0.22 : reached ? 0.08 : 0}
+          roughness={0.6}
+          metalness={0.05}
         />
-      </mesh>
-      {/* Lock bar — solid when locked, dimmed when revealed */}
-      <mesh position={[1.0, 0.55, 0.12]}>
-        <boxGeometry args={[0.5, 0.16, 0.08]} />
-        <meshStandardMaterial
-          color={revealed ? "#26262c" : accent}
-          emissive={revealed ? "#000000" : accent}
-          emissiveIntensity={revealed ? 0 : 1.6}
+        <Edges
+          color={reached ? accent : "#3a3a42"}
+          linewidth={revealed ? 2 : 1}
         />
       </mesh>
     </group>
@@ -140,15 +139,15 @@ function SceneContent({
             text={revealed ? field.plain : field.label}
             active={reached}
             accent={accent}
-            offsetY={0}
+            offsetY={-1.1}
           />
         );
       })}
 
       <EffectComposer>
         <Bloom
-          intensity={0.55}
-          luminanceThreshold={0.25}
+          intensity={0.3}
+          luminanceThreshold={0.5}
           luminanceSmoothing={0.4}
           mipmapBlur
         />

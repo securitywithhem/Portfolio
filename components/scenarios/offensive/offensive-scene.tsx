@@ -181,6 +181,9 @@ function SceneContent({
             text={n.label}
             active={n.stage <= activeBeat}
             accent={accent}
+            offsetY={0.32}
+            // Node spheres are small (r=0.18); a modest offset clears the
+            // glow without drifting far from the shape it labels.
           />
         );
       })}
@@ -189,8 +192,8 @@ function SceneContent({
 
       <EffectComposer>
         <Bloom
-          intensity={0.55}
-          luminanceThreshold={0.25}
+          intensity={0.3}
+          luminanceThreshold={0.5}
           luminanceSmoothing={0.4}
           mipmapBlur
         />
