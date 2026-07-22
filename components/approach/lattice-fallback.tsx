@@ -69,8 +69,8 @@ export function LatticeFallback() {
       {pts.map((p, i) => (
         <circle
           key={i}
-          cx={p.x}
-          cy={p.y}
+          cx={parseFloat(p.x.toFixed(1))}
+          cy={parseFloat(p.y.toFixed(1))}
           r={1.6}
           fill="var(--paper)"
           fillOpacity={0.6}

@@ -1,5 +1,6 @@
 import { profile } from "@/data/profile";
 import { HeroReveal } from "./hero-reveal";
+import { ResumeModal } from "@/components/resume/resume-modal";
 
 /**
  * The four figures a recruiter should retain after three seconds. Rendered as
@@ -75,12 +76,7 @@ export function Hero() {
               >
                 Email me
               </a>
-              <a
-                href={profile.resumeUrl}
-                className="link-underline text-[0.9rem] font-medium"
-              >
-                Resume
-              </a>
+              <ResumeModal />
             </div>
           </div>
         </HeroReveal>

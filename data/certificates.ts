@@ -28,6 +28,13 @@ export const certificates = [
     date: "2026-04-01",
     credentialUrl: null,
   },
+  {
+    id: "cert-isea",
+    title: "Information Security Education and Awareness (ISEA)",
+    issuer: "CDAC / MeitY",
+    date: "2024-07-24",
+    credentialUrl: null,
+  },
 ] satisfies Certificate[];
 
 /** Newest first. */
