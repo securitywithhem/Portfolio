@@ -33,10 +33,10 @@ export const timeline = [
   },
   {
     id: "built-dharma-vaultiq",
-    date: "2026-01",
+    date: "2026-06",
     title: "Built Dharma (GRC) and VaultIQ (AI Security)",
     description:
-      "Turned offensive knowledge into preventive architecture: a compliance platform with tamper-evident audit trails, and a zero-knowledge AI platform secured by design.",
+      "Turned offensive knowledge into preventive architecture: a compliance platform that runs on local AI with a tamper-evident evidence ledger, and a document platform with client-side encryption and a 98%-accurate AI-content detector.",
     category: "milestone",
   },
   {

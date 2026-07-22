@@ -61,7 +61,7 @@ export const skills = [
   },
   {
     id: "skill-zk",
-    name: "Zero-Knowledge Architecture",
+    name: "Client-Side Encryption (AES-256)",
     category: "ai-security",
   },
   { id: "skill-aes", name: "AES-256 Encryption", category: "ai-security" },
