@@ -1,0 +1,20 @@
+[
+  [
+    "entry_1784537629936_hl24do",
+    {
+      "id": "entry_1784537629936_hl24do",
+      "key": "design-tokens",
+      "namespace": "design",
+      "content": "{\"bg\":\"#0A0E14\",\"primary\":\"#E6EDF3\",\"secondary\":\"#3D5A80\",\"accent\":\"#22D3EE\",\"rule\":\"exactly 4 tokens site-wide; bg tints permitted for elevation; accent reserved for CTA/active-state/glow only, never large fill\"}"
+    }
+  ],
+  [
+    "entry_1784537666780_9t64mm",
+    {
+      "id": "entry_1784537666780_9t64mm",
+      "key": "ia-structure",
+      "namespace": "architecture",
+      "content": "{\"stops\":[\"Landing/CapabilityDetection\",\"Hero\",\"About(+JourneyTimeline strip)\",\"Scenarios(1 sticky horizontal carousel of 4)\",\"ProofOfWork(tabbed: Skills/Certifications/TryHackMe/GitHub)\",\"Contact(+Resume)\"],\"blog\":\"moved to footer/nav route, not a scroll stop\",\"rule\":\"6 top-level <section> landmarks total, no content deleted\"}"
+    }
+  ]
+]

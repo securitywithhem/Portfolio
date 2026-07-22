@@ -1,0 +1,31 @@
+{
+  "swarms": {
+    "swarm-1784537628090-r867an": {
+      "swarmId": "swarm-1784537628090-r867an",
+      "topology": "hierarchical",
+      "maxAgents": 6,
+      "status": "running",
+      "agents": [
+        "architect-ia-tokens",
+        "coder-design-system",
+        "coder-layout",
+        "coder-3d-scenario",
+        "reviewer-a11y-perf",
+        "tester-lighthouse"
+      ],
+      "tasks": [],
+      "config": {
+        "topology": "hierarchical",
+        "maxAgents": 6,
+        "strategy": "specialized",
+        "communicationProtocol": "message-bus",
+        "autoScaling": true,
+        "consensusMechanism": "majority"
+      },
+      "createdAt": "2026-07-20T08:53:48.090Z",
+      "updatedAt": "2026-07-20T08:53:48.090Z",
+      "pid": 68363
+    }
+  },
+  "version": "3.0.0"
+}
