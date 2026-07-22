@@ -19,6 +19,17 @@ get the full cinematic scene; everything else gets a fast, still-premium
 fallback. This is the mechanism that lets us pursue Awwwards-tier craft
 without sacrificing the PRD's original 30-second-credibility objective.
 
+**Reframe amendment (Revision 2):** three problems surfaced from a
+recruiter's-eye pass on the live site — excessive vertical scroll (12
+stacked stops), underused 3D presence, and an inconsistent color
+system. This revision collapses the experience to 6 primary stops
+(laterally re-organized, no content removed — see App Flow) and
+replaces the per-scenario accent-color system with one strict 4-token
+palette shared across the whole site (see UI/UX Design Language).
+Scenarios now differentiate via icon system, line motif, and monospace
+tag instead of color. The progressive-enhancement principle above is
+unchanged and still governs the Scenario carousel specifically.
+
 ## Target Users
 
 - Recruiters

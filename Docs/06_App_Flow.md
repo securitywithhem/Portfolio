@@ -14,41 +14,42 @@ Tier Decision: Full 3D  |  Fallback
   ↓
 Hero
   ↓
-About
+About  (absorbs Journey Timeline as a compact horizontal strip inside
+        this section, not its own full-height stop)
   ↓
-Journey Timeline
-  ↓
-Scenarios (4, in sequence — same order regardless of tier)
+Scenarios  (all 4 as ONE sticky horizontal carousel section, not 4
+            stacked full-height scenes — scroll pins the section and
+            progresses the carousel horizontally within the pinned
+            range; same order, regardless of tier)
   1. Offensive Security       → payoff: Enterprise API Pentesting project
   2. GRC & Compliance         → payoff: Dharma project
   3. AI-Secured Systems       → payoff: VaultIQ project
   4. Cloud & Infrastructure   → payoff: AWS-cert-backed skills
   ↓
-Skills
+Proof of Work  (tabbed: [Skills] [Certifications] [TryHackMe]
+                [GitHub] — shared layout shell, one scroll stop)
   ↓
-Certifications
-  ↓
-TryHackMe
-  ↓
-GitHub
-  ↓
-Blog
-  ↓
-Contact
-  ↓
-Resume Download
+Contact  (includes Resume Download; Blog link relocates to
+          footer/nav — Blog stays a real route, not a scroll stop)
 ```
+
+Six primary scroll stops total: Hero, About, Scenarios, Proof of Work,
+Contact — plus Landing/Capability Detection ahead of Hero.
 
 ## Navigation
 
-- Sticky navbar
+- Persistent fast-jump side nav (desktop) / bottom sheet or hamburger
+  (mobile), linking to all 6 stops
 - Smooth scrolling
-- Active section highlight, including per-scenario highlight (nav
-  should indicate which of the 4 scenarios is currently in view, not
-  just "Scenarios" as one lump section)
+- Active-section state shown via `--accent` on the side nav
+- Scenario carousel has its own progress indicator (which of 4
+  scenarios is active), plus horizontal keyboard nav (arrow keys) and
+  swipe on touch — this replaces the old vertical per-scenario nav
+  highlight, adapted from vertical to horizontal
 - Nav behavior is identical on both tiers — navigation is never part
   of the 3D scene itself, it stays as reliable server-rendered UI at
-  all times
+  all times; fallback tier gets the same 6-stop structure and
+  carousel-via-tap pattern, no content fork, only a rendering fork
 
 ## User Journey
 

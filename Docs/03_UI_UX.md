@@ -10,18 +10,39 @@ worth citing in the first place. Glassmorphism reads as
 software-product-marketing; this portfolio needs to read as
 technical-precision instead.
 
-- Dark base UI (not a toggle — dark is the default and primary mode;
-  a light mode can be a Phase 6+ nice-to-have, not a launch requirement)
+- Dark base UI (not a toggle — dark is now the *only* mode, no
+  light-mode toggle, ever)
 - Precision-grid / wireframe motifs as structural background elements
   (thin linework, topographic-style contour patterns — restrained, not
   decorative clutter)
-- One accent color per scenario, not a single global accent — this is
-  the mechanism that gives each scenario visual identity without
-  needing four different layout systems:
-  - Offensive Security → red/amber
-  - GRC & Compliance → blue
-  - AI-Secured Systems → violet
-  - Cloud & Infrastructure → teal
+- **Strict 4-token palette, identical across every section (Revision
+  2 — replaces the per-scenario accent system below):**
+  ```css
+  --bg:        #0A0E14;  /* page background, deepest layer */
+  --primary:   #E6EDF3;  /* headings, body text, primary iconography */
+  --secondary: #3D5A80;  /* borders, dividers, muted text, grid lines */
+  --accent:    #22D3EE;  /* CTAs, active nav state, links, glow/highlight */
+  ```
+  Tints/shades of `--bg` for surface elevation (cards, panels) are
+  permitted and do not count as a 5th color. `--accent` is reserved for
+  CTAs, active/hover states, and the interactive-moment glow — never a
+  large fill area.
+  **Accepted exception:** the "not yet reached" node/edge state inside
+  each scenario's WebGL scene is hardcoded neutral grays rather than a
+  CSS custom property, since three.js material props read a JS value,
+  not CSS — the same constraint that already makes `ACCENT_HEX` a raw
+  constant in `lib/accents.ts` (see that file for the full rationale).
+  Pre-existing, not part of Revision 2's drift surface.
+- Scenarios differentiate via icon + line motif + monospace tag, not
+  color:
+  - Offensive Security → crosshair/node-trace icon, `network-topology`
+    linework, tag `TRACE://`
+  - GRC & Compliance → chain-link/ledger icon, `audit-ledger`
+    linework, tag `LEDGER://`
+  - AI-Secured Systems → lock/shard icon, `encrypted-vault` linework,
+    tag `VAULT://`
+  - Cloud & Infrastructure → node-mesh icon, `cloud-architecture`
+    linework, tag `GRID://`
 - Monospace type (e.g. `JetBrains Mono` or `Space Mono`) for technical
   labels, data readouts, code references — paired with a clean sans
   (e.g. `Inter`) for body/narrative text. Two-typeface system max.
@@ -102,7 +123,8 @@ than four unrelated experiences bolted together):
 - WCAG AA minimum, on both rendering tiers independently
 - Keyboard navigation through every scenario's narrative beats and
   interactive moment, not just through nav/links
-- High contrast — dark base UI must be checked against WCAG contrast
-  ratios per accent color, not just against the default text color
+- High contrast — recompute WCAG AA specifically for `--primary` on
+  `--bg` and `--accent` on `--bg` (Revision 2 hex values); do not
+  assume the prior per-scenario accent ratios still pass
 - All scenario content available to screen readers via the
   server-rendered DOM regardless of which visual tier is active

@@ -1,47 +1,69 @@
-# PRODUCT.md — Hem Gabhawala Portfolio (Immersive Scenario Edition)
+# PRODUCT.md — Hem Gabhawala Portfolio
 
-> Locked decisions for the scenario rebuild. Equivalent of `/impeccable init`'s
-> PRODUCT.md, authored directly because the impeccable command-suite is not
-> installed in this environment (only the single `impeccable:impeccable` skill).
-> Source of truth remains `/Docs/01–06`. This file summarizes, it does not
-> override.
+> Locked product context. `DESIGN.md` covers the visual system.
+> Supersedes the "Immersive Scenario Edition" brief, which described a dark
+> scenario-driven site that no longer exists.
+
+## Register
+
+**Brand** — design IS the product. This is a portfolio; a visitor's impression
+is the thing being made. Not app UI, not a dashboard.
 
 ## Audience (in priority order)
 
-1. **Recruiters / internship coordinators** — skim in <30s, often on mobile or
-   constrained networks. They hit the **fallback tier**. Credibility must land
-   without WebGL.
-2. **Hiring managers** — want proof of real, concrete work (VAPT, GRC, AI
-   security, cloud). Scenario payoff = linked project + GitHub/live.
-3. **Security engineers** — will judge technical taste and precision. The
-   industrial-telemetry aesthetic and honest data readouts are for them.
-
-## Brand lane
-
-**Technical-precision, not product-marketing.** Reads as a declassified
-engineering console / aerospace telemetry, not a SaaS landing page. Explicitly
-avoid: glassmorphism, gradient-as-decoration, soft rounded "friendly" cards,
-hacker-movie/Matrix theatrics, animation spam.
+1. **Recruiters / internship coordinators** — skim in under 40 seconds, often
+   on a phone. They hit the fallback visual tier. Credibility must land without
+   WebGL and without reading a paragraph.
+2. **Hiring managers** — want concrete proof: real engagements, real systems,
+   source where it exists.
+3. **Security engineers** — judge technical taste. The measured contrast, the
+   honest capability schematic and the absence of theatrics are for them.
 
 ## The one job
 
-Make Hem's cybersecurity work **tangible** through scroll-driven scenario
-storytelling — while staying fast, crawlable, and accessible on the fallback
-tier that most of the audience actually sees.
+Get a recruiter from cold load to composing an email. Everything on the page is
+either evidence for that or it is cut.
 
-## Non-negotiables (from PRD/TRD)
+## Positioning
 
-- Immersive 3D is **progressive enhancement, never a gate**. 100% content parity
-  across 3D tier / fallback tier / server-rendered DOM.
-- Lighthouse >95 on the fallback tier (SEO/A11y/Best-Practices target 100);
-  best-effort >80 on the full 3D tier. <2s to first meaningful content.
-- WCAG AA on **both** tiers independently, contrast-checked **per accent color**.
-- Full keyboard + screen-reader path through every scenario's narrative beats
-  **and** its interactive moment.
-- `prefers-reduced-motion` is a hard override at the animation-call level, not
-  just tier selection.
+Offensive security (VAPT) practitioner moving into GRC and AI security. The
+argument is the arc, not the inventory: an attacker's understanding of how
+systems fail, applied to designing systems that don't. Three built platforms
+are the proof it isn't theoretical.
 
-## Out of scope (v1)
+## Brand lane
 
-Spatial/ambient audio · custom cursor / free-camera · light mode (Phase 6+ at
-most) · any mini-game-scale interaction.
+**Technical specimen.** Measured, precise, committed. One typeface shown across
+its range; four surfaces; one accent used as a redline until it takes the whole
+final plate.
+
+Explicitly not: the dark-neon cyber portfolio (first-order cliché for this
+field), and not the light editorial serif page (second-order cliché — display
+serif + mono labels + hairline rules, which is where a previous version landed
+and why it read as AI-made).
+
+## Non-negotiables
+
+- **WCAG AA on every plate**, contrast measured with `culori`, never estimated.
+  Two real failures were caught this way; see DESIGN.md.
+- **3D is progressive enhancement, never a gate.** Full content parity across
+  the WebGL tier, the fallback tier and server-rendered DOM.
+- `prefers-reduced-motion` is a hard override at the animation call site.
+- Full keyboard path; the capability schematic carries a text description.
+- Fast: `three` never enters the bundle for visitors who cannot use it.
+- **No external resource requests.** Nothing hotlinked — an earlier version
+  pulled its hero portrait from a template site, which CSP blocked in
+  production anyway.
+
+## Content rules
+
+- `data/` is the single source of truth. Components import it directly; no
+  component-local copies of skills, projects or credentials.
+- Nothing on the page that isn't in `data/` or the résumé PDF.
+- Two facts per project — what it is, how it's built. The "why it matters"
+  argument runs once, on the Approach plate.
+
+## Out of scope
+
+Light/dark toggle · custom cursor · audio · blog · project detail pages ·
+mini-game-scale interaction.
