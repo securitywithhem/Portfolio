@@ -1,172 +1,97 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import { useActiveSection } from "@/lib/hooks/use-active-section";
-import { accentVar } from "@/lib/accents";
-import { navLeaves, primaryNav, scenarioAnchorIds } from "@/data/navigation";
-import { scenarioMetas } from "@/data/scenarios";
+import { useEffect, useState } from "react";
+import { primaryNav, navLeaves } from "@/data/navigation";
 import { profile } from "@/data/profile";
+import { useActiveSection } from "@/lib/hooks/use-active-section";
 
-// Stable id list for the scroll-spy (module scope — never re-created).
-const LEAF_IDS = navLeaves.map((l) => l.id);
+const SECTION_IDS = navLeaves.map((l) => l.id);
 
+/**
+ * The wash the header wears over each dark plate.
+ *
+ * It is not enough to know a plate is dark — the wash has to be tinted from
+ * that plate's own ground. A neutral `bg-ink/80` over the warm oxblood closing
+ * plate composites to #1f1618, which sits 0.075 below the plate in OKLCH
+ * lightness and reads as a desaturated bar laid on top of it rather than as
+ * the same surface, dimmed.
+ *
+ * Plates not listed here are light and get the paper wash.
+ */
+const DARK_PLATE_WASH: Record<string, string> = {
+  approach: "border-rule-on-ink bg-ink/80 backdrop-blur-md",
+  contact: "border-rule-on-close bg-close/85 backdrop-blur-md",
+};
+
+/**
+ * Sticky header. Transparent over the hero, gaining a rule and a wash only once
+ * the page has scrolled, so the first screen stays clean.
+ *
+ * Mobile shows the wordmark and a single "Email" action rather than a drawer:
+ * five anchors do not justify a menu, and the one thing a recruiter needs on a
+ * phone is the way to make contact.
+ */
 export function SiteHeader() {
-  const active = useActiveSection(LEAF_IDS);
-  const [open, setOpen] = useState(false);
+  const active = useActiveSection(SECTION_IDS);
+  const [scrolled, setScrolled] = useState(false);
 
-  const activeScenario =
-    active && scenarioAnchorIds.has(active)
-      ? scenarioMetas.find((s) => s.id === active)
-      : undefined;
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const darkWash = active !== null ? DARK_PLATE_WASH[active] : undefined;
+  const onDark = darkWash !== undefined;
+
+  const shell = !scrolled
+    ? "border-transparent"
+    : (darkWash ?? "border-rule bg-paper/85 backdrop-blur-md");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-bg">
-      <nav
-        aria-label="Primary"
-        className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6"
-      >
-        {/* Wordmark */}
+    <header
+      className={`fixed top-0 right-0 left-0 z-40 border-b transition-colors duration-500 motion-reduce:transition-none ${shell} ${
+        onDark ? "text-on-ink" : "text-ink"
+      }`}
+    >
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-10">
         <a
           href="#hero"
-          className="group flex items-center gap-2.5 rounded-[2px]"
-          aria-label={`${profile.name} — home`}
+          className="text-[0.92rem] font-semibold tracking-[-0.01em]"
+          style={{ fontVariationSettings: '"wdth" 92' }}
         >
-          <span
-            aria-hidden
-            className="h-5 w-1.5 rounded-[1px] transition-colors"
-            style={{
-              backgroundColor: activeScenario
-                ? accentVar(activeScenario.accent)
-                : "var(--accent)",
-            }}
-          />
-          <span className="font-mono text-sm font-medium tracking-tight text-fg">
-            HEM<span className="text-fg-dim">.</span>GABHAWALA
-          </span>
+          Hem Gabhawala
         </a>
 
-        {/* Desktop nav */}
-        <ul className="hidden items-center gap-1 md:flex">
-          {primaryNav.map((item) => {
-            const isActive = item.scenarioGroup
-              ? active !== null && scenarioAnchorIds.has(active)
-              : active === item.target;
-            return (
-              <li key={item.id}>
-                <a
-                  href={`#${item.target}`}
-                  aria-current={isActive ? "true" : undefined}
-                  className={cn(
-                    "label-mono flex items-center gap-2 rounded-[2px] px-3 py-2 transition-colors hover:text-fg",
-                    isActive && "text-fg",
-                  )}
-                >
-                  <span
-                    aria-hidden
-                    className={cn(
-                      "h-1 w-1 rounded-full transition-colors",
-                      isActive ? "bg-accent" : "bg-transparent",
-                    )}
-                    style={
-                      isActive && activeScenario
-                        ? { backgroundColor: accentVar(activeScenario.accent) }
-                        : undefined
-                    }
-                  />
-                  {item.label}
-                  {item.scenarioGroup && activeScenario && (
-                    <span
-                      className="tabular-nums"
-                      style={{ color: accentVar(activeScenario.accent) }}
-                    >
-                      {activeScenario.unit}
-                    </span>
-                  )}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-
-        {/* Right cluster */}
-        <div className="flex items-center gap-2">
-          <a
-            href={profile.resumeUrl}
-            download
-            className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              "hidden sm:inline-flex",
-            )}
-          >
-            Resume
-          </a>
-          <button
-            type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-[2px] text-fg-muted hover:text-fg md:hidden"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile panel */}
-      {open && (
-        <div id="mobile-nav" className="border-t border-line bg-bg md:hidden">
-          <ul className="mx-auto max-w-6xl px-4 py-3">
-            {navLeaves
-              .filter((l) => l.id !== "hero")
-              .map((leaf) => {
-                const isActive = active === leaf.id;
-                const scenarioAccent = leaf.scenario
-                  ? accentVar(leaf.scenario.accent)
-                  : undefined;
-                return (
-                  <li key={leaf.id}>
-                    <a
-                      href={`#${leaf.id}`}
-                      onClick={() => setOpen(false)}
-                      aria-current={isActive ? "true" : undefined}
-                      className={cn(
-                        "flex items-center gap-3 rounded-[2px] px-2 py-3 text-sm transition-colors",
-                        isActive ? "text-fg" : "text-fg-muted hover:text-fg",
-                      )}
-                    >
-                      {leaf.scenario && (
-                        <span
-                          className="label-mono w-12 shrink-0"
-                          style={{ color: scenarioAccent }}
-                        >
-                          {leaf.scenario.unit}
-                        </span>
-                      )}
-                      <span>{leaf.label}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            <li className="mt-2 border-t border-line pt-3">
-              <a
-                href={profile.resumeUrl}
-                download
-                onClick={() => setOpen(false)}
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "sm" }),
-                  "w-full",
-                )}
-              >
-                Download resume
-              </a>
-            </li>
+        <nav aria-label="Sections" className="hidden md:block">
+          <ul className="flex items-center gap-8">
+            {primaryNav.map((item) => {
+              const isActive = active === item.id;
+              return (
+                <li key={item.id}>
+                  <a
+                    href={`#${item.target}`}
+                    aria-current={isActive ? "true" : undefined}
+                    className={`type-data transition-opacity ${
+                      isActive ? "opacity-100" : "opacity-55 hover:opacity-100"
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
-        </div>
-      )}
+        </nav>
+
+        <a
+          href={`mailto:${profile.email}`}
+          className="link-underline text-[0.85rem] md:hidden"
+        >
+          Email
+        </a>
+      </div>
     </header>
   );
 }

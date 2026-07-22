@@ -5,7 +5,14 @@ export const alt = `${profile.name} — Cybersecurity Engineer`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/** Dynamic OpenGraph/Twitter card — dark industrial, uses system fonts. */
+/**
+ * OpenGraph/Twitter card. Matches the paper plate — a shared card that looks
+ * nothing like the page it links to is its own kind of tell.
+ *
+ * System fonts only: next/og cannot use the next/font Archivo instance without
+ * shipping the binaries, so the width-axis hierarchy the site relies on is
+ * unavailable here and scale plus colour carry it instead.
+ */
 export default function OpengraphImage() {
   return new ImageResponse(
     <div
@@ -15,8 +22,8 @@ export default function OpengraphImage() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        background: "#0a0a0b",
-        color: "#eaeaea",
+        background: "#faf9f7",
+        color: "#14151a",
         padding: 80,
         fontFamily: "sans-serif",
       }}
@@ -25,50 +32,56 @@ export default function OpengraphImage() {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 16,
-          color: "#8a8a90",
-          fontSize: 26,
-          letterSpacing: 4,
+          gap: 14,
+          color: "#6b6d79",
+          fontSize: 24,
+          letterSpacing: 3,
           textTransform: "uppercase",
         }}
       >
-        <div style={{ width: 10, height: 40, background: "#ff5a1f" }} />
-        HEM.GABHAWALA / PORTFOLIO
+        <div
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: 4,
+            background: "#b4331f",
+          }}
+        />
+        {profile.name}
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            fontSize: 76,
-            fontWeight: 800,
-            lineHeight: 1.05,
+            fontSize: 68,
+            lineHeight: 1.1,
             letterSpacing: -2,
           }}
         >
-          <span>From breaking systems to</span>
-          <span style={{ color: "#ff5a1f" }}>building the guardrails.</span>
+          <span>I break systems to understand them,</span>
+          <span>then build the architecture</span>
+          <span>that stops them breaking.</span>
         </div>
-        <div style={{ fontSize: 30, color: "#8a8a90" }}>
-          Cybersecurity Engineer · VAPT → GRC & AI Security
+        <div style={{ fontSize: 28, color: "#5a5c66" }}>
+          Cybersecurity Engineer · VAPT → GRC &amp; AI Security
         </div>
       </div>
 
       <div
         style={{
           display: "flex",
-          gap: 28,
-          color: "#71717a",
+          gap: 40,
+          color: "#5a5c66",
           fontSize: 24,
-          letterSpacing: 3,
-          textTransform: "uppercase",
+          borderTop: "1px solid rgba(20,21,26,0.14)",
+          paddingTop: 28,
         }}
       >
-        <span style={{ color: "#ff5a1f" }}>SC-01 Offensive</span>
-        <span style={{ color: "#3b9eff" }}>SC-02 GRC</span>
-        <span style={{ color: "#9b7bff" }}>SC-03 AI</span>
-        <span style={{ color: "#2dd4bf" }}>SC-04 Cloud</span>
+        <span>Top 2% TryHackMe</span>
+        <span>175+ labs</span>
+        <span>3 platforms built</span>
       </div>
     </div>,
     size,
