@@ -10,14 +10,14 @@ export const tryHackMe = [
     id: "thm-offensive-pentesting",
     title: "Offensive Pentesting",
     issuer: "TryHackMe",
-    date: "2025-08-01",
+    date: "2025-08-06",
     credentialUrl: null,
   },
   {
     id: "thm-web-app-pentesting",
     title: "Web Application Pentesting",
     issuer: "TryHackMe",
-    date: "2025-09-01",
+    date: "2025-09-20",
     credentialUrl: null,
   },
   {
