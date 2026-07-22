@@ -1,34 +1,39 @@
-import type { NavSection } from "@/lib/types";
+import type { NavLeaf } from "@/lib/types";
 
 /**
- * ANCHOR ID CONTRACT (Phase 2.1) — read before building any section.
+ * ANCHOR ID CONTRACT — read before building any section.
  *
- * These ids are the single source of truth for in-page navigation. Every
- * section component built in Phases 2.2+ MUST render a top-level element
- * with the matching `id` (e.g. `<section id="hero">`), in this order.
+ * The page is a hiring funnel in five stops: who I am (hero) → why I'm
+ * different (approach, which carries the 3D set piece) → what I built (work) →
+ * breadth (capabilities, with credentials folded in below it) → the ask
+ * (contact).
  *
- * - The navbar's active-section highlight observes exactly these ids; a
- *   section that renders a different id will never highlight.
- * - Jump-to-section offset under the sticky navbar is handled globally via
- *   `scroll-padding-top` on `html` (styles/globals.css) — sections must NOT
- *   add their own `scroll-mt-*`.
- * - The navbar height is h-16 (4rem); `scroll-padding-top` is 5rem to leave
- *   breathing room below it.
- * - "Home" points at the Hero section — there is no separate home anchor.
+ * Every section MUST render an element with the matching `id`, in this order.
+ * The scroll-spy (`lib/hooks/use-active-section.ts`) observes exactly these
+ * ids; a section rendering a different id will never highlight.
  *
- * Changing an id here is a breaking change for every section that anchors
- * to it; do it only in a change that updates both sides.
+ * Jump offset under the sticky header is handled globally via
+ * `scroll-padding-top` on <html> (styles/globals.css) — sections must NOT add
+ * their own scroll-margin.
  */
-export const navSections = [
+export const navLeaves: NavLeaf[] = [
   { id: "hero", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "journey", label: "Journey" },
-  { id: "skills", label: "Skills" },
-  { id: "experience", label: "Experience" },
-  { id: "projects", label: "Projects" },
-  { id: "certifications", label: "Certifications" },
-  { id: "tryhackme", label: "TryHackMe" },
-  { id: "github", label: "GitHub" },
-  { id: "blog", label: "Blog" },
+  { id: "approach", label: "Approach" },
+  { id: "work", label: "Work" },
+  { id: "capabilities", label: "Capabilities" },
   { id: "contact", label: "Contact" },
-] satisfies NavSection[];
+];
+
+export interface PrimaryNavItem {
+  id: string;
+  label: string;
+  /** In-page target anchor. */
+  target: string;
+}
+
+/**
+ * Header nav — the same targets minus Home, which the wordmark already covers.
+ */
+export const primaryNav: PrimaryNavItem[] = navLeaves
+  .filter((l) => l.id !== "hero")
+  .map((l) => ({ id: l.id, label: l.label, target: l.id }));

@@ -1,357 +1,242 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
 
 /*
- * Design System v2 — flat, high-contrast, editorial.
- * Accent is a functional signal (CTAs, active states, key stats, links),
- * NEVER a background flood. No blur, no gradient washes, no glow.
- * Semantic token names below are mapped to the v2 palette so every component
- * that consumes Tailwind classes (bg-background, text-foreground, text-primary,
- * border-border, text-muted-foreground, …) picks up the new system for free.
+ * Design system — "Specimen".
+ *
+ * One typeface (Archivo, variable) shown across its full width and weight
+ * range, the way a type specimen sheet shows a family. Width is the hierarchy
+ * device: expanded for display, normal for reading, condensed for data.
+ *
+ * Sections are separated by SURFACE, not by hairlines. The page moves
+ * paper → ink → paper → paper-2 → oxblood, and that surface change is the
+ * chapter break. This is why there are no section eyebrows and no 01/02/03
+ * scaffolding anywhere in this system: the background already did that job.
+ *
+ * Every contrast pair below is measured with culori's wcagContrast, not
+ * estimated. Two measurements shaped the system: the original dim ink tier
+ * came in at 3.18:1 and failed, and the vermilion accent scores only 2.98:1
+ * on the ink plate — which is why --accent-on-dark exists.
  */
+
 :root {
-  /* v2 raw palette */
-  --bg-base: #0a0a0b;
-  --bg-surface: #141416;
-  --bg-surface-hover: #1c1c1f;
-  --text-primary: #f5f5f3;
-  --text-secondary: #a3a3a0;
-  --text-muted: #6b6b68;
-  --border-subtle: #232325;
-  --accent: #f57a28;
-  --accent-hover: #ff8c3f;
+  /* ---- Surfaces. Four, and every one is actually used. ---- */
+  --paper: #faf9f7;
+  --paper-2: #f2f0ec;
 
-  /* semantic aliases consumed by existing components */
-  --background: var(--bg-base);
-  --foreground: var(--text-primary);
-  --card: var(--bg-surface);
-  --card-foreground: var(--text-primary);
-  --popover: var(--bg-surface);
-  --popover-foreground: var(--text-primary);
-  --primary: var(--accent);
-  --primary-foreground: var(--bg-base);
-  --secondary: var(--bg-surface-hover);
-  --secondary-foreground: var(--text-primary);
-  --muted: var(--bg-surface);
-  --muted-foreground: var(--text-secondary);
-  --accent-foreground: var(--bg-base);
-  --destructive: #b91c1c;
-  --destructive-foreground: #f5f5f3;
-  --border: var(--border-subtle);
-  --input: var(--border-subtle);
-  --ring: var(--accent);
-  --radius: 0.5rem;
+  /* ---- Ink — one hue, three tiers, all AA on --paper ---- */
+  --ink: #14151a; /* 17.33:1 on paper · 16.02:1 on paper-2 */
+  --ink-muted: #5a5c66; /* 6.32:1 on paper · 5.84:1 on paper-2 */
+  --ink-dim: #6b6d79; /* 4.88:1 on paper · 4.51:1 on paper-2 */
 
-  /* motion tokens (v2 §5) */
-  --duration-fast: 200ms;
-  --duration-base: 500ms;
-  --duration-slow: 800ms;
-  --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
-}
+  /* ---- Structure ---- */
+  --rule: rgb(20 21 26 / 0.12);
+  --rule-strong: rgb(20 21 26 / 0.28);
 
-/*
- * Single flat editorial aesthetic regardless of OS theme. next-themes
- * (attribute="class", defaultTheme="system") stamps .dark on <html> when the
- * OS is dark, so .dark MUST inherit the same tokens — otherwise dark-mode
- * visitors get a different palette. Re-alias here (custom props don't cascade
- * their referenced values into a new scope automatically for @theme).
- */
-.dark {
-  --background: var(--bg-base);
-  --foreground: var(--text-primary);
-  --card: var(--bg-surface);
-  --card-foreground: var(--text-primary);
-  --popover: var(--bg-surface);
-  --popover-foreground: var(--text-primary);
-  --primary: var(--accent);
-  --primary-foreground: var(--bg-base);
-  --secondary: var(--bg-surface-hover);
-  --secondary-foreground: var(--text-primary);
-  --muted: var(--bg-surface);
-  --muted-foreground: var(--text-secondary);
-  --accent-foreground: var(--bg-base);
-  --destructive: #b91c1c;
-  --destructive-foreground: #f5f5f3;
-  --border: var(--border-subtle);
-  --input: var(--border-subtle);
-  --ring: var(--accent);
+  /* ---- Accent — deep vermilion. The redline: correction, emphasis, the
+   * single most important mark on a plate. 5.81:1 on paper. ---- */
+  --accent: #b4331f;
+  --accent-on: #faf9f7;
+
+  /* ---- Inverted plate (surface = --ink). The accent above measures
+   * 2.98:1 here and FAILS, so dark plates get their own lighter accent. ---- */
+  --on-ink: #faf9f7; /* 17.33:1 */
+  --on-ink-muted: #9a9893; /* 6.33:1 */
+  --accent-on-dark: #e0563c; /* 4.83:1 */
+  --rule-on-ink: rgb(250 249 247 / 0.16);
+
+  /* ---- Closing plate (contact + footer). Deep oxblood: the accent's own
+   * hue at depth — OKLCH hue 30 against the accent's 32, darkened (L 0.29 vs
+   * 0.52) and desaturated (C 0.078 vs 0.169). Related to the redline by
+   * construction rather than by repeating it.
+   *
+   * This ground replaced a full-strength --accent drench, which read as the
+   * loudest thing on the site and supported only two text tiers (a third
+   * measured 4.39:1 and failed). The depth here buys a real muted tier. ---- */
+  --close: #4a1811;
+  --on-close: #faf9f7; /* 13.96:1 */
+  --on-close-muted: #c9aaa0; /* 6.81:1 — one step dimmer (#af8478) fails at 4.47 */
+  --rule-on-close: rgb(250 249 247 / 0.2);
+
+  --radius: 2px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-dim: var(--ink-dim);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
   --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-accent-on: var(--accent-on);
 
-  /* v2 palette exposed directly (bg-surface, text-muted, accent-hover, …) */
-  --color-bg-base: var(--bg-base);
-  --color-bg-surface: var(--bg-surface);
-  --color-bg-surface-hover: var(--bg-surface-hover);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-  --color-border-subtle: var(--border-subtle);
-  --color-accent-hover: var(--accent-hover);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-accent-on-dark: var(--accent-on-dark);
+  --color-rule-on-ink: var(--rule-on-ink);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-close: var(--close);
+  --color-on-close: var(--on-close);
+  --color-on-close-muted: var(--on-close-muted);
+  --color-rule-on-close: var(--rule-on-close);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-border: var(--rule);
+  --color-ring: var(--accent);
 
-  /*
-   * Deliberate, limited type scale (enterprise / Apple + Vercel direction).
-   * Tailwind's defaults beyond this set are removed so hierarchy stays
-   * intentional: body text, two supporting sizes, three heading steps,
-   * one display step.
-   */
-  --text-*: initial;
-  --text-xs: 0.75rem;
-  --text-xs--line-height: 1rem;
-  --text-sm: 0.875rem;
-  --text-sm--line-height: 1.25rem;
-  --text-base: 1rem;
-  --text-base--line-height: 1.5rem;
-  --text-lg: 1.125rem;
-  --text-lg--line-height: 1.75rem;
-  --text-xl: 1.25rem;
-  --text-xl--line-height: 1.75rem;
-  --text-2xl: 1.5rem;
-  --text-2xl--line-height: 2rem;
-  --text-3xl: 1.875rem;
-  --text-3xl--line-height: 2.25rem;
-  --text-4xl: 2.25rem;
-  --text-4xl--line-height: 2.5rem;
-  --text-6xl: 3.75rem;
-  --text-6xl--line-height: 1;
-  /* Oversized display steps for the editorial hero (v2 §3: 64–96px) */
-  --text-7xl: 4.5rem;
-  --text-7xl--line-height: 1;
-  --text-8xl: 6rem;
-  --text-8xl--line-height: 0.98;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+    scroll-padding-top: 5rem;
   }
 
-  /*
-   * Smooth in-page scrolling (App Flow: "Smooth scrolling") with a global
-   * anchor offset: the sticky navbar is h-16 (4rem), so anchored sections
-   * stop 5rem down (1rem breathing room). Sections must NOT add their own
-   * scroll-mt-* — see the anchor contract in data/navigation.ts. The
-   * reduced-motion rule below flattens scroll-behavior back to auto.
-   */
-  html {
-    @apply scroll-pt-20 scroll-smooth;
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
-    @apply bg-background font-sans text-foreground antialiased;
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-variation-settings: "wdth" 100;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
-  /*
-   * Global focus ring (accessibility requirement): every focusable element
-   * gets a visible ring in the accent color, both themes. shadcn primitives
-   * opt out via `outline-none` and render their own ring from the same
-   * --ring token, so the treatment stays consistent everywhere.
-   */
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-on);
+  }
+
   :focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
   }
 
-  /*
-   * CSS-level reduced-motion support. Framer Motion presets additionally
-   * respect this via MotionConfig reducedMotion="user"; this rule covers
-   * CSS transitions/animations (tw-animate-css, hover transitions, smooth
-   * scrolling) for users who opt out of motion.
-   */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    ::before,
-    ::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  /* Prose measure. The register caps line length at 65–75ch; anything wider
+   * is a reading failure regardless of how much horizontal room exists. */
+  p {
+    text-wrap: pretty;
   }
-}
 
-/*
- * v2 removes glassmorphism. This former "glass" utility is redefined as a
- * FLAT opaque surface (no blur, no translucency) so existing `glass` class
- * usages downgrade cleanly to the editorial surface treatment: solid
- * bg-surface with a hairline border.
- */
-@utility glass {
-  border-width: 1px;
-  border-color: var(--border-subtle);
-  background-color: var(--bg-surface);
-}
-
-/*
- * Premium Motion Layer — GSAP animations + micro-interactions.
- * Part of the Complex Motion tier (8/10).
- */
-
-/* Loading pulse animation */
-@keyframes pulse-glow {
-  0%,
-  100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 60%, transparent);
-  }
-  50% {
-    opacity: 0.8;
-    box-shadow: 0 0 0 8px color-mix(in oklch, var(--primary) 0%, transparent);
-  }
-}
-
-/* Smooth color transition */
-@keyframes color-shift {
-  0% {
-    color: var(--foreground);
-  }
-  50% {
-    color: var(--primary);
-  }
-  100% {
-    color: var(--foreground);
-  }
-}
-
-/* Smooth gradient animation for loading states */
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 }
 
 @layer utilities {
-  /* Smooth transitions for interactive elements */
-  .transition-smooth {
-    transition-property: all;
-    transition-duration: 300ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  /*
+   * The specimen scale. Width axis carries the hierarchy — same family, three
+   * registers. Steps are ≥1.25 apart (6 / 3.75 / 2.25 / 1.125rem); a flat
+   * scale reads as uncommitted.
+   */
+
+  /* Hero statement. Ceiling held at 6rem — above that the page is shouting.
+   * Tracking stays at the -0.04em floor or looser so letters never touch. */
+  .type-statement {
+    font-size: clamp(2.75rem, 7vw, 6rem);
+    font-variation-settings:
+      "wdth" 118,
+      "wght" 700;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
   }
 
-  /* Will-change for GPU acceleration during animations */
-  .will-animate {
-    will-change: transform, opacity;
+  .type-plate {
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-variation-settings:
+      "wdth" 112,
+      "wght" 600;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
   }
 
-  /* Prevent layout shift during hover animations */
-  .hover-stable {
-    transition: none;
+  .type-sub {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-variation-settings:
+      "wdth" 100,
+      "wght" 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
-  /* v2: headings are flat high-contrast, not gradient-filled. Kept as a
-     solid-color alias so any lingering `.gradient-text` usage stays flat. */
-  .gradient-text {
-    color: var(--text-primary);
+  .type-body {
+    font-size: 1.0625rem;
+    font-variation-settings:
+      "wdth" 100,
+      "wght" 400;
+    line-height: 1.6;
+    max-width: 68ch;
   }
 
-  /* Hover elevation with shadow */
-  .hover-elevate {
-    transition: none;
-    will-change: transform, opacity;
+  /* Condensed register — dense data strips, figures, technical labels. The
+   * specimen shows its small sizes too; this is the density counterweight to
+   * the display scale above. */
+  .type-data {
+    font-size: 0.8125rem;
+    font-variation-settings:
+      "wdth" 78,
+      "wght" 500;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
   }
 
-  /* Smooth focus state */
-  .focus-ring {
-    outline: none;
-    box-shadow:
-      0 0 0 2px var(--primary),
-      0 0 0 4px var(--background);
-    transition-property: all;
-    transition-duration: 200ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .animate-color-shift {
-    animation: color-shift 3s ease-in-out infinite;
-  }
-
-  /* Magnetic hover effect baseline */
-  .magnetic-base {
-    transition: none;
-    will-change: transform, opacity;
-  }
-
-  .animate-shimmer {
-    animation: shimmer 3s infinite;
-    background: linear-gradient(
-      90deg,
-      var(--muted) 25%,
-      var(--accent) 50%,
-      var(--muted) 75%
-    );
-    background-size: 1000px 100%;
+  .type-figure {
+    font-variation-settings:
+      "wdth" 88,
+      "wght" 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
   }
 
   /*
-   * v2 §1: "Confidence comes from typography and whitespace, not decoration."
-   * The floating glow orbs and their float animation are removed entirely —
-   * the page background is a single flat --bg-base.
+   * The closing plate's transit band — segments travelling down their channels.
+   * Travel starts above the band and ends below it so a segment is fully clear
+   * of the visible area before it loops, which is what keeps the repeat
+   * invisible. Linear on purpose: easing would make every rail pulse in time
+   * with the others. Applied in components/contact/transit-rails.tsx, and
+   * suppressed there entirely under reduced motion rather than slowed down.
    */
-  main {
-    position: relative;
-    z-index: 1;
+  @keyframes transit-fall {
+    from {
+      transform: translateY(-15%);
+    }
+    to {
+      transform: translateY(115%);
+    }
   }
 
-  /* Editorial buttons: flat, sharp transitions, accent as fill/hover signal.
-     No glow, no bounce. */
-  .btn-accent {
-    background-color: var(--accent);
-    color: var(--bg-base);
-    transition:
-      background-color var(--duration-fast) var(--ease-default),
-      transform var(--duration-fast) var(--ease-default);
+  /* Underline that grows from the left. Motion is opt-in per plate rather
+   * than a uniform reflex, but link affordance is not decoration. */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .btn-accent:hover {
-    background-color: var(--accent-hover);
+  .link-underline:hover {
+    background-size: 100% 1px;
   }
 
-  .btn-outline {
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
-    transition:
-      border-color var(--duration-fast) var(--ease-default),
-      color var(--duration-fast) var(--ease-default);
-  }
-
-  .btn-outline:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+  @media (prefers-reduced-motion: reduce) {
+    .link-underline {
+      transition: none;
+    }
   }
 }

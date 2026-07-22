@@ -1,11 +1,10 @@
 import type { Certificate } from "@/lib/types";
 
 /**
- * Formal certifications (non-TryHackMe) — traces the same arc as the rest of
- * the portfolio: risk/governance and AI/cloud foundations layered on top of
- * the offensive base. TryHackMe achievements live in data/tryhackme.ts (same
- * Certificate schema, distinct source). Add verification URLs where issuers
- * provide them (see data/README.md).
+ * Formal certifications (non-TryHackMe) — governance and AI/cloud foundations
+ * layered on the offensive base. TryHackMe achievements live in
+ * data/tryhackme.ts (same schema, distinct source). Add verification URLs where
+ * issuers provide them.
  */
 export const certificates = [
   {
@@ -30,3 +29,8 @@ export const certificates = [
     credentialUrl: null,
   },
 ] satisfies Certificate[];
+
+/** Newest first. */
+export const certificatesSorted = [...certificates].sort((a, b) =>
+  b.date.localeCompare(a.date),
+);

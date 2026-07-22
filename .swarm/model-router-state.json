@@ -1,0 +1,71 @@
+{
+  "totalDecisions": 6,
+  "modelDistribution": {
+    "haiku": 0,
+    "sonnet": 0,
+    "opus": 6,
+    "inherit": 0
+  },
+  "avgComplexity": 0.44834267149092527,
+  "avgConfidence": 0.7009165237424836,
+  "circuitBreakerTrips": 0,
+  "lastUpdated": "2026-07-20T08:54:45.794Z",
+  "learningHistory": [],
+  "version": 2,
+  "priors": {
+    "low": {
+      "haiku": {
+        "alpha": 1,
+        "beta": 1
+      },
+      "sonnet": {
+        "alpha": 1,
+        "beta": 1
+      },
+      "opus": {
+        "alpha": 1,
+        "beta": 1
+      },
+      "inherit": {
+        "alpha": 1,
+        "beta": 1
+      }
+    },
+    "med": {
+      "haiku": {
+        "alpha": 1,
+        "beta": 1
+      },
+      "sonnet": {
+        "alpha": 1,
+        "beta": 1
+      },
+      "opus": {
+        "alpha": 1,
+        "beta": 1
+      },
+      "inherit": {
+        "alpha": 1,
+        "beta": 1
+      }
+    },
+    "high": {
+      "haiku": {
+        "alpha": 1,
+        "beta": 1
+      },
+      "sonnet": {
+        "alpha": 1,
+        "beta": 1
+      },
+      "opus": {
+        "alpha": 1,
+        "beta": 1
+      },
+      "inherit": {
+        "alpha": 1,
+        "beta": 1
+      }
+    }
+  }
+}

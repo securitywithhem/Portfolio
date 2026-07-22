@@ -1,68 +1,41 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 
 /**
- * Active band: starts below the sticky navbar (matches the 5rem
- * `scroll-padding-top` in globals.css) and ends 45% down the viewport, so a
- * section becomes "active" while it occupies the reading position — not the
- * moment its first pixel enters the screen.
- */
-const OBSERVER_ROOT_MARGIN = "-80px 0px -55% 0px";
-
-/**
- * Tracks which in-page section currently occupies the reading position.
- *
- * IntersectionObserver only — no scroll listeners, so there is no per-frame
- * main-thread work; React re-renders happen only when the active id actually
- * changes. `ids` must be in document order (they are, per the contract in
- * data/navigation.ts): among visible sections the topmost wins.
- *
- * Returns null when none of the ids exist on the current page (e.g. on
- * routes other than the home page), so callers can render no highlight.
- * Assumes sections are at least ~half a viewport tall — a final section
- * shorter than that may never reach the band.
+ * Scroll-spy: returns the id of the section currently occupying a trigger band
+ * near the top-center of the viewport. `ids` must be in document order. Pass a
+ * stable array (module-level or memoized) — the effect re-subscribes when the
+ * joined id list changes.
  */
 export function useActiveSection(ids: string[]): string | null {
-  const [activeId, setActiveId] = React.useState<string | null>(null);
-  // Key by content, not array identity, so a caller mapping ids on each
-  // render doesn't tear down the observer every time.
-  const idsKey = ids.join(",");
+  const [active, setActive] = useState<string | null>(ids[0] ?? null);
+  const key = ids.join(",");
 
-  React.useEffect(() => {
-    const orderedIds = idsKey.split(",").filter(Boolean);
-    const sections = orderedIds
+  useEffect(() => {
+    const els = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
-
-    if (sections.length === 0) {
-      setActiveId(null);
-      return;
-    }
+    if (els.length === 0) return;
 
     const visible = new Set<string>();
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            visible.add(entry.target.id);
-          } else {
-            visible.delete(entry.target.id);
-          }
+          if (entry.isIntersecting) visible.add(entry.target.id);
+          else visible.delete(entry.target.id);
         }
-        const topmost = orderedIds.find((id) => visible.has(id));
-        if (topmost) {
-          setActiveId(topmost);
-        }
+        // Topmost in-document visible section wins — stable, predictable.
+        const first = ids.find((id) => visible.has(id));
+        if (first) setActive(first);
       },
-      { rootMargin: OBSERVER_ROOT_MARGIN },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 },
     );
 
-    for (const section of sections) {
-      observer.observe(section);
-    }
+    els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [idsKey]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
 
-  return activeId;
+  return active;
 }

@@ -1,0 +1,83 @@
+{
+  "agents": {
+    "architect-ia-tokens": {
+      "agentId": "architect-ia-tokens",
+      "agentType": "architect",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {},
+      "createdAt": "2026-07-20T08:54:34.517Z",
+      "domain": "frontend",
+      "model": "opus",
+      "modelRoutedBy": "router",
+      "provider": "anthropic"
+    },
+    "coder-design-system": {
+      "agentId": "coder-design-system",
+      "agentType": "coder",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {},
+      "createdAt": "2026-07-20T08:54:37.811Z",
+      "domain": "frontend",
+      "model": "opus",
+      "modelRoutedBy": "router",
+      "provider": "anthropic"
+    },
+    "coder-layout": {
+      "agentId": "coder-layout",
+      "agentType": "coder",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {},
+      "createdAt": "2026-07-20T08:54:39.791Z",
+      "domain": "frontend",
+      "model": "opus",
+      "modelRoutedBy": "router",
+      "provider": "anthropic"
+    },
+    "coder-3d-scenario": {
+      "agentId": "coder-3d-scenario",
+      "agentType": "coder",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {},
+      "createdAt": "2026-07-20T08:54:45.769Z",
+      "domain": "frontend",
+      "model": "opus",
+      "modelRoutedBy": "router",
+      "provider": "anthropic"
+    },
+    "reviewer-a11y-perf": {
+      "agentId": "reviewer-a11y-perf",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {},
+      "createdAt": "2026-07-20T08:54:45.773Z",
+      "domain": "frontend",
+      "model": "opus",
+      "modelRoutedBy": "router",
+      "provider": "anthropic"
+    },
+    "tester-lighthouse": {
+      "agentId": "tester-lighthouse",
+      "agentType": "tester",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {},
+      "createdAt": "2026-07-20T08:54:45.794Z",
+      "domain": "frontend",
+      "model": "opus",
+      "modelRoutedBy": "router",
+      "provider": "anthropic"
+    }
+  },
+  "version": "3.0.0"
+}

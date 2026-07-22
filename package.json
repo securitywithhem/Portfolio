@@ -18,7 +18,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix --max-warnings=0",
+      "eslint --fix --max-warnings=0 --no-warn-ignored",
       "prettier --write"
     ],
     "*.{json,css,mjs,md}": [
@@ -26,20 +26,15 @@
     ]
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.4.0",
-    "class-variance-authority": "^0.7.1",
+    "@react-three/fiber": "^9.6.1",
     "clsx": "^2.1.1",
-    "gsap": "^3.15.0",
     "lucide-react": "^1.25.0",
     "motion": "^12.42.2",
     "next": "15.5.20",
-    "next-themes": "^0.4.6",
-    "radix-ui": "^1.6.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-hook-form": "^7.82.0",
-    "resend": "^6.17.2",
     "tailwind-merge": "^3.6.0",
+    "three": "^0.185.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -51,6 +46,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.185.1",
     "culori": "^4.0.2",
     "eslint": "^9",
     "eslint-config-next": "15.5.20",

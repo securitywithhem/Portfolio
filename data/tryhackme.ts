@@ -1,16 +1,11 @@
 import type { Certificate } from "@/lib/types";
 
 /**
- * TryHackMe learning paths and achievements. Uses the same Certificate schema
- * as formal certifications (lib/types/certificate.ts) but is a distinct data
- * source — TryHackMe is a hands-on learning platform, not a formal
- * credentialing body. Ordered newest-first at read time.
- *
- * The two "Featured" pentesting paths lead; the foundational paths follow as
- * supporting evidence of the offensive base (positioning v2). Add profile /
- * completion URLs where applicable (see data/README.md).
+ * TryHackMe learning paths — same Certificate schema, distinct source (a
+ * hands-on platform, not a formal credentialing body). The two pentesting paths
+ * lead; foundational paths follow as evidence of the offensive base.
  */
-export const tryHackMeAchievements = [
+export const tryHackMe = [
   {
     id: "thm-offensive-pentesting",
     title: "Offensive Pentesting",
@@ -54,3 +49,16 @@ export const tryHackMeAchievements = [
     credentialUrl: null,
   },
 ] satisfies Certificate[];
+
+export const tryHackMeSorted = [...tryHackMe].sort((a, b) =>
+  b.date.localeCompare(a.date),
+);
+
+/** Headline achievement stats (from the resume / TryHackMe profile). */
+export const tryHackMeStats = [
+  { label: "GLOBAL RANK", value: "Top 2%" },
+  { label: "LABS COMPLETED", value: "175+" },
+  { label: "LEARNING PATHS", value: String(tryHackMe.length) },
+];
+
+export const tryHackMeProfileUrl = "https://tryhackme.com/p/SecurityWithHem";
