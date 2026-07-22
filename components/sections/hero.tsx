@@ -1,101 +1,89 @@
-import { ArrowRight } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { Reveal } from "@/components/shared/reveal";
-import { cn } from "@/lib/utils";
-import { getProfile } from "@/lib/data";
-import { firstScenarioMeta } from "@/data/scenarios";
+import { profile } from "@/data/profile";
+import { HeroReveal } from "./hero-reveal";
 
 /**
- * Hero — first meaningful content. Fully server-rendered (crawlable) with a
- * reduced-motion-aware entrance layered on top. No WebGL here; the immersive
- * layer begins at the scenarios. First scenario anchor drives the primary CTA.
+ * The four figures a recruiter should retain after three seconds. Rendered as
+ * a dense condensed data strip along the foot of the plate — the counterweight
+ * to the statement above it. Boxing these in stat cards is the SaaS
+ * hero-metric template; the numbers carry themselves at this scale.
+ */
+const PROOF = [
+  { value: "Top 2%", label: "TryHackMe, globally" },
+  { value: "175+", label: "Hands-on labs" },
+  { value: "3", label: "Security platforms built" },
+  { value: "1", label: "Live VAPT internship" },
+];
+
+/**
+ * Plate 1 — paper. Typographic, asymmetric, no portrait.
+ *
+ * The headline is the positioning rather than the name: the name is in the
+ * header, and a recruiter scanning for three seconds needs to know what you do.
+ * Set at the specimen's widest and heaviest, which is the one place on the page
+ * the type runs at full display scale.
  */
 export function Hero() {
-  const profile = getProfile();
-  const firstScenario = firstScenarioMeta;
-
   return (
     <section
       id="hero"
-      aria-labelledby="hero-heading"
-      className="relative isolate flex min-h-[calc(100dvh-4rem)] items-center overflow-hidden"
+      className="flex min-h-[94svh] flex-col justify-center bg-paper px-6 pt-28 pb-14 text-ink md:px-10"
     >
-      {/* Restrained blueprint grid, faded toward the edges. */}
-      <div
-        aria-hidden
-        className="precision-grid pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]"
-      />
+      <div className="mx-auto w-full max-w-6xl">
+        <HeroReveal>
+          <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <p className="type-data flex items-center gap-2.5 text-accent">
+                <span
+                  aria-hidden
+                  className="inline-block h-1.5 w-1.5 rounded-full bg-accent"
+                />
+                Available now for security internships &amp; part-time roles
+              </p>
 
-      <div className="mx-auto w-full max-w-6xl px-6 py-20">
-        {/* Telemetry status line */}
-        <Reveal mode="slide">
-          <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-2">
-            <span className="label-mono flex items-center gap-2 text-accent">
-              <span
-                aria-hidden
-                className="h-1.5 w-1.5 rounded-full bg-accent"
-              />
-              CANDIDATE · AVAILABLE
-            </span>
-            <span className="label-mono">{profile.location}</span>
+              <h1 className="type-statement mt-7 max-w-[16ch]">
+                I break systems to understand them, then build what stops them
+                breaking.
+              </h1>
+            </div>
+
+            {/* Sits on the baseline of the statement rather than centred under
+                it — the asymmetry is what keeps this from reading as a hero
+                template. */}
+            <p className="type-body max-w-sm text-ink-muted lg:pb-2 lg:text-right">
+              Cybersecurity engineer. Offensive security and VAPT by training,
+              moving into governance, risk &amp; compliance and AI security.
+            </p>
           </div>
-        </Reveal>
 
-        <Reveal delay={0.05} mode="slide">
-          <p className="label-mono mb-5 text-fg">
-            {profile.name} <span className="text-fg-dim">/</span> Cybersecurity
-            Engineer
-          </p>
-        </Reveal>
+          <div className="mt-16 flex flex-col gap-8 border-t border-rule pt-7 md:mt-24 lg:flex-row lg:items-start lg:justify-between">
+            <dl className="grid grow grid-cols-2 gap-x-10 gap-y-6 sm:grid-cols-4">
+              {PROOF.map((stat) => (
+                <div key={stat.label}>
+                  <dt className="sr-only">{stat.label}</dt>
+                  <dd className="type-figure text-[clamp(1.5rem,2.6vw,2rem)] leading-none">
+                    {stat.value}
+                  </dd>
+                  <p className="type-data mt-2 text-ink-dim">{stat.label}</p>
+                </div>
+              ))}
+            </dl>
 
-        <Reveal delay={0.1} mode="slide">
-          <h1
-            id="hero-heading"
-            className="max-w-4xl text-5xl leading-[0.95] font-extrabold tracking-[-0.03em] text-balance sm:text-6xl lg:text-7xl"
-          >
-            From breaking systems to{" "}
-            <span className="text-accent">building the guardrails</span>.
-          </h1>
-        </Reveal>
-
-        <Reveal delay={0.15} mode="slide">
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-fg-muted">
-            I started in offensive security — VAPT, penetration testing, network
-            reconnaissance — and I&apos;m turning that attacker&apos;s instinct
-            into GRC and AI-security architecture. Explore the work as four
-            interactive scenarios.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.2} mode="slide">
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            <a
-              href={`#${firstScenario.id}`}
-              className={cn(buttonVariants({ variant: "primary", size: "md" }))}
-            >
-              Enter the scenarios
-              <ArrowRight size={16} aria-hidden />
-            </a>
-            <a
-              href={profile.resumeUrl}
-              download
-              className={cn(buttonVariants({ variant: "outline", size: "md" }))}
-            >
-              Download resume
-            </a>
+            <div className="flex shrink-0 flex-wrap items-center gap-6">
+              <a
+                href={`mailto:${profile.email}?subject=${encodeURIComponent("Security role — let's talk")}`}
+                className="inline-flex h-11 items-center rounded-[2px] bg-ink px-6 text-[0.9rem] font-medium text-paper transition-colors hover:bg-accent motion-reduce:transition-none"
+              >
+                Email me
+              </a>
+              <a
+                href={profile.resumeUrl}
+                className="link-underline text-[0.9rem] font-medium"
+              >
+                Resume
+              </a>
+            </div>
           </div>
-        </Reveal>
-
-        {/* Focus areas — mono chips */}
-        <Reveal delay={0.25} mode="slide">
-          <ul className="mt-14 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-6">
-            {profile.focusAreas.map((area) => (
-              <li key={area} className="label-mono text-fg-muted">
-                {area}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+        </HeroReveal>
       </div>
     </section>
   );
