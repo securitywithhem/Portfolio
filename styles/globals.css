@@ -1,130 +1,102 @@
 @import "tailwindcss";
 
 /*
- * Design System v3 — Industrial Telemetry (see /DESIGN.md).
- * Dark is the only mode at launch (not a toggle). Depth comes from layering,
- * 1px hairlines, and contrast — never shadows or gradient washes.
- * Direction: taste-skill brutalist (Tactical Telemetry), tempered by the
- * typographic restraint the docs inherit from Apple/Linear/Vercel.
+ * Design system — "Specimen".
+ *
+ * One typeface (Archivo, variable) shown across its full width and weight
+ * range, the way a type specimen sheet shows a family. Width is the hierarchy
+ * device: expanded for display, normal for reading, condensed for data.
+ *
+ * Sections are separated by SURFACE, not by hairlines. The page moves
+ * paper → ink → paper → paper-2 → oxblood, and that surface change is the
+ * chapter break. This is why there are no section eyebrows and no 01/02/03
+ * scaffolding anywhere in this system: the background already did that job.
+ *
+ * Every contrast pair below is measured with culori's wcagContrast, not
+ * estimated. Two measurements shaped the system: the original dim ink tier
+ * came in at 3.18:1 and failed, and the vermilion accent scores only 2.98:1
+ * on the ink plate — which is why --accent-on-dark exists.
  */
 
 :root {
-  /* ---- Substrate (deactivated CRT — never pure black) ---- */
-  --bg: #0a0a0b;
-  --surface: #111113;
-  --surface-2: #17171a;
+  /* ---- Surfaces. Four, and every one is actually used. ---- */
+  --paper: #faf9f7;
+  --paper-2: #f2f0ec;
 
-  /* ---- Foreground (white phosphor) ---- */
-  --fg: #eaeaea;
-  --fg-muted: #8a8a90;
-  --fg-dim: #71717a;
+  /* ---- Ink — one hue, three tiers, all AA on --paper ---- */
+  --ink: #14151a; /* 17.33:1 on paper · 16.02:1 on paper-2 */
+  --ink-muted: #5a5c66; /* 6.32:1 on paper · 5.84:1 on paper-2 */
+  --ink-dim: #6b6d79; /* 4.88:1 on paper · 4.51:1 on paper-2 */
 
   /* ---- Structure ---- */
-  --line: #232327;
-  --line-strong: #333338;
+  --rule: rgb(20 21 26 / 0.12);
+  --rule-strong: rgb(20 21 26 / 0.28);
 
-  /* ---- Per-scenario accents (one accent per scenario, not a global one) ----
-   * Each has a base, an -on (text placed on the accent), and a -soft (low-alpha
-   * fill). WCAG-AA verified against --bg per accent in the phase it ships. */
-  --accent-red-amber: #ff5a1f;
-  --accent-red-amber-on: #0a0a0b;
-  --accent-red-amber-soft: rgb(255 90 31 / 0.12);
+  /* ---- Accent — deep vermilion. The redline: correction, emphasis, the
+   * single most important mark on a plate. 5.81:1 on paper. ---- */
+  --accent: #b4331f;
+  --accent-on: #faf9f7;
 
-  --accent-blue: #3b9eff;
-  --accent-blue-on: #0a0a0b;
-  --accent-blue-soft: rgb(59 158 255 / 0.12);
+  /* ---- Inverted plate (surface = --ink). The accent above measures
+   * 2.98:1 here and FAILS, so dark plates get their own lighter accent. ---- */
+  --on-ink: #faf9f7; /* 17.33:1 */
+  --on-ink-muted: #9a9893; /* 6.33:1 */
+  --accent-on-dark: #e0563c; /* 4.83:1 */
+  --rule-on-ink: rgb(250 249 247 / 0.16);
 
-  --accent-violet: #9b7bff;
-  --accent-violet-on: #0a0a0b;
-  --accent-violet-soft: rgb(155 123 255 / 0.12);
+  /* ---- Closing plate (contact + footer). Deep oxblood: the accent's own
+   * hue at depth — OKLCH hue 30 against the accent's 32, darkened (L 0.29 vs
+   * 0.52) and desaturated (C 0.078 vs 0.169). Related to the redline by
+   * construction rather than by repeating it.
+   *
+   * This ground replaced a full-strength --accent drench, which read as the
+   * loudest thing on the site and supported only two text tiers (a third
+   * measured 4.39:1 and failed). The depth here buys a real muted tier. ---- */
+  --close: #4a1811;
+  --on-close: #faf9f7; /* 13.96:1 */
+  --on-close-muted: #c9aaa0; /* 6.81:1 — one step dimmer (#af8478) fails at 4.47 */
+  --rule-on-close: rgb(250 249 247 / 0.2);
 
-  --accent-teal: #2dd4bf;
-  --accent-teal-on: #0a0a0b;
-  --accent-teal-soft: rgb(45 212 191 / 0.12);
-
-  /* Global default accent = red-amber (Offensive Security is the flagship).
-   * Scenario sections re-point --accent locally so components stay accent-agnostic. */
-  --accent: var(--accent-red-amber);
-  --accent-on: var(--accent-red-amber-on);
-  --accent-soft: var(--accent-red-amber-soft);
-
-  /* ---- Semantic aliases consumed by shadcn primitives ---- */
-  --background: var(--bg);
-  --foreground: var(--fg);
-  --card: var(--surface);
-  --card-foreground: var(--fg);
-  --popover: var(--surface);
-  --popover-foreground: var(--fg);
-  --primary: var(--accent);
-  --primary-foreground: var(--accent-on);
-  --secondary: var(--surface-2);
-  --secondary-foreground: var(--fg);
-  --muted: var(--surface-2);
-  --muted-foreground: var(--fg-muted);
-  --accent-color: var(--surface-2);
-  --accent-foreground: var(--fg);
-  --destructive: #ff4d4d;
-  --destructive-foreground: var(--fg);
-  --border: var(--line);
-  --input: var(--line-strong);
-  --ring: var(--accent);
-
-  /* Radius ceiling: 2px (docs allow 2–4px; we hold the low end). */
   --radius: 2px;
 }
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-fg: var(--fg);
-  --color-fg-muted: var(--fg-muted);
-  --color-fg-dim: var(--fg-dim);
-  --color-line: var(--line);
-  --color-line-strong: var(--line-strong);
-
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-dim: var(--ink-dim);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
   --color-accent: var(--accent);
   --color-accent-on: var(--accent-on);
-  --color-accent-soft: var(--accent-soft);
 
-  /* shadcn semantic names */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-accent-on-dark: var(--accent-on-dark);
+  --color-rule-on-ink: var(--rule-on-ink);
 
-  --font-sans:
-    var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", monospace;
+  --color-close: var(--close);
+  --color-on-close: var(--on-close);
+  --color-on-close-muted: var(--on-close-muted);
+  --color-rule-on-close: var(--rule-on-close);
+
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-border: var(--rule);
+  --color-ring: var(--accent);
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 
   --radius-sm: 2px;
   --radius-md: 2px;
-  --radius-lg: 4px;
+  --radius-lg: 2px;
 }
 
 @layer base {
-  * {
-    border-color: var(--border);
-  }
-
   html {
     scroll-behavior: smooth;
-    color-scheme: dark;
-    /* Offset in-page jumps below the 4rem sticky navbar. Sections must NOT add
-     * their own scroll-margin — this is the single global source. */
+    color-scheme: light;
     scroll-padding-top: 5rem;
   }
 
@@ -135,9 +107,10 @@
   }
 
   body {
-    background-color: var(--bg);
-    color: var(--fg);
+    background-color: var(--paper);
+    color: var(--ink);
     font-family: var(--font-sans);
+    font-variation-settings: "wdth" 100;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -147,30 +120,123 @@
     color: var(--accent-on);
   }
 
-  /* Visible, precise focus ring — accessibility, not decoration. */
   :focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  /* Prose measure. The register caps line length at 65–75ch; anything wider
+   * is a reading failure regardless of how much horizontal room exists. */
+  p {
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 }
 
 @layer utilities {
-  /* Uppercase monospace telemetry label — nav, metadata, unit IDs, coordinates. */
-  .label-mono {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--fg-muted);
+  /*
+   * The specimen scale. Width axis carries the hierarchy — same family, three
+   * registers. Steps are ≥1.25 apart (6 / 3.75 / 2.25 / 1.125rem); a flat
+   * scale reads as uncommitted.
+   */
+
+  /* Hero statement. Ceiling held at 6rem — above that the page is shouting.
+   * Tracking stays at the -0.04em floor or looser so letters never touch. */
+  .type-statement {
+    font-size: clamp(2.75rem, 7vw, 6rem);
+    font-variation-settings:
+      "wdth" 118,
+      "wght" 700;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
   }
 
-  /* Restrained blueprint grid — structure, not decoration. Kept faint. */
-  .precision-grid {
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 64px 64px;
-    background-position: center center;
-    opacity: 0.35;
+  .type-plate {
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-variation-settings:
+      "wdth" 112,
+      "wght" 600;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+  }
+
+  .type-sub {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-variation-settings:
+      "wdth" 100,
+      "wght" 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .type-body {
+    font-size: 1.0625rem;
+    font-variation-settings:
+      "wdth" 100,
+      "wght" 400;
+    line-height: 1.6;
+    max-width: 68ch;
+  }
+
+  /* Condensed register — dense data strips, figures, technical labels. The
+   * specimen shows its small sizes too; this is the density counterweight to
+   * the display scale above. */
+  .type-data {
+    font-size: 0.8125rem;
+    font-variation-settings:
+      "wdth" 78,
+      "wght" 500;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
+  }
+
+  .type-figure {
+    font-variation-settings:
+      "wdth" 88,
+      "wght" 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * The closing plate's transit band — segments travelling down their channels.
+   * Travel starts above the band and ends below it so a segment is fully clear
+   * of the visible area before it loops, which is what keeps the repeat
+   * invisible. Linear on purpose: easing would make every rail pulse in time
+   * with the others. Applied in components/contact/transit-rails.tsx, and
+   * suppressed there entirely under reduced motion rather than slowed down.
+   */
+  @keyframes transit-fall {
+    from {
+      transform: translateY(-15%);
+    }
+    to {
+      transform: translateY(115%);
+    }
+  }
+
+  /* Underline that grows from the left. Motion is opt-in per plate rather
+   * than a uniform reflex, but link affordance is not decoration. */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link-underline {
+      transition: none;
+    }
   }
 }

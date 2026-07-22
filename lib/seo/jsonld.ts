@@ -6,7 +6,7 @@ import {
   CONTACT_EMAIL,
 } from "./config";
 import { profile } from "@/data/profile";
-import { scenarios } from "@/lib/scenarios";
+import { projects } from "@/data/projects";
 
 /** Person schema — site-wide identity. */
 export function generatePersonSchema() {
@@ -30,7 +30,7 @@ export function generatePersonSchema() {
   };
 }
 
-/** WebSite schema, with the scenario sections as parts. */
+/** WebSite schema, with the built projects as parts. */
 export function generateWebsiteSchema() {
   return {
     "@context": "https://schema.org",
@@ -38,11 +38,14 @@ export function generateWebsiteSchema() {
     name: SITE_NAME,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    hasPart: scenarios.map((s) => ({
-      "@type": "WebPageElement",
-      name: s.title,
-      description: s.summary,
-      url: `${SITE_URL}/#${s.id}`,
+    hasPart: projects.map((project) => ({
+      "@type": "SoftwareSourceCode",
+      name: project.title,
+      description: project.description,
+      programmingLanguage: project.techStack,
+      author: { "@type": "Person", name: SITE_NAME },
+      ...(project.github ? { codeRepository: project.github } : {}),
+      url: `${SITE_URL}/#work`,
     })),
   };
 }

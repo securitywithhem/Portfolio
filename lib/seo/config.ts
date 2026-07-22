@@ -5,7 +5,7 @@ export const SITE_NAME = profile.name;
 export const SITE_URL = env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const SITE_TITLE = `${profile.name} — Cybersecurity Portfolio`;
 export const SITE_DESCRIPTION =
-  "Immersive, scenario-based cybersecurity portfolio — offensive security (VAPT), GRC & compliance, AI-secured systems, and cloud infrastructure. Fast, accessible, crawlable.";
+  "Cybersecurity engineer working across offensive security (VAPT), cloud and AI security, moving into GRC. Top 2% on TryHackMe, 175+ hands-on labs, three security platforms built. Available for security internships.";
 export const CONTACT_EMAIL = profile.email;
 export const SOCIAL_URLS = profile.socials.map((s) => s.url);
 
