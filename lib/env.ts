@@ -11,6 +11,12 @@ const envSchema = z.object({
     .default("development"),
   /** Canonical site origin, for absolute URLs in metadata/OG tags. */
   NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
+  /**
+   * Set automatically by Vercel to the project's stable production domain
+   * (host only, no scheme). Used as the fallback origin so deployments get
+   * correct absolute URLs without any dashboard configuration.
+   */
+  VERCEL_PROJECT_PRODUCTION_URL: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -18,6 +24,7 @@ export type Env = z.infer<typeof envSchema>;
 const parsed = envSchema.safeParse({
   NODE_ENV: process.env.NODE_ENV,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+  VERCEL_PROJECT_PRODUCTION_URL: process.env.VERCEL_PROJECT_PRODUCTION_URL,
 });
 
 if (!parsed.success) {
