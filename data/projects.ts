@@ -24,7 +24,7 @@ export const projects = [
     description:
       "Self-hosted compliance platform that automates SOC 2, ISO 27001 and DPDP Act 2023 readiness entirely on-premise — mapping evidence to controls with a local LLM, so audit data never touches a public AI API.",
     technical:
-      "Multi-container platform (Next.js, tRPC, PostgreSQL + pgvector, MinIO, Redis/BullMQ) that maps evidence to controls with a local Ollama model, so documents never touch a public AI API. Evidence is hash-chained — alter one record and the signature chain breaks — and workspaces are multi-tenant with Stripe billing.",
+      "Multi-container platform (Next.js, tRPC, PostgreSQL + pgvector, MinIO, Redis/BullMQ) that maps evidence to controls with a local Ollama model, so documents never touch a public AI API. Evidence is hash-chained — alter one record and the signature chain breaks — with multi-tenant workspaces and Stripe billing in development.",
     whyItMatters:
       "Most GRC candidates come from a policy or audit background and have never built the systems that generate the evidence they review. I built one — GRC understood from the infrastructure up.",
     techStack: [
